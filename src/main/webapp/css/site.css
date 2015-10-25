@@ -1,3 +1,6 @@
 .form-control[disabled], fieldset[disabled] .form-control  {
     cursor: default; /* overrides 'not-allowed' which looks a bit aggressive */
 }
+
+.error { color: red;}
+.technicaldetails { color: lightgray;}
