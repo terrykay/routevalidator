@@ -14,6 +14,7 @@
     </div>
     <div class="panel-body">
         <div class="error">${error}</div>
+        <div><a href="/">Return to the home page</a></div>
         <%
         Exception exception = (Exception)request.getAttribute("exception");
         if(exception != null) {

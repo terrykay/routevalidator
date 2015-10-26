@@ -1,5 +1,7 @@
 package com.bjt.routevalidator;
 
+import com.bjt.gpxparser.Gpx;
+import com.bjt.gpxparser.GpxParser;
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -26,17 +29,33 @@ public class ValidateServlet extends HttpServlet {
 
         try {
             final FileItemIterator itemIterator = servletFileUpload.getItemIterator(req);
+            Gpx intendedGpx = null;
+            Gpx actualGpx = null;
+            final GpxParser gpxParser = new GpxParser();
             while (itemIterator.hasNext()) {
                 final FileItemStream file = itemIterator.next();
-                logger.info("Uploaded " + file.getContentType() + " to " + file.getFieldName());
+                if(file.getFieldName().equals("intended")) {
+                    intendedGpx = readGpx(file, gpxParser);
+                }
+                if(file.getFieldName().equals("actual")) {
+                    actualGpx = readGpx(file, gpxParser);
+                }
+            }
+            if(intendedGpx == null || actualGpx == null) {
+                ErrorHandler.handleError("Both intended and actual gpx files must be uploaded.", null, req, resp);
+            } else {
+
             }
             req.getRequestDispatcher("/result.jsp").include(req, resp);
 
 
-        } catch (FileUploadException e) {
-            logger.throwing(ValidateServlet.class.getName(), "doPost", e);
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            e.printStackTrace(resp.getWriter());
+        } catch (Exception e) {
+            ErrorHandler.handleError("There was an error processing the GPX files.", e, req, resp);
+        }
+    }
+    private static Gpx readGpx(final FileItemStream file, final GpxParser gpxParser) throws Exception {
+        try(final InputStream inputStream = file.openStream()) {
+            return gpxParser.parseGpx(inputStream);
         }
     }
 }

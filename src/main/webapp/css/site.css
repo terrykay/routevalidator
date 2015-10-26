@@ -4,3 +4,5 @@
 
 .error { color: red;}
 .technicaldetails { color: lightgray;}
+th, td {padding: 10px;}
+tr td:first-of-type, tr th:first-of-type {padding-left: 0px;}
