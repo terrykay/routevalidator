@@ -8,6 +8,7 @@ public class Result {
     public static  final String STATUS_REFER = "Refer";
 
     private String status;
+    private int tolerance;
 
     public String getStatus() {
         return status;
@@ -15,5 +16,13 @@ public class Result {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getTolerance() {
+        return tolerance;
+    }
+
+    public void setTolerance(int tolerance) {
+        this.tolerance = tolerance;
     }
 }

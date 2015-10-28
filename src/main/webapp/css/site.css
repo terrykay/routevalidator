@@ -1,8 +1,15 @@
 .form-control[disabled], fieldset[disabled] .form-control  {
     cursor: default; /* overrides 'not-allowed' which looks a bit aggressive */
 }
+.bootstrap-filestyle .buttonText {
+    margin-left:5px;
+}
 
 .error { color: red;}
 .technicaldetails { color: lightgray;}
 th, td {padding: 10px;}
 tr td:first-of-type, tr th:first-of-type {padding-left: 0px;}
+#toleranceLabel {
+    display: inline-block;
+    min-width: 40px;
+}

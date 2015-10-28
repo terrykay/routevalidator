@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
 <body>
-This is the result.
+This is a new result. You selected a tolerance of: ${result.tolerance}.
 </body>
 </html>

@@ -3,8 +3,8 @@ package com.bjt.routevalidator;
 import com.bjt.gpxparser.Gpx;
 import com.bjt.gpxparser.GpxParser;
 import org.apache.commons.fileupload.*;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -24,7 +22,6 @@ public class ValidateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doPost(req, resp);
         final ServletFileUpload servletFileUpload = new ServletFileUpload();
 
         try {
@@ -32,6 +29,7 @@ public class ValidateServlet extends HttpServlet {
             Gpx intendedGpx = null;
             Gpx actualGpx = null;
             final GpxParser gpxParser = new GpxParser();
+            Integer tolerance = null;
             while (itemIterator.hasNext()) {
                 final FileItemStream file = itemIterator.next();
                 if(file.getFieldName().equals("intended")) {
@@ -40,13 +38,22 @@ public class ValidateServlet extends HttpServlet {
                 if(file.getFieldName().equals("actual")) {
                     actualGpx = readGpx(file, gpxParser);
                 }
+                if(file.getFieldName().equals("tolerance") && file.isFormField()) {
+                    try(final InputStream stream = file.openStream()) {
+                        final String toleranceString = Streams.asString(stream);
+                        tolerance = Integer.parseInt(toleranceString);
+                    }
+                }
             }
             if(intendedGpx == null || actualGpx == null) {
                 ErrorHandler.handleError("Both intended and actual gpx files must be uploaded.", null, req, resp);
+            }else if (tolerance == null) {
+                ErrorHandler.handleError("Tolerance must be specified.", null, req, resp);
             } else {
-
+                final Result result = Validator.validate(intendedGpx, actualGpx, tolerance);
+                req.setAttribute("result", result);
+                req.getRequestDispatcher("/result.jsp").include(req, resp);
             }
-            req.getRequestDispatcher("/result.jsp").include(req, resp);
 
 
         } catch (Exception e) {
