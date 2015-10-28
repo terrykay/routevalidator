@@ -50,7 +50,8 @@ public class ValidateServlet extends HttpServlet {
             }else if (tolerance == null) {
                 ErrorHandler.handleError("Tolerance must be specified.", null, req, resp);
             } else {
-                final Result result = Validator.validate(intendedGpx, actualGpx, tolerance);
+                final Validator validator = new Validator();
+                final Result result = validator.validate(intendedGpx, actualGpx, tolerance);
                 req.setAttribute("result", result);
                 req.getRequestDispatcher("/result.jsp").include(req, resp);
             }

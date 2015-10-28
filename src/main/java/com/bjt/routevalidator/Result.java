@@ -25,4 +25,6 @@ public class Result {
     public void setTolerance(int tolerance) {
         this.tolerance = tolerance;
     }
+
+
 }
