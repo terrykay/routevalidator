@@ -8,3 +8,9 @@ $("#tolerance").slider({
 $("#tolerance").on("slide", function(e) {
     $("#toleranceLabel").text(formatToleranceValue(e.value));
 });
+
+$(document).ready(function() {
+    if($("#map").length > 0) {
+
+    }
+});

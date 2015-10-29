@@ -7,9 +7,25 @@
 
 .error { color: red;}
 .technicaldetails { color: lightgray;}
-th, td {padding: 10px;}
-tr td:first-of-type, tr th:first-of-type {padding-left: 0px;}
+table.spaced th, table.spaced td {padding: 10px;}
+table.spaced tr td:first-of-type, table.spaced tr th:first-of-type {padding-left: 0px;}
 #toleranceLabel {
     display: inline-block;
     min-width: 40px;
+}
+
+table.mapcontainer {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+tr.mapheader {
+    height: 100px;
+}
+div#map {
+    height: 100%;
+    width: 100%;
+    background: blue;
 }
