@@ -26,17 +26,21 @@ public class ValidateServlet extends HttpServlet {
 
         try {
             final FileItemIterator itemIterator = servletFileUpload.getItemIterator(req);
-            Gpx intendedGpx = null;
-            Gpx actualGpx = null;
+            GpxFile intendedGpxFile = null;
+            GpxFile actualGpxFile = null;
             final GpxParser gpxParser = new GpxParser();
             Integer tolerance = null;
             while (itemIterator.hasNext()) {
                 final FileItemStream file = itemIterator.next();
                 if(file.getFieldName().equals("intended")) {
-                    intendedGpx = readGpx(file, gpxParser);
+                    final Gpx intendedGpx = readGpx(file, gpxParser);
+                    final String intendedFilename = file.getName();
+                    intendedGpxFile = new GpxFile(intendedFilename, intendedGpx);
                 }
                 if(file.getFieldName().equals("actual")) {
-                    actualGpx = readGpx(file, gpxParser);
+                    final Gpx actualGpx = readGpx(file, gpxParser);
+                    final String actualFilename = file.getName();
+                    actualGpxFile = new GpxFile(actualFilename, actualGpx);
                 }
                 if(file.getFieldName().equals("tolerance") && file.isFormField()) {
                     try(final InputStream stream = file.openStream()) {
@@ -45,18 +49,16 @@ public class ValidateServlet extends HttpServlet {
                     }
                 }
             }
-            if(intendedGpx == null || actualGpx == null) {
+            if(intendedGpxFile == null || actualGpxFile == null) {
                 ErrorHandler.handleError("Both intended and actual gpx files must be uploaded.", null, req, resp);
             }else if (tolerance == null) {
                 ErrorHandler.handleError("Tolerance must be specified.", null, req, resp);
             } else {
                 final Validator validator = new Validator();
-                final Result result = validator.validate(intendedGpx, actualGpx, tolerance);
+                final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance);
                 req.setAttribute("result", result);
                 req.getRequestDispatcher("/result.jsp").include(req, resp);
             }
-
-
         } catch (Exception e) {
             ErrorHandler.handleError("There was an error processing the GPX files.", e, req, resp);
         }

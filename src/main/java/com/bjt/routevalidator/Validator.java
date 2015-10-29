@@ -21,19 +21,21 @@ public class Validator {
         geoHelper = new GeoHelper();
     }
 
-    public Result validate(Gpx intendedGpx, Gpx actualGpx, int tolerance) throws FactoryException, TransformException {
-        final Result result = new Result();
-        result.setTolerance(tolerance);
+
+    public Result validate(GpxFile intendedGpx, GpxFile actualGpx, int tolerance) throws FactoryException, TransformException {
+        final Result result = new Result(intendedGpx, actualGpx, tolerance);
 
         //intended:
-        final List<Coordinate> controls = getAllPoints(intendedGpx);
-        final List<List<Coordinate>> pathsRidden = getAllLines(actualGpx);
+        final List<Coordinate> controls = getAllPoints(intendedGpx.getGpx());
+        final List<List<Coordinate>> pathsRidden = getAllLines(actualGpx.getGpx());
 
         final List<List<TrackPoint>> referralAreas = new ArrayList<>();
         List<TrackPoint> currentReferralArea = null;
+        int counter = 0;
         for(final Coordinate control : controls) {
-            final Double dist = getMinDistance(control, pathsRidden);
-            if(dist > tolerance) {
+            if((int)(counter / 10) %5 == 0) {
+            //final Double dist = getMinDistance(control, pathsRidden);
+            //if(dist > tolerance) {
                 if(currentReferralArea == null) {
                     currentReferralArea = new ArrayList<>();
                     referralAreas.add(currentReferralArea);
