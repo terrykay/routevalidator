@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.bjt.RouteValidator.Result" %>
+<% com.bjt.routevalidator.Result result = (com.bjt.routevalidator.Result)request.getAttribute("result"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css"/>
     <link rel="stylesheet" href="css/site.css" type="text/css"/>
 </head>
+
 <body>
 <table class="mapcontainer">
     <tr class="mapheader">
@@ -16,12 +18,12 @@
             <table class="spaced">
                 <tr>
                     <td><span>Intended GPX:</span></td>
-                    <td>${result.intendedGpx.fileName}</td>
+                    <td class="intended">${result.intendedGpx.fileName}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td><span>Actual GPX:</span></td>
-                    <td>${result.actualGpx.fileName}</td>
+                    <td class="actual">${result.actualGpx.fileName}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -37,6 +39,34 @@
                 <tr>
                     <td><span>Result:</span></td>
                     <td><span class="result ${result.status}">${result.status}</span>
+                    <% if (!result.getReferralAreas().isEmpty()) { %>
+                    <td><span>Referral areas:</span>
+                    <td>
+                        <ul class="pagination" id="referralpages">
+                            <li>
+                              <a href="#" id="referralfirst" aria-label="First">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#" id="referralprev" aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                              </a>
+                            </li>
+                            <li><a href="#" id="referralcurrentpage" data-current="0"></a></li>
+                            <li>
+                              <a href="#" id="referralnext" aria-label="Next">
+                                <span aria-hidden="true">&rsaquo;</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#" id="referrallast" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                            </li>
+                          </ul>
+                    </td>
+                    <% } else {  %> <td></td><td></td> <% } %>
                 </tr>
             </table>
         </td>
@@ -48,7 +78,14 @@
         </td>
     </tr>
 </table>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-slider.min.js"></script>
+<script type="text/javascript" src="js/site.js"></script>
+
 <script type="text/javascript">
+
 $(document).ready(function() {
         var map = L.map("map");
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -57,18 +94,42 @@ $(document).ready(function() {
             id: 'bentaylor.o16m82k1',
             accessToken: 'pk.eyJ1IjoiYmVudGF5bG9yIiwiYSI6Ik5WRF95TXcifQ.h24LeDgvQobB_uwKymYbTA'
         }).addTo(map);
-        <% Result result = request.getAttribute("result"); %>
-        var intended = L.multiPolyline(<%= result.getTolerance() %>
+
+        var intended = L.multiPolyline(<%= result.getIntendedGpx().getSimpleLatLngArray() %>
             , {color: 'blue' } ).addTo(map);
 
+        var actual = L.multiPolyline(<%= result.getActualGpx().getSimpleLatLngArray() %>
+            , {color: 'red' } ).addTo(map);
 
-        var featureGroup = new L.featureGroup([intended]);
+
+        var fitBoundsOptions = { maxZoom: 13};
+        var referralAreas = <%= result.getReferralAreasString() %>;
+        if(referralAreas && referralAreas.length > 0) {
+            $("#referralcurrentpage").text("1 of " + referralAreas.length);
+            map.fitBounds(referralAreas[0], fitBoundsOptions );
+            $("#referralfirst").click(function() { setReferral(0);});
+            $("#referralprev").click(function() {setReferral(parseInt($("#referralcurrentpage").data("current")) - 1);});
+            $("#referralcurrentpage").click(function() {setReferral(parseInt($("#referralcurrentpage").data("current")));});
+            $("#referralnext").click(function() {setReferral(parseInt($("#referralcurrentpage").data("current")) + 1);});
+            $("#referrallast").click(function() {setReferral(referralAreas.length - 1); });
+        }
+        var featureGroup = new L.featureGroup([intended, actual]);
         map.fitBounds(featureGroup);
+
+        var setReferral = function(j) { //j is 0-based
+            $("#referralpages a").trigger("blur");
+            var i = (j + referralAreas.length) % (referralAreas.length);
+            if(i >= 0 && i < referralAreas.length) {
+                $("#referralcurrentpage").data("current", i).text((i + 1) + " of " + referralAreas.length);
+                map.fitBounds(referralAreas[i], fitBoundsOptions);
+            }
+        };
 
 });
 </script>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-paginator.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-slider.min.js"></script>
 <script type="text/javascript" src="leaflet/leaflet.js"></script>
 <script type="text/javascript" src="js/proj4-compressed.js"></script>

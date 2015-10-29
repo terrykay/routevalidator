@@ -1,6 +1,7 @@
 package com.bjt.routevalidator;
 
 import com.vividsolutions.jts.geom.*;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
@@ -10,6 +11,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +35,12 @@ public class GeoHelper {
         final Geometry lineTransformed = JTS.transform(geometryLine, mathTransform);
         final Geometry pointTransformed = JTS.transform(geometryPoint, mathTransform);
         return lineTransformed.distance(pointTransformed);
+    }
+
+    public Geometry getEnvelope(final List<? extends Coordinate> coordinates) {
+        final Coordinate[] coordinateArray = coordinates.toArray(new Coordinate[]{});
+        final MultiPoint multiPoint = geometryFactory.createMultiPoint(coordinateArray);
+        return multiPoint.getEnvelope();
     }
 
     private static final Coordinate getCentroidOfLine(final List<? extends Coordinate> line) {

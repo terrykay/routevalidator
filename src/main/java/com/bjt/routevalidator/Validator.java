@@ -5,6 +5,8 @@ import com.bjt.gpxparser.Track;
 import com.bjt.gpxparser.TrackPoint;
 import com.bjt.gpxparser.TrackSegment;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -29,19 +31,18 @@ public class Validator {
         final List<Coordinate> controls = getAllPoints(intendedGpx.getGpx());
         final List<List<Coordinate>> pathsRidden = getAllLines(actualGpx.getGpx());
 
-        final List<List<TrackPoint>> referralAreas = new ArrayList<>();
-        List<TrackPoint> currentReferralArea = null;
+        final List<List<Coordinate>> referralAreas = new ArrayList<>();
+        List<Coordinate> currentReferralArea = null;
         int counter = 0;
         for(final Coordinate control : controls) {
-            if((int)(counter / 10) %5 == 0) {
-            //final Double dist = getMinDistance(control, pathsRidden);
-            //if(dist > tolerance) {
+            //if((int)(counter / 10) %5 == 0) {
+            final Double dist = getMinDistance(control, pathsRidden);
+            if(dist > tolerance) {
                 if(currentReferralArea == null) {
                     currentReferralArea = new ArrayList<>();
                     referralAreas.add(currentReferralArea);
                 }
-                final TrackPoint referralPoint = new TrackPoint(control.y, control.x);
-                currentReferralArea.add(referralPoint);
+                currentReferralArea.add((Coordinate) control.clone());
             } else {
                 currentReferralArea = null;
             }
@@ -52,7 +53,24 @@ public class Validator {
         } else {
             result.setStatus(Result.STATUS_REFER);
         }
+
+        final List<String> renderedReferralAreas = renderReferralAreas(referralAreas);
+        result.setReferralAreas(renderedReferralAreas);
         return result;
+    }
+
+    private List<String> renderReferralAreas(final List<List<Coordinate>> referralAreas) {
+        final List<String> renderedStrings = new ArrayList<>();
+        for(final List<Coordinate> referralArea : referralAreas) {
+            final Geometry envelope = geoHelper.getEnvelope(referralArea);
+            final List<String> latLongs = new ArrayList<>();
+            for(final Coordinate coordinate : envelope.getCoordinates()) {
+                latLongs.add(String.format("[%.4f,%.4f]", coordinate.y, coordinate.x));
+            }
+            final String referralAreaString = "[" + String.join(",", latLongs) + "]";
+            renderedStrings.add(referralAreaString);
+        }
+        return renderedStrings;
     }
 
     private static List<Coordinate> getAllPoints(final Gpx gpx) {

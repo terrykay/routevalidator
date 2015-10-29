@@ -1,5 +1,13 @@
 package com.bjt.routevalidator;
 
+import com.bjt.gpxparser.TrackPoint;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Ben.Taylor on 25/10/2015.
  */
@@ -11,6 +19,7 @@ public class Result {
     private GpxFile intendedGpx;
     private GpxFile actualGpx;
     private int tolerance;
+    private List<String> referralAreas;
 
     public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance) {
         this.intendedGpx = intendedGpx;
@@ -48,5 +57,17 @@ public class Result {
 
     public void setActualGpx(GpxFile actualGpx) {
         this.actualGpx = actualGpx;
+    }
+
+    public void setReferralAreas(List<String> referralAreas) {
+        this.referralAreas = referralAreas;
+    }
+
+    public List<String> getReferralAreas() {
+        return this.referralAreas;
+    }
+
+    public String getReferralAreasString() {
+        return "[" + String.join(",", referralAreas) + "]";
     }
 }

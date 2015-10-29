@@ -8,7 +8,7 @@
 .error { color: red;}
 .technicaldetails { color: lightgray;}
 table.spaced th, table.spaced td {padding: 10px;}
-table.spaced tr td:first-of-type, table.spaced tr th:first-of-type {padding-left: 0px;}
+
 #toleranceLabel {
     display: inline-block;
     min-width: 40px;
@@ -38,3 +38,11 @@ div#map {
 .result.REFER {
     color: ORANGE;
 }
+#referralpages {
+    margin: 0;
+}
+#referralpages li a {
+    cursor: default;
+}
+.intended { color: blue;}
+.actual { color: red;}
