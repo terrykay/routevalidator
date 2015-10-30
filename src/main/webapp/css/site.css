@@ -46,3 +46,7 @@ div#map {
 }
 .intended { color: blue;}
 .actual { color: red;}
+
+input.btn, a.btn {
+    min-width: 120px;
+}
