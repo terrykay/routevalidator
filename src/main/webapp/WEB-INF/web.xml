@@ -4,6 +4,14 @@
         <servlet-name>ValidateServlet</servlet-name>
         <servlet-class>com.bjt.routevalidator.ValidateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReValidateServlet</servlet-name>
+        <servlet-class>com.bjt.routevalidator.ReValidateServlet</servlet-class>
+    </servlet>
+<servlet-mapping>
+    <servlet-name>ReValidateServlet</servlet-name>
+    <url-pattern>/revalidate</url-pattern>
+</servlet-mapping>
 <servlet-mapping>
     <servlet-name>ValidateServlet</servlet-name>
     <url-pattern>/validate</url-pattern>

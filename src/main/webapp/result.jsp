@@ -13,27 +13,29 @@
 
 <body>
 <table class="mapcontainer">
+
     <tr class="mapheader">
         <td>
+            <form action="revalidate" method="post">
             <table class="spaced">
                 <tr>
                     <td><span>Intended GPX:</span></td>
                     <td class="intended">${result.intendedGpx.fileName}</td>
-                    <td></td>
+                    <td><a href="." class="btn btn-primary">New enquiry</a></td>
                 </tr>
                 <tr>
                     <td><span>Actual GPX:</span></td>
                     <td class="actual">${result.actualGpx.fileName}</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td><span>Tolerance (metres):</span></td>
                     <td>
-                        <span>${result.tolerance}m</span>
-                        <!--
-                        <span id="toleranceLabel">200m</span>
-                        <input id="tolerance" name="tolerance" type="text" data-slider-min="10" data-slider-max="1000" data-slider-step="10" data-slider-value="200"/>
-                        -->
+                        <span id="toleranceLabel"><%= result.getToleranceString() %></span>
+                        <input id="tolerance" name="tolerance" type="text"
+                        data-slider-min="10" data-slider-max="1000" data-slider-step="10" data-slider-value="${result.tolerance}"/>
+                    </td>
+                    <td>
+                        <input class="btn btn-primary" type="submit" value="Recalculate" id="recalculate" style="visibility: hidden"/>
                     </td>
                 </tr>
                 <tr>
@@ -69,6 +71,7 @@
                     <% } else {  %> <td></td><td></td> <% } %>
                 </tr>
             </table>
+            </form>
         </td>
     </tr>
     <tr>
@@ -78,10 +81,14 @@
         </td>
     </tr>
 </table>
+
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-slider.min.js"></script>
+<script type="text/javascript" src="leaflet/leaflet.js"></script>
+<script type="text/javascript" src="js/proj4-compressed.js"></script>
+<script type="text/javascript" src="js/proj4leaflet.js"></script>
+<script type="text/javascript" src="js/OSOpenSpace.js"></script>
 <script type="text/javascript" src="js/site.js"></script>
 
 <script type="text/javascript">
@@ -125,16 +132,11 @@ $(document).ready(function() {
             }
         };
 
+        $("#tolerance").on("slide", function() {
+            $("#recalculate").show().css("visibility", "visible");
+        });
+
 });
 </script>
-<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-paginator.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-slider.min.js"></script>
-<script type="text/javascript" src="leaflet/leaflet.js"></script>
-<script type="text/javascript" src="js/proj4-compressed.js"></script>
-<script type="text/javascript" src="js/proj4leaflet.js"></script>
-<script type="text/javascript" src="js/OSOpenSpace.js"></script>
-<script type="text/javascript" src="js/site.js"></script>
 </body>
 </html>

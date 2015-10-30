@@ -11,7 +11,7 @@ table.spaced th, table.spaced td {padding: 10px;}
 
 #toleranceLabel {
     display: inline-block;
-    min-width: 40px;
+    min-width: 50px;
 }
 
 table.mapcontainer {

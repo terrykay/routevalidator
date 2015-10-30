@@ -19,6 +19,7 @@ public class Result {
     private GpxFile intendedGpx;
     private GpxFile actualGpx;
     private int tolerance;
+    private String toleranceString;
     private List<String> referralAreas;
 
     public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance) {
@@ -37,6 +38,11 @@ public class Result {
 
     public int getTolerance() {
         return tolerance;
+    }
+
+    public String getToleranceString() {
+        if(tolerance == 1000) return "1km";
+        else return String.valueOf(tolerance) + "m";
     }
 
     public void setTolerance(int tolerance) {

@@ -56,6 +56,7 @@ public class ValidateServlet extends HttpServlet {
             } else {
                 final Validator validator = new Validator();
                 final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance);
+                req.getSession().setAttribute("result", result);
                 req.setAttribute("result", result);
                 req.getRequestDispatcher("/result.jsp").include(req, resp);
             }
