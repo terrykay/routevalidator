@@ -85,7 +85,7 @@
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-slider.min.js"></script>
-<script type="text/javascript" src="leaflet/leaflet.js"></script>
+<script type="text/javascript" src="leaflet/leaflet-src.js"></script>
 <script type="text/javascript" src="js/proj4-compressed.js"></script>
 <script type="text/javascript" src="js/proj4leaflet.js"></script>
 <script type="text/javascript" src="js/OSOpenSpace.js"></script>
@@ -93,14 +93,60 @@
 
 <script type="text/javascript">
 
+L.Map.prototype.setCrs = function(newCrs) {
+    this.options.crs = newCrs;
+}
+
 $(document).ready(function() {
-        var map = L.map("map");
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+
+        var map = L.map("map", {
+            /*crs: L.OSOpenSpace.getCRS(),*/
+            continuousWorld: true,
+            worldCopyJump: false,
+            minZoom: 0,
+            /*maxZoom: L.OSOpenSpace.RESOLUTIONS.length - 1,*/
+        });
+        var defaultCrs = map.options.crs;
+
+        var mapboxLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
             maxZoom: 18,
             id: 'bentaylor.o16m82k1',
             accessToken: 'pk.eyJ1IjoiYmVudGF5bG9yIiwiYSI6Ik5WRF95TXcifQ.h24LeDgvQobB_uwKymYbTA'
-        }).addTo(map);
+        });
+
+        //var openspaceLayer = L.tileLayer.OSOpenSpace("229B0D5190F91C32E0530B6CA40A00BA");
+        var openspaceLayer = L.tileLayer.OSOpenSpace("D276231FF76DC72AE0405F0AC8607D37");//GPXEditor's key
+
+        map.on('baselayerchange', function(layer) {
+                console.info("baselayerchange:start, zoom is now " + map.getZoom() + " - layer = " + layer.name);
+              var centerPoint = map.getCenter();
+              if(layer.name == osLayerName) {
+                map.setCrs(L.OSOpenSpace.getCRS());
+              } else {
+                map.setCrs(defaultCrs);
+              }
+              console.info("baselayerchange:finish, zoom is now " + map.getZoom());
+              map.setView(centerPoint,map.getZoom());
+        });
+        map.addLayer(mapboxLayer);
+        //map.addLayer(openspaceLayer);
+
+        map.on("zoomend", function() {
+            console.info("zoomend:");
+            console.info(arguments);
+        });
+        map.on("zoomlevelschange", function() {
+            console.info("zoomlevelschange:");
+            console.info(arguments);
+        });
+
+        var osLayerName = "Ordnance Survey";
+        var baseMaps = {
+            "MapBox": mapboxLayer
+        };
+        baseMaps[osLayerName] = openspaceLayer;
+        L.control.layers(baseMaps).addTo(map);
 
         var intended = L.multiPolyline(<%= result.getIntendedGpx().getSimpleLatLngArray() %>
             , {color: 'blue' } ).addTo(map);
