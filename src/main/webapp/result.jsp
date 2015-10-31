@@ -100,11 +100,9 @@ L.Map.prototype.setCrs = function(newCrs) {
 $(document).ready(function() {
 
         var map = L.map("map", {
-            /*crs: L.OSOpenSpace.getCRS(),*/
             continuousWorld: true,
             worldCopyJump: false,
-            minZoom: 0,
-            /*maxZoom: L.OSOpenSpace.RESOLUTIONS.length - 1,*/
+            minZoom: 0
         });
         var defaultCrs = map.options.crs;
 
@@ -115,28 +113,26 @@ $(document).ready(function() {
             accessToken: 'pk.eyJ1IjoiYmVudGF5bG9yIiwiYSI6Ik5WRF95TXcifQ.h24LeDgvQobB_uwKymYbTA'
         });
 
-        //var openspaceLayer = L.tileLayer.OSOpenSpace("229B0D5190F91C32E0530B6CA40A00BA");
-        var openspaceLayer = L.tileLayer.OSOpenSpace("D276231FF76DC72AE0405F0AC8607D37");//GPXEditor's key
+        var openspaceLayer = L.tileLayer.OSOpenSpace("229B0D5190F91C32E0530B6CA40A00BA");
 
         map.on('baselayerchange', function(layer) {
               var centerPoint = map.getCenter();
+              var startZoom = map.getZoom() - (map.currentZoomDelta || 0);
               var zoomDelta = 0;
-              var startZoom = map.getZoom();
               if(layer.name == osLayerName) {
                 zoomDelta = -6;
                 map.setCrs(L.OSOpenSpace.getCRS());
               } else {
-                zoomDelta = 6;
+                zoomDelta = 0;
                 map.setCrs(defaultCrs);
               }
-              map.setView(centerPoint,startZoom + zoomDelta);
+              map.currentZoomDelta = zoomDelta;
+              var newZoom = startZoom + zoomDelta;
+              if(newZoom < 0) newZoom = 0;
+              if(map.getMaxZoom()  && newZoom > map.getMaxZoom()) newZoom = map.getMaxZoom();
+              map.setView(centerPoint, newZoom);
         });
-        map.addLayer(mapboxLayer);
-        //map.addLayer(openspaceLayer);
-
-        map.on("zoomend", function() {
-            console.info("zoomend: " + map.getZoom());
-        });
+        map.addLayer(openspaceLayer);
 
         var osLayerName = "Ordnance Survey";
         var baseMaps = {
