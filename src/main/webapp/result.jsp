@@ -120,13 +120,16 @@ $(document).ready(function() {
 
         map.on('baselayerchange', function(layer) {
               var centerPoint = map.getCenter();
+              var zoomDelta = 0;
+              var startZoom = map.getZoom();
               if(layer.name == osLayerName) {
+                zoomDelta = -6;
                 map.setCrs(L.OSOpenSpace.getCRS());
               } else {
+                zoomDelta = 6;
                 map.setCrs(defaultCrs);
               }
-              console.info("setting to zoom " + map.getZoom());
-              map.setView(centerPoint,map.getZoom());
+              map.setView(centerPoint,startZoom + zoomDelta);
         });
         map.addLayer(mapboxLayer);
         //map.addLayer(openspaceLayer);
