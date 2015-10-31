@@ -119,26 +119,20 @@ $(document).ready(function() {
         var openspaceLayer = L.tileLayer.OSOpenSpace("D276231FF76DC72AE0405F0AC8607D37");//GPXEditor's key
 
         map.on('baselayerchange', function(layer) {
-                console.info("baselayerchange:start, zoom is now " + map.getZoom() + " - layer = " + layer.name);
               var centerPoint = map.getCenter();
               if(layer.name == osLayerName) {
                 map.setCrs(L.OSOpenSpace.getCRS());
               } else {
                 map.setCrs(defaultCrs);
               }
-              console.info("baselayerchange:finish, zoom is now " + map.getZoom());
+              console.info("setting to zoom " + map.getZoom());
               map.setView(centerPoint,map.getZoom());
         });
         map.addLayer(mapboxLayer);
         //map.addLayer(openspaceLayer);
 
         map.on("zoomend", function() {
-            console.info("zoomend:");
-            console.info(arguments);
-        });
-        map.on("zoomlevelschange", function() {
-            console.info("zoomlevelschange:");
-            console.info(arguments);
+            console.info("zoomend: " + map.getZoom());
         });
 
         var osLayerName = "Ordnance Survey";
