@@ -14,6 +14,7 @@
     <link href="css/bootstrap-theme.min.css" type="text/css" rel="stylesheet"/>
     <link href="css/bootstrap-slider.min.css" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css"/>
+    <link rel="stylesheet" href="css/aukfont.css" type="text/css"/>
     <link rel="stylesheet" href="css/site.css" type="text/css"/>
 </head>
 
@@ -22,6 +23,7 @@
 
     <tr class="mapheader">
         <td>
+            <div class="banner">
             <form action="<%= result.getSubmitAction() %>" method="post">
             <table class="spaced">
                 <tr>
@@ -98,6 +100,7 @@
                 <% } %>
             </table>
             </form>
+            </div>
         </td>
     </tr>
     <tr>

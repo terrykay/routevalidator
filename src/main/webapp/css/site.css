@@ -1,5 +1,5 @@
-.body {
-    font-family: 'AUKfont', 'sans-serif'
+body {
+    font-family: 'AUKfont', 'Helvetica Neue', Helvetica,Arial,sans-serif !important
 }
 
 .form-control[disabled], fieldset[disabled] .form-control  {
@@ -63,3 +63,15 @@ td.mapcontainer {
 input.btn, a.btn {
     min-width: 120px;
 }
+
+.banner {
+    background-image: url('../images/AUK-Full-Black-500.png');
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: top;
+    padding-right: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    min-height: 246px;
+    min-width: 500px;
+}}

@@ -30,7 +30,7 @@ public class ReValidateServlet extends HttpServlet {
             final Result result = validator.validate(lastResult.getIntendedGpx(), lastResult.getActualGpx(), newTolerance);
             req.getSession().setAttribute("result", result);
             req.setAttribute("result", result);
-            req.getRequestDispatcher("/result.jsp").include(req, resp);
+            req.getRequestDispatcher("/index.jsp").include(req, resp);
         } catch (Exception e) {
             e.printStackTrace(resp.getWriter());
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -58,7 +58,7 @@ public class ValidateServlet extends HttpServlet {
                 final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance);
                 req.getSession().setAttribute("result", result);
                 req.setAttribute("result", result);
-                req.getRequestDispatcher("/result.jsp").include(req, resp);
+                req.getRequestDispatcher("/index.jsp").include(req, resp);
             }
         } catch (Exception e) {
             ErrorHandler.handleError("There was an error processing the GPX files.", e, req, resp);
