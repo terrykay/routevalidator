@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% com.bjt.routevalidator.Result result = (com.bjt.routevalidator.Result)request.getAttribute("result"); %>
+<%
+    com.bjt.routevalidator.Result result = (com.bjt.routevalidator.Result)request.getAttribute("result");
+    if(result == null)  {
+        result = new com.bjt.routevalidator.Result(null, null, 200);
+    }
+    boolean isProcessed = result.isProcessed();
+%>
 
 <!DOCTYPE html>
 <html>
@@ -11,33 +17,47 @@
     <link rel="stylesheet" href="css/site.css" type="text/css"/>
 </head>
 
-<body>
+<body style="overflow-y:hidden">
 <table class="mapcontainer">
 
     <tr class="mapheader">
         <td>
-            <form action="revalidate" method="post">
+            <form action="<%= result.getSubmitAction() %>" method="post">
             <table class="spaced">
                 <tr>
                     <td><span>Intended GPX:</span></td>
-                    <td class="intended">${result.intendedGpx.fileName}</td>
-                    <td><a href="." class="btn btn-primary">New enquiry</a></td>
+
+                    <%  if (!isProcessed) { %>
+                        <td><input class="filestyle" type="file" name="intended"/></td>
+                    <% } else { %>
+                        <td class="intended">${result.intendedGpx.fileName}</td>
+                        <td><a href="." class="btn btn-primary">New enquiry</a></td>
+                    <% } %>
+
+
                 </tr>
                 <tr>
                     <td><span>Actual GPX:</span></td>
-                    <td class="actual">${result.actualGpx.fileName}</td>
+                    <% if (!isProcessed) { %>
+                        <td><input class="filestyle" type="file" name="actual"/></td>
+                    <% } else { %>
+                        <td class="actual">${result.actualGpx.fileName}</td>
+                    <% } %>
                 </tr>
                 <tr>
                     <td><span>Tolerance (metres):</span></td>
                     <td>
                         <span id="toleranceLabel"><%= result.getToleranceString() %></span>
                         <input id="tolerance" name="tolerance" type="text"
-                        data-slider-min="10" data-slider-max="1000" data-slider-step="10" data-slider-value="${result.tolerance}"/>
+                        data-slider-min="10" data-slider-max="1000" data-slider-step="10" data-slider-value="<%= result.getTolerance() %>"/>
                     </td>
+                    <% if(isProcessed) { %>
                     <td>
                         <input class="btn btn-primary" type="submit" value="Recalculate" id="recalculate" style="visibility: hidden"/>
                     </td>
+                    <% } %>
                 </tr>
+                <% if (isProcessed) { %>
                 <tr>
                     <td><span>Result:</span></td>
                     <td><span class="result ${result.status}">${result.status}</span>
@@ -70,12 +90,18 @@
                     </td>
                     <% } else {  %> <td></td><td></td> <% } %>
                 </tr>
+                <% } %>
+                <% if(!isProcessed) { %>
+                <tr>
+                    <td><input class="btn btn-primary" type="submit" value="Compare"/></td>
+                </tr>
+                <% } %>
             </table>
             </form>
         </td>
     </tr>
     <tr>
-        <td>
+        <td class="mapcontainer">
             <div id="map">
             </div>
         </td>
@@ -85,20 +111,19 @@
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-slider.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
 <script type="text/javascript" src="leaflet/leaflet-src.js"></script>
 <script type="text/javascript" src="js/proj4-compressed.js"></script>
 <script type="text/javascript" src="js/proj4leaflet.js"></script>
 <script type="text/javascript" src="js/OSOpenSpace.js"></script>
 <script type="text/javascript" src="js/site.js"></script>
 
+<% if(result.getIntendedGpx() != null && result.getActualGpx() != null) { %>
 <script type="text/javascript">
-
 L.Map.prototype.setCrs = function(newCrs) {
     this.options.crs = newCrs;
 }
-
 $(document).ready(function() {
-
         var map = L.map("map", {
             continuousWorld: true,
             worldCopyJump: false,
@@ -174,8 +199,8 @@ $(document).ready(function() {
         $("#tolerance").on("slide", function() {
             $("#recalculate").show().css("visibility", "visible");
         });
-
 });
 </script>
+<% } %>
 </body>
 </html>

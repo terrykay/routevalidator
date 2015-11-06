@@ -28,6 +28,14 @@ public class Result {
         this.tolerance = tolerance;
     }
 
+    public boolean isProcessed() {
+        return intendedGpx != null && actualGpx != null;
+    }
+
+    public String getSubmitAction() {
+        return isProcessed() ? "revalidate" : "validate";
+    }
+
     public String getStatus() {
         return status;
     }

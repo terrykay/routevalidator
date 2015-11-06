@@ -1,3 +1,7 @@
+.body {
+    font-family: 'AUKfont', 'sans-serif'
+}
+
 .form-control[disabled], fieldset[disabled] .form-control  {
     cursor: default; /* overrides 'not-allowed' which looks a bit aggressive */
 }
@@ -25,9 +29,18 @@ tr.mapheader {
     height: 100px;
 }
 div#map {
+    display: inline-block;
     height: 100%;
     width: 100%;
 }
+
+td.mapcontainer {
+    display:table-cell;
+    vertical-align: middle;
+    width:100%;
+    height:100%;
+}
+
 .result {
     font-size: 1.2em;
     font-weight: bold;
