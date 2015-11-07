@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css"/>
     <link rel="stylesheet" href="css/aukfont.css" type="text/css"/>
     <link rel="stylesheet" href="css/site.css" type="text/css"/>
+    <title>AUK Route Validator</title>
 </head>
 
 <body style="overflow-y:hidden">
@@ -23,8 +24,10 @@
 
     <tr class="mapheader">
         <td>
-            <div class="banner">
-            <form action="<%= result.getSubmitAction() %>" method="post">
+            <div>
+            <form action="<%= result.getSubmitAction() %>" method="post"
+                <% if (!isProcessed) { %> enctype="multipart/form-data" <% } %>
+            >
             <table class="spaced">
                 <tr>
                     <td><span>Intended GPX:</span></td>
@@ -35,8 +38,6 @@
                         <td class="intended">${result.intendedGpx.fileName}</td>
                         <td><a href="." class="btn btn-primary">New enquiry</a></td>
                     <% } %>
-
-
                 </tr>
                 <tr>
                     <td><span>Actual GPX:</span></td>
@@ -100,6 +101,7 @@
                 <% } %>
             </table>
             </form>
+            <div class="logo"></div>
             </div>
         </td>
     </tr>
