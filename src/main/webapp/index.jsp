@@ -5,6 +5,8 @@
         result = new com.bjt.routevalidator.Result(null, null, 200);
     }
     boolean isProcessed = result.isProcessed();
+    String actualColour = "#f0c"; /* luminous pink (darkish) */
+    String intendedColour = "#004cff"; /* blue */
 %>
 
 <!DOCTYPE html>
@@ -14,7 +16,6 @@
     <link href="css/bootstrap-theme.min.css" type="text/css" rel="stylesheet"/>
     <link href="css/bootstrap-slider.min.css" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css"/>
-    <link rel="stylesheet" href="css/aukfont.css" type="text/css"/>
     <link rel="stylesheet" href="css/site.css" type="text/css"/>
     <title>AUK Route Validator</title>
 </head>
@@ -35,7 +36,7 @@
                     <%  if (!isProcessed) { %>
                         <td><input class="filestyle" type="file" name="intended"/></td>
                     <% } else { %>
-                        <td class="intended">${result.intendedGpx.fileName}</td>
+                        <td style="color: <%= intendedColour %>">${result.intendedGpx.fileName}</td>
                         <td><a href="." class="btn btn-primary">New enquiry</a></td>
                     <% } %>
                 </tr>
@@ -44,7 +45,7 @@
                     <% if (!isProcessed) { %>
                         <td><input class="filestyle" type="file" name="actual"/></td>
                     <% } else { %>
-                        <td class="actual">${result.actualGpx.fileName}</td>
+                        <td style="color: <%= actualColour %>">${result.actualGpx.fileName}</td>
                     <% } %>
                 </tr>
                 <tr>
@@ -144,6 +145,7 @@ $(document).ready(function() {
         });
 
         var openspaceLayer = L.tileLayer.OSOpenSpace("229B0D5190F91C32E0530B6CA40A00BA");
+	openspaceLayer.setOpacity(0.3);
 
         map.on('baselayerchange', function(layer) {
               var centerPoint = map.getCenter();
@@ -162,7 +164,7 @@ $(document).ready(function() {
               if(map.getMaxZoom()  && newZoom > map.getMaxZoom()) newZoom = map.getMaxZoom();
               map.setView(centerPoint, newZoom);
         });
-        map.addLayer(openspaceLayer);
+        map.addLayer(mapboxLayer);
 
         var osLayerName = "Ordnance Survey";
         var baseMaps = {
@@ -172,10 +174,10 @@ $(document).ready(function() {
         L.control.layers(baseMaps).addTo(map);
 
         var intended = L.multiPolyline(<%= result.getIntendedGpx().getSimpleLatLngArray() %>
-            , {color: 'blue' } ).addTo(map);
+            , {color: '<%= intendedColour %>', weight: 10 } ).addTo(map);
 
         var actual = L.multiPolyline(<%= result.getActualGpx().getSimpleLatLngArray() %>
-            , {color: 'red' } ).addTo(map);
+            , {color: '<%= actualColour %>', weight: 10 } ).addTo(map);
 
 
         var fitBoundsOptions = { maxZoom: 13};
