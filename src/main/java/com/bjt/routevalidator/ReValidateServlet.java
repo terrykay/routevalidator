@@ -1,11 +1,5 @@
 package com.bjt.routevalidator;
 
-import com.bjt.gpxparser.Gpx;
-import com.bjt.gpxparser.GpxParser;
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

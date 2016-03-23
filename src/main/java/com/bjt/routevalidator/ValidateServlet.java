@@ -1,7 +1,8 @@
 package com.bjt.routevalidator;
 
+import com.bjt.gpxparser.GeoFile;
+import com.bjt.gpxparser.GeoFileParser;
 import com.bjt.gpxparser.Gpx;
-import com.bjt.gpxparser.GpxParser;
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
@@ -28,17 +29,18 @@ public class ValidateServlet extends HttpServlet {
             final FileItemIterator itemIterator = servletFileUpload.getItemIterator(req);
             GpxFile intendedGpxFile = null;
             GpxFile actualGpxFile = null;
-            final GpxParser gpxParser = new GpxParser();
+            final GeoFileParser geoFileParser = new GeoFileParser();
             Integer tolerance = null;
             while (itemIterator.hasNext()) {
                 final FileItemStream file = itemIterator.next();
+
                 if(file.getFieldName().equals("intended")) {
-                    final Gpx intendedGpx = readGpx(file, gpxParser);
+                    final GeoFile intendedGpx = readGpx(file, geoFileParser, file.getName());
                     final String intendedFilename = file.getName();
                     intendedGpxFile = new GpxFile(intendedFilename, intendedGpx);
                 }
                 if(file.getFieldName().equals("actual")) {
-                    final Gpx actualGpx = readGpx(file, gpxParser);
+                    final GeoFile actualGpx = readGpx(file, geoFileParser, file.getName());
                     final String actualFilename = file.getName();
                     actualGpxFile = new GpxFile(actualFilename, actualGpx);
                 }
@@ -64,9 +66,9 @@ public class ValidateServlet extends HttpServlet {
             ErrorHandler.handleError("There was an error processing the GPX files.", e, req, resp);
         }
     }
-    private static Gpx readGpx(final FileItemStream file, final GpxParser gpxParser) throws Exception {
+    private static GeoFile readGpx(final FileItemStream file, final GeoFileParser geoFileParser, final String fileName) throws Exception {
         try(final InputStream inputStream = file.openStream()) {
-            return gpxParser.parseGpx(inputStream);
+            return geoFileParser.parseGpx(inputStream, fileName);
         }
     }
 }

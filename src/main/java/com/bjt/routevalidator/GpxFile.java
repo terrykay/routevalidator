@@ -1,11 +1,7 @@
 package com.bjt.routevalidator;
 
-import com.bjt.gpxparser.Gpx;
-import com.bjt.gpxparser.Track;
-import com.bjt.gpxparser.TrackPoint;
-import com.bjt.gpxparser.TrackSegment;
+import com.bjt.gpxparser.*;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,19 +9,19 @@ import java.util.List;
  * Created by Ben.Taylor on 29/10/2015.
  */
 public class GpxFile {
-    public GpxFile(String fileName, Gpx gpx) {
+    public GpxFile(String fileName, GeoFile geoFile) {
         this.fileName = fileName;
-        this.gpx = gpx;
+        this.gpx = geoFile;
     }
 
     private final String fileName;
-    private final Gpx gpx;
+    private final GeoFile gpx;
 
     public String getFileName() {
         return fileName;
     }
 
-    public Gpx getGpx() {
+    public GeoFile getGpx() {
         return gpx;
     }
 

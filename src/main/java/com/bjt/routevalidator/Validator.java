@@ -1,9 +1,6 @@
 package com.bjt.routevalidator;
 
-import com.bjt.gpxparser.Gpx;
-import com.bjt.gpxparser.Track;
-import com.bjt.gpxparser.TrackPoint;
-import com.bjt.gpxparser.TrackSegment;
+import com.bjt.gpxparser.*;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -73,7 +70,7 @@ public class Validator {
         return renderedStrings;
     }
 
-    private static List<Coordinate> getAllPoints(final Gpx gpx) {
+    private static List<Coordinate> getAllPoints(final GeoFile gpx) {
         final List<Coordinate> points = new ArrayList<>();
         for(final Track track: gpx.getTracks()) {
             for(final TrackSegment trackSeg : track.getTrackSegments()) {
@@ -86,7 +83,7 @@ public class Validator {
         return points;
     }
 
-    private static List<List<Coordinate>> getAllLines(final Gpx gpx) {
+    private static List<List<Coordinate>> getAllLines(final GeoFile gpx) {
         final List<List<Coordinate>> lines =  new ArrayList<>();
         for(final Track track: gpx.getTracks()) {
             for(final TrackSegment trackSegment : track.getTrackSegments()) {
