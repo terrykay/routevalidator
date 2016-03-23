@@ -7,11 +7,18 @@
 
 .error { color: red;}
 .technicaldetails { color: lightgray;}
-table.spaced th, table.spaced td {padding: 10px;}
+table.spaced>thead>tr>th, table.spaced>tbody>tr>td {padding: 10px;}
 
 table.form {
     width: 100%;
 }
+
+table.internalpadding5>tbody>tr>td { padding: 5px;}
+table.internalpadding5>tbody>tr>td:last-of-type { padding-right: 0;}
+table.internalpadding5>tbody>tr:last-of-type>td { padding-bottom: 0;}
+table.internalpadding5>tbody>tr>td:first-of-type { padding-left: 0;}
+table.internalpadding5>tbody>tr:first-of-type>td { padding-top: 0;}
+
 
 div.logo {
     background: url('../images/AUK-Full-Black-500.png') no-repeat;

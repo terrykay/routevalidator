@@ -1,5 +1,8 @@
 package com.bjt.routevalidator;
 
+import com.bjt.gpxparser.Track;
+import com.bjt.gpxparser.TrackPoint;
+import com.bjt.gpxparser.TrackSegment;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
@@ -27,20 +30,42 @@ public class GeoHelper {
 
     public double lineToPoint(final List<? extends  Coordinate> line, final Coordinate point) throws FactoryException, TransformException {
         final LineString geometryLine = geometryFactory.createLineString(line.toArray(new Coordinate[]{}));
-        final Coordinate centroidOfLine =getCentroidOfLine(line);
-        final String crsString = String.format("AUTO:42001,%f,%f", centroidOfLine.x, centroidOfLine.y);
-        final CoordinateReferenceSystem crs = CRS.decode(crsString);
-        final MathTransform mathTransform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs); //gets it to metres
+        final MathTransform mathTransform = getMathTransform(line);
         final Point geometryPoint = geometryFactory.createPoint(point);
         final Geometry lineTransformed = JTS.transform(geometryLine, mathTransform);
         final Geometry pointTransformed = JTS.transform(geometryPoint, mathTransform);
         return lineTransformed.distance(pointTransformed);
     }
 
+    private MathTransform getMathTransform(List<? extends Coordinate> line) throws FactoryException {
+        final Coordinate centroidOfLine =getCentroidOfLine(line);
+        final String crsString = String.format("AUTO:42001,%f,%f", centroidOfLine.x, centroidOfLine.y);
+        final CoordinateReferenceSystem crs = CRS.decode(crsString);
+        return CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs);
+    }
+
     public Geometry getEnvelope(final List<? extends Coordinate> coordinates) {
         final Coordinate[] coordinateArray = coordinates.toArray(new Coordinate[]{});
         final MultiPoint multiPoint = geometryFactory.createMultiPoint(coordinateArray);
         return multiPoint.getEnvelope();
+    }
+
+    public double getDistance(final Track track) throws FactoryException, TransformException {
+        final List<Coordinate> coords = getCoords(track);
+        final MathTransform mathTransform = getMathTransform(coords);
+        final Geometry lineString = JTS.transform(geometryFactory.createLineString(coords.toArray(new Coordinate[]{})), mathTransform);
+        double length = lineString.getLength();
+        return length;
+    }
+
+    public static List<Coordinate> getCoords(final Track track) {
+        final List<Coordinate> coords = new ArrayList<>();
+        for(final TrackSegment trackSegment : track.getTrackSegments()) {
+            for(final TrackPoint trackPoint : trackSegment.getTrackPoints()) {
+                coords.add(new Coordinate(trackPoint.getLon(), trackPoint.getLat()));
+            }
+        }
+        return coords;
     }
 
     private static final Coordinate getCentroidOfLine(final List<? extends Coordinate> line) {

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -58,7 +59,8 @@ public class ValidateServlet extends HttpServlet {
                 ErrorHandler.handleError("Tolerance must be specified.", null, req, resp);
             } else {
                 final Validator validator = new Validator();
-                final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance);
+                final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
+                final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance, trackUsePreferences);
                 req.getSession().setAttribute("result", result);
                 req.setAttribute("result", result);
                 req.getRequestDispatcher("/index.jsp").include(req, resp);

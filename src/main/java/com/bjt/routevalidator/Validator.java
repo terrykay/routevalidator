@@ -9,6 +9,7 @@ import org.opengis.referencing.operation.TransformException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Ben.Taylor on 25/10/2015.
@@ -21,8 +22,9 @@ public class Validator {
     }
 
 
-    public Result validate(GpxFile intendedGpx, GpxFile actualGpx, int tolerance) throws FactoryException, TransformException {
-        final Result result = new Result(intendedGpx, actualGpx, tolerance);
+    public Result validate(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences) throws FactoryException, TransformException {
+
+        final Result result = new Result(intendedGpx, actualGpx, tolerance, trackUsePreferences);
 
         //intended:
         final List<Coordinate> controls = getAllPoints(intendedGpx.getGpx());
@@ -53,6 +55,11 @@ public class Validator {
 
         final List<String> renderedReferralAreas = renderReferralAreas(referralAreas);
         result.setReferralAreas(renderedReferralAreas);
+
+        for(final Track track : actualGpx.getGpx().getTracks()) {
+            Logger.getAnonymousLogger().info("Track " + track.getName() + " is of length: " + geoHelper.getDistance(track));
+        }
+
         return result;
     }
 

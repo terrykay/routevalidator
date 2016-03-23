@@ -19,13 +19,21 @@ public class Result {
     private GpxFile intendedGpx;
     private GpxFile actualGpx;
     private int tolerance;
+    private List<? extends TrackUsePreference> trackUsePreferences;
     private String toleranceString;
     private List<String> referralAreas;
 
-    public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance) {
+    public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences) {
         this.intendedGpx = intendedGpx;
         this.actualGpx = actualGpx;
         this.tolerance = tolerance;
+        this.trackUsePreferences = trackUsePreferences;
+        if(trackUsePreferences == null) this.trackUsePreferences = new ArrayList<>();
+    }
+
+    public boolean hasTrackUsePreferences() {
+        final boolean b = getTrackUsePreferences().size() > 0;
+        return b;
     }
 
     public boolean isProcessed() {
@@ -83,5 +91,9 @@ public class Result {
 
     public String getReferralAreasString() {
         return "[" + String.join(",", referralAreas) + "]";
+    }
+
+    public List<? extends TrackUsePreference> getTrackUsePreferences() {
+        return trackUsePreferences;
     }
 }

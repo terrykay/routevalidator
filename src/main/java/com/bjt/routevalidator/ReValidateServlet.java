@@ -1,12 +1,17 @@
 package com.bjt.routevalidator;
 
 
+import com.bjt.gpxparser.Track;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.operation.TransformException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +27,8 @@ public class ReValidateServlet extends HttpServlet {
             final Result lastResult = (Result) req.getSession().getAttribute("result");
             final Validator validator = new Validator();
             final int newTolerance = Integer.parseInt(req.getParameter("tolerance"));
-            final Result result = validator.validate(lastResult.getIntendedGpx(), lastResult.getActualGpx(), newTolerance);
+            final List<TrackUsePreference> trackUsePreferences = parseTrackUsePreferences(req, lastResult.getActualGpx());
+            final Result result = validator.validate(lastResult.getIntendedGpx(), lastResult.getActualGpx(), newTolerance, trackUsePreferences);
             req.getSession().setAttribute("result", result);
             req.setAttribute("result", result);
             req.getRequestDispatcher("/index.jsp").include(req, resp);
@@ -30,5 +36,9 @@ public class ReValidateServlet extends HttpServlet {
             ErrorHandler.handleError("Error revalidating", e, req, resp);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private List<TrackUsePreference> parseTrackUsePreferences(HttpServletRequest req, GpxFile actualGpx) throws FactoryException, TransformException {
+        return TrackUsePreference.getDefault(actualGpx.getGpx()); //TODO: fill in
     }
 }

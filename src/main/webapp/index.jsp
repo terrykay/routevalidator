@@ -2,7 +2,7 @@
 <%
     com.bjt.routevalidator.Result result = (com.bjt.routevalidator.Result)request.getAttribute("result");
     if(result == null)  {
-        result = new com.bjt.routevalidator.Result(null, null, 200);
+        result = new com.bjt.routevalidator.Result(null, null, 200, null);
     }
     boolean isProcessed = result.isProcessed();
     String actualColour = "#f0c"; /* luminous pink (darkish) */
@@ -61,6 +61,23 @@
                     </td>
                     <% } %>
                 </tr>
+                <% if (result.hasTrackUsePreferences()) { %>
+                <tr>
+                    <td style="vertical-align: top"><span>Track list:</span></td>
+                    <td>
+                        <table class="internalpadding5">
+                            <tbody>
+                            <% for(com.bjt.routevalidator.TrackUsePreference trackUsePreference : result.getTrackUsePreferences()) { %>
+                            <tr>
+                                <td><span><%= trackUsePreference.getTrackName() %></span></td>
+                                <td><input type="checkbox" checked="<%= trackUsePreference.checked() %>"/></td>
+                            </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <% } %>
                 <% if (isProcessed) { %>
                 <tr>
                     <td><span>Result:</span></td>
