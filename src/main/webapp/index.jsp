@@ -41,9 +41,9 @@
                     <% } %>
                 </tr>
                 <tr>
-                    <td><span>Actual GPX:</span></td>
+                    <td><span>Actual GPX/TCX:</span></td>
                     <% if (!isProcessed) { %>
-                        <td><input class="filestyle" type="file" name="actual"/></td>
+                        <td><input class="filestyle" type="file" name="actual" accept=".gpx,.tcx"/></td>
                     <% } else { %>
                         <td style="color: <%= actualColour %>">${result.actualGpx.fileName}</td>
                     <% } %>

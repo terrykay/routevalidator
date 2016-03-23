@@ -25,6 +25,7 @@ public class ValidateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final ServletFileUpload servletFileUpload = new ServletFileUpload();
 
+        logger.info("ValidateServlet.doPost working!");
         try {
             final FileItemIterator itemIterator = servletFileUpload.getItemIterator(req);
             GpxFile intendedGpxFile = null;
@@ -68,7 +69,8 @@ public class ValidateServlet extends HttpServlet {
     }
     private static GeoFile readGpx(final FileItemStream file, final GeoFileParser geoFileParser, final String fileName) throws Exception {
         try(final InputStream inputStream = file.openStream()) {
-            return geoFileParser.parseGpx(inputStream, fileName);
+            final GeoFile geoFile = geoFileParser.parseGeoFile(inputStream, fileName);
+            return geoFile;
         }
     }
 }

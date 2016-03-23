@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +27,7 @@ public class ReValidateServlet extends HttpServlet {
             req.setAttribute("result", result);
             req.getRequestDispatcher("/index.jsp").include(req, resp);
         } catch (Exception e) {
-            e.printStackTrace(resp.getWriter());
+            ErrorHandler.handleError("Error revalidating", e, req, resp);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
