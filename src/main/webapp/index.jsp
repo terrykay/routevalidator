@@ -67,12 +67,22 @@
                     <td>
                         <table class="internalpadding5">
                             <tbody>
-                            <% for(com.bjt.routevalidator.TrackUsePreference trackUsePreference : result.getTrackUsePreferences()) { %>
+                            <%
+                             Integer count = 0;
+                             for(com.bjt.routevalidator.TrackUsePreference trackUsePreference : result.getTrackUsePreferences()) {
+                              %>
                             <tr>
                                 <td><span><%= trackUsePreference.getTrackName() %></span></td>
-                                <td><input type="checkbox" checked="<%= trackUsePreference.checked() %>"/></td>
+                                <td>
+                                    <% if (trackUsePreference.isRender()) { %>
+                                        <input type="checkbox" name="<%= String.format("trackusepreference_checked_%d", count) %>" checked="checked"/>
+                                    <% } else { %>
+                                        <input type="checkbox" name="<%= String.format("trackusepreference_checked_%d", count) %>"/>
+                                    <% } %>
+                                    <input type="hidden" name="<%= String.format("trackusepreference_name_%d", count) %>" value="<%=trackUsePreference.getTrackName() %>"/>
+                                </td>
                             </tr>
-                            <% } %>
+                            <% count++; } %>
                             </tbody>
                         </table>
                     </td>
@@ -221,6 +231,10 @@ $(document).ready(function() {
         };
 
         $("#tolerance").on("slide", function() {
+            $("#recalculate").show().css("visibility", "visible");
+        });
+
+        $("input[type=checkbox]").on("change", function() {
             $("#recalculate").show().css("visibility", "visible");
         });
 });

@@ -6,6 +6,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
+import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Validator {
 
         //intended:
         final List<Coordinate> controls = getAllPoints(intendedGpx.getGpx());
-        final List<List<Coordinate>> pathsRidden = getAllLines(actualGpx.getGpx());
+        final List<List<Coordinate>> pathsRidden = getAllLines(actualGpx.getGpx(), trackUsePreferences);
 
         final List<List<Coordinate>> referralAreas = new ArrayList<>();
         List<Coordinate> currentReferralArea = null;
@@ -36,7 +37,7 @@ public class Validator {
         for(final Coordinate control : controls) {
             //if((int)(counter / 10) %5 == 0) {
             final Double dist = getMinDistance(control, pathsRidden);
-            if(dist > tolerance) {
+            if(dist == null || dist > tolerance) {
                 if(currentReferralArea == null) {
                     currentReferralArea = new ArrayList<>();
                     referralAreas.add(currentReferralArea);
@@ -90,19 +91,35 @@ public class Validator {
         return points;
     }
 
-    private static List<List<Coordinate>> getAllLines(final GeoFile gpx) {
+    private static List<List<Coordinate>> getAllLines(final GeoFile gpx, List<? extends TrackUsePreference> trackUsePreferences) {
         final List<List<Coordinate>> lines =  new ArrayList<>();
         for(final Track track: gpx.getTracks()) {
-            for(final TrackSegment trackSegment : track.getTrackSegments()) {
-                final List<Coordinate> line = new ArrayList<>();
-                for(final TrackPoint trackPoint : trackSegment.getTrackPoints()) {
-                    final Coordinate coordinate = new Coordinate(trackPoint.getLon(), trackPoint.getLat());
-                    line.add(coordinate);
+            if(trackUsed(track, trackUsePreferences)) {
+                for (final TrackSegment trackSegment : track.getTrackSegments()) {
+                    final List<Coordinate> line = new ArrayList<>();
+                    for (final TrackPoint trackPoint : trackSegment.getTrackPoints()) {
+                        final Coordinate coordinate = new Coordinate(trackPoint.getLon(), trackPoint.getLat());
+                        line.add(coordinate);
+                    }
+                    lines.add(line);
                 }
-                lines.add(line);
+            } else {
+                Logger.getAnonymousLogger().info(String.format("Track %s not used!", track.getName()));
             }
         }
         return lines;
+    }
+
+    private static boolean trackUsed(final Track track, List<? extends TrackUsePreference> trackUsePreferences ) {
+        boolean val = false;
+        for(final TrackUsePreference trackUsePreference : trackUsePreferences) {
+            boolean equals = trackUsePreference.getTrackName().equals(track.getName());
+            Logger.getAnonymousLogger().info(String.format("getTrackName = %s, track.getName = %s, used = %b", trackUsePreference.getTrackName(), track.getName(), equals));
+            if(equals) {
+                val |= trackUsePreference.isRender();
+            }
+        }
+        return val;
     }
 
     private Double getMinDistance(final Coordinate point,  final List<List<Coordinate>> lines) throws FactoryException, TransformException {

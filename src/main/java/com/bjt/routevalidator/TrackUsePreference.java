@@ -24,10 +24,6 @@ public class TrackUsePreference {
         return trackName;
     }
 
-    public String checked() {
-        return isRender() ? "checked" : "";
-    }
-
     public boolean isRender() {
         return render;
     }

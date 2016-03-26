@@ -1,7 +1,6 @@
 package com.bjt.routevalidator;
 
 
-import com.bjt.gpxparser.Track;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -10,9 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -27,7 +25,7 @@ public class ReValidateServlet extends HttpServlet {
             final Result lastResult = (Result) req.getSession().getAttribute("result");
             final Validator validator = new Validator();
             final int newTolerance = Integer.parseInt(req.getParameter("tolerance"));
-            final List<TrackUsePreference> trackUsePreferences = parseTrackUsePreferences(req, lastResult.getActualGpx());
+            final List<TrackUsePreference> trackUsePreferences = parseTrackUsePreferences(req);
             final Result result = validator.validate(lastResult.getIntendedGpx(), lastResult.getActualGpx(), newTolerance, trackUsePreferences);
             req.getSession().setAttribute("result", result);
             req.setAttribute("result", result);
@@ -38,7 +36,18 @@ public class ReValidateServlet extends HttpServlet {
         }
     }
 
-    private List<TrackUsePreference> parseTrackUsePreferences(HttpServletRequest req, GpxFile actualGpx) throws FactoryException, TransformException {
-        return TrackUsePreference.getDefault(actualGpx.getGpx()); //TODO: fill in
+    private List<TrackUsePreference> parseTrackUsePreferences(HttpServletRequest req) throws FactoryException, TransformException {
+        String trackName;
+        Integer i = 0;
+        final List<TrackUsePreference> trackUsePreferences = new ArrayList<>();
+        while((trackName = req.getParameter("trackusepreference_name_" + i.toString())) != null) {
+            final boolean checked = "on".equalsIgnoreCase(req.getParameter("trackusepreference_checked_" + i.toString()));
+            final TrackUsePreference trackUsePreference = new TrackUsePreference(trackName, checked);
+            trackUsePreferences.add(trackUsePreference);
+            Logger.getAnonymousLogger().info(String.format("%d: track name: %s, checked: %b", i, trackName, checked));
+            i++;
+        }
+
+        return trackUsePreferences;
     }
 }
