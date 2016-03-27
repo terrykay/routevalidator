@@ -160,6 +160,22 @@
             <div id="map">
             </div>
         </td>
+        <td>
+            <div>
+                <table style="float:left">
+                    <tr>
+                        <td colspan="2"><strong>Intended track</strong></td>
+                    </tr>
+                </table>
+                <table style="float:left">
+                    <tr>
+                        <td colspan="2"><strong>Actual track</strong></td>
+                    </tr>
+                </table>
+                <div style="clear: both"></div>
+            </div>
+
+        </td>
     </tr>
 </table>
 
