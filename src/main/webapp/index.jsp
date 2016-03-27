@@ -93,6 +93,7 @@
                             <td>
                                 <span id="toleranceLabel"><%= result.getToleranceString() %></span>
                                 <input id="tolerance" name="tolerance" type="text"
+                                data-slider-tooltip-position="bottom"
                                 data-slider-min="10" data-slider-max="1000" data-slider-step="10" data-slider-value="<%= result.getTolerance() %>"/>
                             </td>
                         </tr>
@@ -135,13 +136,18 @@
                         <%-- speed limit compliance tr  --%>
                         <% } %> <%-- if isProcessed --%>
                     </table>
+                </div>
 
-                    <% if (isProcessed) { %>
-                    <div style="float: left"> <%-- buttons --%>
+                <% if (isProcessed) { %>
+                <div style="float: left; margin-left: 10px"> <%-- buttons --%>
+                    <div style="margin-top: 10px">
                         <a href="." class="btn btn-primary">New enquiry</a>
+                    </div>
+                    <div style="margin-top: 10px">
                         <input class="btn btn-primary" type="submit" value="Recalculate" id="recalculate" style="visibility: hidden"/>
                     </div>
-                    <% } %>
+                </div>
+                <% } %>
 
                 <div style="clear: both"></div>
             </form>
