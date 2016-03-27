@@ -136,10 +136,12 @@
                         <% } %> <%-- if isProcessed --%>
                     </table>
 
-                <div style="float: left"> <%-- buttons --%>
-                    <a href="." class="btn btn-primary">New enquiry</a>
-                    <input class="btn btn-primary" type="submit" value="Recalculate" id="recalculate" style="visibility: hidden"/>
-                </div>
+                    <% if (isProcessed) { %>
+                    <div style="float: left"> <%-- buttons --%>
+                        <a href="." class="btn btn-primary">New enquiry</a>
+                        <input class="btn btn-primary" type="submit" value="Recalculate" id="recalculate" style="visibility: hidden"/>
+                    </div>
+                    <% } %>
 
                 <div style="clear: both"></div>
             </form>
