@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
         <servlet-name>ValidateServlet</servlet-name>
         <servlet-class>com.bjt.routevalidator.ValidateServlet</servlet-class>
@@ -8,12 +9,16 @@
         <servlet-name>ReValidateServlet</servlet-name>
         <servlet-class>com.bjt.routevalidator.ReValidateServlet</servlet-class>
     </servlet>
-<servlet-mapping>
-    <servlet-name>ReValidateServlet</servlet-name>
-    <url-pattern>/revalidate</url-pattern>
-</servlet-mapping>
-<servlet-mapping>
-    <servlet-name>ValidateServlet</servlet-name>
-    <url-pattern>/validate</url-pattern>
-</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReValidateServlet</servlet-name>
+        <url-pattern>/revalidate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ValidateServlet</servlet-name>
+        <url-pattern>/validate</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>ClimbingServerUrl</param-name>
+        <param-value>http://52.25.237.100:8080/hdsrvgatewayjson/climbdata</param-value>
+    </context-param>
 </web-app>

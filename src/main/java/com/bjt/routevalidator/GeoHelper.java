@@ -52,6 +52,10 @@ public class GeoHelper {
 
     public double getDistance(final Track track) throws FactoryException, TransformException {
         final List<Coordinate> coords = getCoords(track);
+        return getDistance(coords);
+    }
+
+    public double getDistance(List<? extends Coordinate> coords) throws FactoryException, TransformException {
         final MathTransform mathTransform = getMathTransform(coords);
         final Geometry lineString = JTS.transform(geometryFactory.createLineString(coords.toArray(new Coordinate[]{})), mathTransform);
         double length = lineString.getLength();

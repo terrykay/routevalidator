@@ -1,14 +1,17 @@
 package com.bjt.routevalidator;
 
-import com.bjt.gpxparser.*;
+import com.bjt.gpxparser.GeoFile;
+import com.bjt.gpxparser.Track;
+import com.bjt.gpxparser.TrackPoint;
+import com.bjt.gpxparser.TrackSegment;
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
-import sun.rmi.runtime.Log;
 
+import javax.servlet.ServletContext;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,19 +20,26 @@ import java.util.logging.Logger;
  */
 public class Validator {
     private final GeoHelper geoHelper;
+    private final ServletContext servletContext;
 
-    public Validator() {
+    public Validator(ServletContext servletContext) {
+        this.servletContext = servletContext;
         geoHelper = new GeoHelper();
     }
 
 
     public Result validate(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences) throws FactoryException, TransformException {
 
-        final Result result = new Result(intendedGpx, actualGpx, tolerance, trackUsePreferences);
-
         //intended:
         final List<Coordinate> controls = getAllPoints(intendedGpx.getGpx());
+        //actual:
         final List<List<Coordinate>> pathsRidden = getAllLines(actualGpx.getGpx(), trackUsePreferences);
+
+        final List<? extends Statistic> intendedStatistics = getIntendedStatistics(intendedGpx);
+        final List<? extends Statistic> actualStatistics = getActualStatistics(actualGpx, pathsRidden);
+
+        final Result result = new Result(intendedGpx, actualGpx, tolerance, trackUsePreferences, intendedStatistics, actualStatistics);
+
 
         final List<List<Coordinate>> referralAreas = new ArrayList<>();
         List<Coordinate> currentReferralArea = null;
@@ -62,6 +72,19 @@ public class Validator {
         }
 
         return result;
+    }
+
+    private List<? extends Statistic> getActualStatistics(final GpxFile actualGpx, List<List<Coordinate>> pathsRidden) {
+        return null;
+    }
+
+    private List<? extends Statistic> getIntendedStatistics(final GpxFile intendedGpx) throws FactoryException, TransformException {
+        final List<List<Coordinate>> intendedPaths = getAllLines(intendedGpx.getGpx(), null);
+        return Arrays.asList(
+                new DistanceStatistic(intendedPaths, geoHelper),
+                new ClimbingStatistic(intendedPaths, servletContext),
+                new DoubleWidthCommentStatistic("(Contour counting)")
+        );
     }
 
     private List<String> renderReferralAreas(final List<List<Coordinate>> referralAreas) {
@@ -103,8 +126,6 @@ public class Validator {
                     }
                     lines.add(line);
                 }
-            } else {
-                Logger.getAnonymousLogger().info(String.format("Track %s not used!", track.getName()));
             }
         }
         return lines;
@@ -112,12 +133,9 @@ public class Validator {
 
     private static boolean trackUsed(final Track track, List<? extends TrackUsePreference> trackUsePreferences ) {
         boolean val = false;
+        if(trackUsePreferences == null) return true;
         for(final TrackUsePreference trackUsePreference : trackUsePreferences) {
-            boolean equals = trackUsePreference.getTrackName().equals(track.getName());
-            Logger.getAnonymousLogger().info(String.format("getTrackName = %s, track.getName = %s, used = %b", trackUsePreference.getTrackName(), track.getName(), equals));
-            if(equals) {
-                val |= trackUsePreference.isRender();
-            }
+            if(trackUsePreference.getTrackName().equals(track.getName()) && trackUsePreference.isRender()) return true;
         }
         return val;
     }

@@ -2,7 +2,6 @@ package com.bjt.routevalidator;
 
 import com.bjt.gpxparser.GeoFile;
 import com.bjt.gpxparser.GeoFileParser;
-import com.bjt.gpxparser.Gpx;
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
@@ -58,7 +57,7 @@ public class ValidateServlet extends HttpServlet {
             }else if (tolerance == null) {
                 ErrorHandler.handleError("Tolerance must be specified.", null, req, resp);
             } else {
-                final Validator validator = new Validator();
+                final Validator validator = new Validator(getServletContext());
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
                 final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance, trackUsePreferences);
                 req.getSession().setAttribute("result", result);

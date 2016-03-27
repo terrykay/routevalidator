@@ -16,19 +16,24 @@ public class Result {
     public static  final String STATUS_REFER = "REFER";
 
     private String status;
-    private GpxFile intendedGpx;
-    private GpxFile actualGpx;
-    private int tolerance;
-    private List<? extends TrackUsePreference> trackUsePreferences;
+    private final GpxFile intendedGpx;
+    private final GpxFile actualGpx;
+    private final int tolerance;
+    private final List<? extends TrackUsePreference> trackUsePreferences;
+    private final List<? extends Statistic> intendedStatistics;
+    private final List<? extends Statistic> actualStatistics;
     private String toleranceString;
     private List<String> referralAreas;
 
-    public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences) {
+    public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences, List<? extends Statistic> intendedStatistics, List<? extends Statistic> actualStatistics) {
         this.intendedGpx = intendedGpx;
         this.actualGpx = actualGpx;
         this.tolerance = tolerance;
+        if(trackUsePreferences == null) trackUsePreferences = new ArrayList<>();
         this.trackUsePreferences = trackUsePreferences;
-        if(trackUsePreferences == null) this.trackUsePreferences = new ArrayList<>();
+        this.intendedStatistics = intendedStatistics;
+        this.actualStatistics = actualStatistics;
+
     }
 
     public boolean hasTrackUsePreferences() {
@@ -61,24 +66,12 @@ public class Result {
         else return String.valueOf(tolerance) + "m";
     }
 
-    public void setTolerance(int tolerance) {
-        this.tolerance = tolerance;
-    }
-
     public GpxFile getIntendedGpx() {
         return intendedGpx;
     }
 
-    public void setIntendedGpx(GpxFile intendedGpx) {
-        this.intendedGpx = intendedGpx;
-    }
-
     public GpxFile getActualGpx() {
         return actualGpx;
-    }
-
-    public void setActualGpx(GpxFile actualGpx) {
-        this.actualGpx = actualGpx;
     }
 
     public void setReferralAreas(List<String> referralAreas) {
@@ -95,5 +88,13 @@ public class Result {
 
     public List<? extends TrackUsePreference> getTrackUsePreferences() {
         return trackUsePreferences;
+    }
+
+    public List<? extends Statistic> getIntendedStatistics() {
+        return intendedStatistics;
+    }
+
+    public List<? extends Statistic> getActualStatistics() {
+        return actualStatistics;
     }
 }
