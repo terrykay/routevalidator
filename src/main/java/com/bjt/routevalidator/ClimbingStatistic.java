@@ -36,7 +36,7 @@ public class ClimbingStatistic  extends  StandardStatistic{
         final ClimbServerResult climbServerResult = getClimbing(intendedPaths, climbServerUrl);
 
         if(climbServerResult != null && climbServerResult.isSuccess()) {
-            final String climbing = String.format("%,d", climbServerResult.getClimbing());
+            final String climbing = String.format("%,d m", climbServerResult.getClimbing());
             return climbing;
         } else {
             return "?";

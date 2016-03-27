@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Ben.Taylor on 27/03/2016.
  */
 public class ClimbServerTest {
-    @Test
+    //@Test
     public void jsonTest() {
         final GsonBuilder gsonBuilder = new GsonBuilder();
         final Gson gson = gsonBuilder.create();
@@ -25,7 +25,7 @@ public class ClimbServerTest {
         System.out.println(String.format("%,.2f km", 0.123456789));
     }
 
-    @Test
+    //@Test
     public void getClimbing() throws IOException {
         final List<List<Coordinate>> paths =Arrays.asList(
                 Arrays.asList(

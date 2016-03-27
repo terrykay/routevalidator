@@ -181,7 +181,7 @@
                         <% } %>
                     </tbody>
                 </table>
-                <table style="float:left">
+                <table style="float:left; margin-left: 20px">
                     <thead>
                         <tr>
                             <th colspan="2"><strong>Actual track</strong></th>
