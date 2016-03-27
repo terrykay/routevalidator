@@ -60,7 +60,7 @@ div#stats {
     min-width: 600px
 }
 
-div#stats table th {
+div#stats table th, div#stats table td {
     padding: 0 15px 10px 15px
 }
 

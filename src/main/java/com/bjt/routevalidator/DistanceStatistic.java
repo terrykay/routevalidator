@@ -15,11 +15,11 @@ public class DistanceStatistic extends StandardStatistic {
     }
 
     private static String getDistance(List<List<Coordinate>> intendedPaths, final GeoHelper geoHelper) throws FactoryException, TransformException {
-        double distance = 0;
+        double distanceInMetres = 0;
         for(final List<Coordinate> path : intendedPaths) {
-            distance += geoHelper.getDistance(path);
+            distanceInMetres += geoHelper.getDistance(path);
         }
-        final String distString = String.format("%,.2f km", distance);
+        final String distString = String.format("%,.2f km", distanceInMetres / 1000);
         return distString;
     }
 }
