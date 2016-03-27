@@ -29,105 +29,119 @@
             <form action="<%= result.getSubmitAction() %>" method="post"
                 <% if (!isProcessed) { %> enctype="multipart/form-data" <% } %>
             >
-            <table class="spaced">
-                <tr>
-                    <td><span>Intended GPX:</span></td>
 
-                    <%  if (!isProcessed) { %>
-                        <td><input class="filestyle" type="file" name="intended"/></td>
-                    <% } else { %>
-                        <td style="color: <%= intendedColour %>">${result.intendedGpx.fileName}</td>
-                        <td><a href="." class="btn btn-primary">New enquiry</a></td>
-                    <% } %>
-                </tr>
-                <tr>
-                    <td><span>Actual GPX/TCX:</span></td>
-                    <% if (!isProcessed) { %>
-                        <td><input class="filestyle" type="file" name="actual" accept=".gpx,.tcx"/></td>
-                    <% } else { %>
-                        <td style="color: <%= actualColour %>">${result.actualGpx.fileName}</td>
-                    <% } %>
-                </tr>
-                <tr>
-                    <td><span>Tolerance (metres):</span></td>
-                    <td>
-                        <span id="toleranceLabel"><%= result.getToleranceString() %></span>
-                        <input id="tolerance" name="tolerance" type="text"
-                        data-slider-min="10" data-slider-max="1000" data-slider-step="10" data-slider-value="<%= result.getTolerance() %>"/>
-                    </td>
-                    <% if(isProcessed) { %>
-                    <td>
-                        <input class="btn btn-primary" type="submit" value="Recalculate" id="recalculate" style="visibility: hidden"/>
-                    </td>
-                    <% } %>
-                </tr>
-                <% if (result.hasTrackUsePreferences()) { %>
-                <tr>
-                    <td style="vertical-align: top"><span>Track list:</span></td>
-                    <td>
-                        <table class="internalpadding5">
-                            <tbody>
-                            <%
-                             Integer count = 0;
-                             for(com.bjt.routevalidator.TrackUsePreference trackUsePreference : result.getTrackUsePreferences()) {
-                              %>
-                            <tr>
-                                <td><span><%= trackUsePreference.getTrackName() %></span></td>
-                                <td>
-                                    <% if (trackUsePreference.isRender()) { %>
-                                        <input type="checkbox" name="<%= String.format("trackusepreference_checked_%d", count) %>" checked="checked"/>
-                                    <% } else { %>
-                                        <input type="checkbox" name="<%= String.format("trackusepreference_checked_%d", count) %>"/>
-                                    <% } %>
-                                    <input type="hidden" name="<%= String.format("trackusepreference_name_%d", count) %>" value="<%=trackUsePreference.getTrackName() %>"/>
-                                </td>
-                            </tr>
-                            <% count++; } %>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <% } %>
-                <% if (isProcessed) { %>
-                <tr>
-                    <td><span>Result:</span></td>
-                    <td><span class="result ${result.status}">${result.status}</span>
-                    <% if (!result.getReferralAreas().isEmpty()) { %>
-                    <td><span>Referral areas:</span>
-                    <td>
-                        <ul class="pagination" id="referralpages">
-                            <li>
-                              <a href="#" id="referralfirst" aria-label="First">
-                                <span aria-hidden="true">&laquo;</span>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#" id="referralprev" aria-label="Previous">
-                                <span aria-hidden="true">&lsaquo;</span>
-                              </a>
-                            </li>
-                            <li><a href="#" id="referralcurrentpage" data-current="0"></a></li>
-                            <li>
-                              <a href="#" id="referralnext" aria-label="Next">
-                                <span aria-hidden="true">&rsaquo;</span>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#" id="referrallast" aria-label="Last">
-                                <span aria-hidden="true">&raquo;</span>
-                              </a>
-                            </li>
-                          </ul>
-                    </td>
-                    <% } else {  %> <td></td><td></td> <% } %>
-                </tr>
-                <% } %>
-                <% if(!isProcessed) { %>
-                <tr>
-                    <td><input class="btn btn-primary" type="submit" value="Compare"/></td>
-                </tr>
-                <% } %>
-            </table>
+                <div style="float: left">
+                    <table class="spaced">
+                        <tr>
+                            <td><span>Intended GPX:</span></td>
+
+                            <%  if (!isProcessed) { %>
+                                <td><input class="filestyle" type="file" name="intended"/></td>
+                            <% } else { %>
+                                <td style="color: <%= intendedColour %>">${result.intendedGpx.fileName}</td>
+                            <% } %>
+                        </tr>
+                        <tr>
+                            <td><span>Actual GPX/TCX:</span></td>
+                            <% if (!isProcessed) { %>
+                                <td><input class="filestyle" type="file" name="actual" accept=".gpx,.tcx"/></td>
+                            <% } else { %>
+                                <td style="color: <%= actualColour %>">${result.actualGpx.fileName}</td>
+                            <% } %>
+                        </tr>
+                        <% if (result.hasTrackUsePreferences()) { %>
+                        <tr>
+                            <td style="vertical-align: top"><span>Track list:</span></td>
+                            <td>
+                                <table class="internalpadding5">
+                                    <tbody>
+                                    <%
+                                     Integer count = 0;
+                                     for(com.bjt.routevalidator.TrackUsePreference trackUsePreference : result.getTrackUsePreferences()) {
+                                      %>
+                                    <tr>
+                                        <td><span><%= trackUsePreference.getTrackName() %></span></td>
+                                        <td>
+                                            <% if (trackUsePreference.isRender()) { %>
+                                                <input type="checkbox" name="<%= String.format("trackusepreference_checked_%d", count) %>" checked="checked"/>
+                                            <% } else { %>
+                                                <input type="checkbox" name="<%= String.format("trackusepreference_checked_%d", count) %>"/>
+                                            <% } %>
+                                            <input type="hidden" name="<%= String.format("trackusepreference_name_%d", count) %>" value="<%=trackUsePreference.getTrackName() %>"/>
+                                        </td>
+                                    </tr>
+                                    <% count++; } %>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <% } %>
+
+                        <% if(!isProcessed) { %>
+                        <tr>
+                            <td><input class="btn btn-primary" type="submit" value="Compare"/></td>
+                        </tr>
+                        <% } %>
+
+                    </table>
+                </div>
+                <div style="float: left">
+                    <table class="spaced">
+                        <tr>
+                            <td><span>Tolerance (metres):</span></td>
+                            <td>
+                                <span id="toleranceLabel"><%= result.getToleranceString() %></span>
+                                <input id="tolerance" name="tolerance" type="text"
+                                data-slider-min="10" data-slider-max="1000" data-slider-step="10" data-slider-value="<%= result.getTolerance() %>"/>
+                            </td>
+                        </tr>
+                        <% if (isProcessed) { %>
+                        <tr>
+                            <td><span>Track adherence:</span></td>
+                            <td><span class="result ${result.status}">${result.status}</span>
+                        </tr>
+                        <% if (!result.getReferralAreas().isEmpty()) { %>
+                        <tr>
+                            <td><span>Referral areas:</span>
+                            <td>
+                                <ul class="pagination" id="referralpages">
+                                    <li>
+                                      <a href="#" id="referralfirst" aria-label="First">
+                                        <span aria-hidden="true">&laquo;</span>
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a href="#" id="referralprev" aria-label="Previous">
+                                        <span aria-hidden="true">&lsaquo;</span>
+                                      </a>
+                                    </li>
+                                    <li><a href="#" id="referralcurrentpage" data-current="0"></a></li>
+                                    <li>
+                                      <a href="#" id="referralnext" aria-label="Next">
+                                        <span aria-hidden="true">&rsaquo;</span>
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a href="#" id="referrallast" aria-label="Last">
+                                        <span aria-hidden="true">&raquo;</span>
+                                      </a>
+                                    </li>
+                                  </ul>
+                            </td>
+
+                        </tr>
+                        <% } %> <%-- if getReferralAreas isEmpty --%>
+                        <%-- speed limit compliance tr  --%>
+                        <% } %> <%-- if isProcessed --%>
+                    </table>
+
+                <div style="float: left"> <%-- buttons --%>
+                    <a href="." class="btn btn-primary">New enquiry</a>
+                    <input class="btn btn-primary" type="submit" value="Recalculate" id="recalculate" style="visibility: hidden"/>
+                </div>
+
+                <div style="clear: both"></div>
             </form>
             <div class="logo"></div>
             </div>
