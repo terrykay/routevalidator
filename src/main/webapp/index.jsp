@@ -2,7 +2,7 @@
 <%
     com.bjt.routevalidator.Result result = (com.bjt.routevalidator.Result)request.getAttribute("result");
     if(result == null)  {
-        result = new com.bjt.routevalidator.Result(null, null, 200, null);
+        result = new com.bjt.routevalidator.Result();
     }
     boolean isProcessed = result.isProcessed();
     String actualColour = "#f0c"; /* luminous pink (darkish) */
@@ -169,6 +169,17 @@
                             <th colspan="2"><strong>Intended track</strong></th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <% for(com.bjt.routevalidator.Statistic stat : result.getIntendedStatistics()) { %>
+                            <tr>
+                                <% for (com.bjt.routevalidator.TableCell cell : stat.getCells()) { %>
+                                    <td colspan="<%= cell.getColSpan() %>">
+                                        <span><%= cell.getContents() %></span>
+                                    </td>
+                                <% } %>
+                            </tr>
+                        <% } %>
+                    </tbody>
                 </table>
                 <table style="float:left">
                     <thead>
@@ -176,6 +187,17 @@
                             <th colspan="2"><strong>Actual track</strong></th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <% for(com.bjt.routevalidator.Statistic stat : result.getActualStatistics()) { %>
+                            <tr>
+                                <% for (com.bjt.routevalidator.TableCell cell : stat.getCells()) { %>
+                                    <td colspan="<%= cell.getColSpan() %>">
+                                        <span><%= cell.getContents() %></span>
+                                    </td>
+                                <% } %>
+                            </tr>
+                        <% } %>
+                    </tbody>
                 </table>
                 <div style="clear: both"></div>
             </div>

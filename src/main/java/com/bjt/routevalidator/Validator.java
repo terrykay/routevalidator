@@ -10,6 +10,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Validator {
     }
 
 
-    public Result validate(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences) throws FactoryException, TransformException {
+    public Result validate(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences) throws FactoryException, TransformException, IOException {
 
         //intended:
         final List<Coordinate> controls = getAllPoints(intendedGpx.getGpx());
@@ -39,7 +40,6 @@ public class Validator {
         final List<? extends Statistic> actualStatistics = getActualStatistics(actualGpx, pathsRidden);
 
         final Result result = new Result(intendedGpx, actualGpx, tolerance, trackUsePreferences, intendedStatistics, actualStatistics);
-
 
         final List<List<Coordinate>> referralAreas = new ArrayList<>();
         List<Coordinate> currentReferralArea = null;
@@ -75,10 +75,10 @@ public class Validator {
     }
 
     private List<? extends Statistic> getActualStatistics(final GpxFile actualGpx, List<List<Coordinate>> pathsRidden) {
-        return null;
+        return new ArrayList<>();
     }
 
-    private List<? extends Statistic> getIntendedStatistics(final GpxFile intendedGpx) throws FactoryException, TransformException {
+    private List<? extends Statistic> getIntendedStatistics(final GpxFile intendedGpx) throws FactoryException, TransformException, IOException {
         final List<List<Coordinate>> intendedPaths = getAllLines(intendedGpx.getGpx(), null);
         return Arrays.asList(
                 new DistanceStatistic(intendedPaths, geoHelper),

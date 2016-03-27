@@ -1,10 +1,10 @@
 package com.bjt.routevalidator;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
+        import com.vividsolutions.jts.geom.Coordinate;
+        import org.opengis.referencing.FactoryException;
+        import org.opengis.referencing.operation.TransformException;
 
-import java.util.List;
+        import java.util.List;
 
 /**
  * Created by Ben.Taylor on 27/03/2016.
@@ -19,7 +19,7 @@ public class DistanceStatistic extends StandardStatistic {
         for(final List<Coordinate> path : intendedPaths) {
             distance += geoHelper.getDistance(path);
         }
-        final String distString = String.format("%.2f km", distance);
+        final String distString = String.format("%,.2f km", distance);
         return distString;
     }
 }

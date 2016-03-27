@@ -25,6 +25,10 @@ public class Result {
     private String toleranceString;
     private List<String> referralAreas;
 
+    public Result() {
+        this(null, null, 200, null, null, null);
+    }
+
     public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences, List<? extends Statistic> intendedStatistics, List<? extends Statistic> actualStatistics) {
         this.intendedGpx = intendedGpx;
         this.actualGpx = actualGpx;
