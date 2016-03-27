@@ -30,6 +30,10 @@ div.logo {
     height: 172px;
 }
 
+tr.mapheader>td>div:first-of-type {
+    min-height: 192px;
+}
+
 #toleranceLabel {
     display: inline-block;
     min-width: 50px;
@@ -50,6 +54,14 @@ div#map {
     display: inline-block;
     height: 100%;
     width: 100%;
+}
+
+div#stats {
+    min-width: 600px
+}
+
+div#stats table th {
+    padding: 0 15px 10px 15px
 }
 
 td.mapcontainer {
