@@ -226,7 +226,7 @@ L.Map.prototype.setCrs = function(newCrs) {
 }
 
 <%
-    String errorMessage = request.getSession().getAttribute("FriendlyErrorMessage");
+    String errorMessage = (String)request.getSession().getAttribute("FriendlyErrorMessage");
     if(!(errorMessage == null || errorMessage.isEmpty())) {
         request.getSession().removeAttribute("FriendlyErrorMessage");
 %>
