@@ -7,6 +7,7 @@
     boolean isProcessed = result.isProcessed();
     String actualColour = "#f0c"; /* luminous pink (darkish) */
     String intendedColour = "#004cff"; /* blue */
+
 %>
 
 <!DOCTYPE html>
@@ -16,7 +17,8 @@
     <link href="css/bootstrap-theme.min.css" type="text/css" rel="stylesheet"/>
     <link href="css/bootstrap-slider.min.css" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css"/>
-    <link rel="stylesheet" href="css/site.css" type="text/css"/>
+    <link href="css/bootstrap-slider.min.css" type="text/css" rel="stylesheet"/>
+    <link href="css/jquery.jgrowl.min.css" type="text/css" rel="stylesheet"/>
     <title>AUK Route Validator</title>
 </head>
 
@@ -215,12 +217,28 @@
 <script type="text/javascript" src="js/proj4leaflet.js"></script>
 <script type="text/javascript" src="js/OSOpenSpace.js"></script>
 <script type="text/javascript" src="js/site.js"></script>
+<script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
 
 <% if(result.getIntendedGpx() != null && result.getActualGpx() != null) { %>
 <script type="text/javascript">
 L.Map.prototype.setCrs = function(newCrs) {
     this.options.crs = newCrs;
 }
+
+<%
+    String errorMessage = request.getSession().getAttribute("FriendlyErrorMessage");
+    if(!(errorMessage == null || errorMessage.isEmpty())) {
+        request.getSession().removeAttribute("FriendlyErrorMessage");
+%>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.jGrowl('<%= errorMessage %>', {sticky: true, theme: "error"});
+            });
+        </script>
+<%
+    }
+%>
+
 $(document).ready(function() {
         var map = L.map("map", {
             continuousWorld: true,

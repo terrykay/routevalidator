@@ -35,26 +35,36 @@ public class ValidateServlet extends HttpServlet {
             while (itemIterator.hasNext()) {
                 final FileItemStream file = itemIterator.next();
 
-                if(file.getFieldName().equals("intended")) {
-                    final GeoFile intendedGpx = readGpx(file, geoFileParser, file.getName());
+                if (file.getFieldName().equals("intended")) {
+                    final GeoFile intendedGpx;
+                    try {
+                        intendedGpx = readGpx(file, geoFileParser, file.getName());
+                    } catch (final Exception ex) {
+                        throw new FriendlyException("The intended GPX file was invalid.");
+                    }
                     final String intendedFilename = file.getName();
                     intendedGpxFile = new GpxFile(intendedFilename, intendedGpx);
                 }
-                if(file.getFieldName().equals("actual")) {
-                    final GeoFile actualGpx = readGpx(file, geoFileParser, file.getName());
+                if (file.getFieldName().equals("actual")) {
+                    final GeoFile actualGpx;
+                    try {
+                        actualGpx = readGpx(file, geoFileParser, file.getName());
+                    }catch(final Exception ex) {
+                        throw new FriendlyException("The actual GPX file was invalid.");
+                    }
                     final String actualFilename = file.getName();
                     actualGpxFile = new GpxFile(actualFilename, actualGpx);
                 }
-                if(file.getFieldName().equals("tolerance") && file.isFormField()) {
-                    try(final InputStream stream = file.openStream()) {
+                if (file.getFieldName().equals("tolerance") && file.isFormField()) {
+                    try (final InputStream stream = file.openStream()) {
                         final String toleranceString = Streams.asString(stream);
                         tolerance = Integer.parseInt(toleranceString);
                     }
                 }
             }
-            if(intendedGpxFile == null || actualGpxFile == null) {
+            if (intendedGpxFile == null || actualGpxFile == null) {
                 ErrorHandler.handleError("Both intended and actual gpx files must be uploaded.", null, req, resp);
-            }else if (tolerance == null) {
+            } else if (tolerance == null) {
                 ErrorHandler.handleError("Tolerance must be specified.", null, req, resp);
             } else {
                 final Validator validator = new Validator(getServletContext());
@@ -64,12 +74,16 @@ public class ValidateServlet extends HttpServlet {
                 req.setAttribute("result", result);
                 req.getRequestDispatcher("/index.jsp").include(req, resp);
             }
-        } catch (Exception e) {
+        } catch (final FriendlyException e) {
+            req.getSession().setAttribute("FriendlyErrorMessage", e.getMessage());
+            resp.sendRedirect(req.getRequestURI());
+        } catch (final Exception e) {
             ErrorHandler.handleError("There was an error processing the GPX files.", e, req, resp);
         }
     }
+
     private static GeoFile readGpx(final FileItemStream file, final GeoFileParser geoFileParser, final String fileName) throws Exception {
-        try(final InputStream inputStream = file.openStream()) {
+        try (final InputStream inputStream = file.openStream()) {
             final GeoFile geoFile = geoFileParser.parseGeoFile(inputStream, fileName);
             return geoFile;
         }
