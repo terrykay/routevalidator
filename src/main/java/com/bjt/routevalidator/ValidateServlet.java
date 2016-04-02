@@ -76,7 +76,7 @@ public class ValidateServlet extends HttpServlet {
             }
         } catch (final FriendlyException e) {
             req.getSession().setAttribute("FriendlyErrorMessage", e.getMessage());
-            resp.sendRedirect(req.getRequestURI());
+            resp.sendRedirect("/");
         } catch (final Exception e) {
             ErrorHandler.handleError("There was an error processing the GPX files.", e, req, resp);
         }
