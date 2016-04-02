@@ -3,6 +3,7 @@ import com.bjt.routevalidator.ClimbingStatistic;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vividsolutions.jts.geom.Coordinate;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by Ben.Taylor on 27/03/2016.
  */
 public class ClimbServerTest {
-    //@Test
+    @Test
     public void jsonTest() {
         final GsonBuilder gsonBuilder = new GsonBuilder();
         final Gson gson = gsonBuilder.create();
@@ -23,6 +24,9 @@ public class ClimbServerTest {
 
         System.out.println(String.format("%,.2f km", 1234.567));
         System.out.println(String.format("%,.2f km", 0.123456789));
+
+
+        System.out.println(StringEscapeUtils.escapeJavaScript("The 'actual' file did not look very \"actual\" to me."));
     }
 
     //@Test
