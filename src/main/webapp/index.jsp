@@ -18,6 +18,7 @@
     <link href="css/bootstrap-slider.min.css" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css"/>
     <link href="css/bootstrap-slider.min.css" type="text/css" rel="stylesheet"/>
+    <link href="css/site.css" type="text/css" rel="stylesheet"/>
     <link href="css/jquery.jgrowl.min.css" type="text/css" rel="stylesheet"/>
     <title>AUK Route Validator</title>
 </head>
