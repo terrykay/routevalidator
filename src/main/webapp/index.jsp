@@ -220,12 +220,6 @@
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
 
-<% if(result.getIntendedGpx() != null && result.getActualGpx() != null) { %>
-<script type="text/javascript">
-L.Map.prototype.setCrs = function(newCrs) {
-    this.options.crs = newCrs;
-}
-
 <%
     String errorMessage = (String)request.getSession().getAttribute("FriendlyErrorMessage");
     if(!(errorMessage == null || errorMessage.isEmpty())) {
@@ -239,6 +233,13 @@ L.Map.prototype.setCrs = function(newCrs) {
 <%
     }
 %>
+
+
+<% if(result.getIntendedGpx() != null && result.getActualGpx() != null) { %>
+<script type="text/javascript">
+L.Map.prototype.setCrs = function(newCrs) {
+    this.options.crs = newCrs;
+}
 
 $(document).ready(function() {
         var map = L.map("map", {
