@@ -227,7 +227,7 @@
 %>
         <script type="text/javascript">
             $(document).ready(function() {
-                $.jGrowl('<%= org.apache.commons.lang.StringEscapeUtils.escapeJavaScript(errorMessage) %>', {sticky: true, theme: "error"});
+                $.jGrowl('<%= org.apache.commons.lang.StringEscapeUtils.escapeJavaScript(errorMessage) %>', {sticky: true, theme: "error", position: "center"});
             });
         </script>
 <%

@@ -91,3 +91,11 @@ td.mapcontainer {
 input.btn, a.btn {
     min-width: 120px;
 }
+
+.jGrowl.error {
+    background: rgb(255, 217, 229);
+    border: 1px solid rgb(205, 10, 10);
+    color: rgb(205, 10, 10);
+    -ms-opacity: 1;
+    opacity: 1;
+}
