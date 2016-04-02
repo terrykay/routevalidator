@@ -77,17 +77,6 @@ public class Validator {
         return result;
     }
 
-    private void checkActualIsActual(final GpxFile actualGpx) throws FriendlyException {
-        for(final Track  track : actualGpx.getGpx().getTracks()) {
-            for(final TrackSegment trackSeg : track.getTrackSegments()) {
-                for(final TrackPoint trackPoint : trackSeg.getTrackPoints()) {
-                    if(trackPoint.getTime() == null || trackPoint.getTime().isEmpty()) throw new FriendlyException("At least one trackpoint in the actual file does not have time information. This could be the case if it was generated on a computer rather than by being recording by a device.");
-
-                }
-            }
-        }
-    }
-
     private List<? extends Statistic> getActualStatistics(final GpxFile actualGpx, List<List<Coordinate>> pathsRidden) throws FactoryException, TransformException {
         return Arrays.asList(
             new DistanceStatistic(pathsRidden, geoHelper)
