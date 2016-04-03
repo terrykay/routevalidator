@@ -1,5 +1,6 @@
 package com.bjt.routevalidator;
 
+import com.bjt.gpxparser.GeoFile;
 import com.bjt.gpxparser.Track;
 import com.bjt.gpxparser.TrackPoint;
 import com.bjt.gpxparser.TrackSegment;
@@ -81,5 +82,18 @@ public class GeoHelper {
         final double aveX = totalX / line.size();
         final double aveY = totalY / line.size();
         return new Coordinate(aveX, aveY);
+    }
+
+    public static List<Coordinate> getAllPoints(final GeoFile geoFile) {
+        final List<Coordinate> points = new ArrayList<>();
+        for(final Track track: geoFile.getTracks()) {
+            for(final TrackSegment trackSeg : track.getTrackSegments()) {
+                for(final TrackPoint trackPoint : trackSeg.getTrackPoints()) {
+                    final Coordinate coordinate = new Coordinate(trackPoint.getLon(), trackPoint.getLat());
+                    points.add(coordinate);
+                }
+            }
+        }
+        return points;
     }
 }

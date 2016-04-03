@@ -1,5 +1,8 @@
 package com.bjt.routevalidator;
 
+        import com.bjt.gpxparser.GeoFile;
+        import com.bjt.gpxparser.Track;
+        import com.bjt.gpxparser.TrackSegment;
         import com.vividsolutions.jts.geom.Coordinate;
         import org.opengis.referencing.FactoryException;
         import org.opengis.referencing.operation.TransformException;
@@ -10,15 +13,13 @@ package com.bjt.routevalidator;
  * Created by Ben.Taylor on 27/03/2016.
  */
 public class DistanceStatistic extends StandardStatistic {
-    public DistanceStatistic(final List<List<Coordinate>> intendedPaths, final GeoHelper geoHelper) throws FactoryException, TransformException {
-        super("Distance", getDistance(intendedPaths, geoHelper));
+    public DistanceStatistic(final GeoFile geoFile, final GeoHelper geoHelper) throws FactoryException, TransformException {
+        super("Distance", getDistance(geoFile, geoHelper));
     }
 
-    private static String getDistance(List<List<Coordinate>> intendedPaths, final GeoHelper geoHelper) throws FactoryException, TransformException {
-        double distanceInMetres = 0;
-        for(final List<Coordinate> path : intendedPaths) {
-            distanceInMetres += geoHelper.getDistance(path);
-        }
+    private static String getDistance(final GeoFile geoFile, final GeoHelper geoHelper) throws FactoryException, TransformException {
+        final List<Coordinate> allPoints = GeoHelper.getAllPoints(geoFile);
+        double distanceInMetres = geoHelper.getDistance(allPoints);
         final String distString = String.format("%,.2f km", distanceInMetres / 1000);
         return distString;
     }

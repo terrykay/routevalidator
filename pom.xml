@@ -48,6 +48,12 @@
     <dependencies>
         <!-- Compile/runtime dependencies -->
         <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.3</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
             <version>${geotools.version}</version>
@@ -81,7 +87,7 @@
         <dependency>
             <groupId>com.bjt.gpxparser</groupId>
             <artifactId>gpxparser</artifactId>
-            <version>2.4</version>
+            <version>2.7</version>
         </dependency>
 
         <dependency>

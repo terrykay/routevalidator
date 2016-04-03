@@ -30,6 +30,7 @@ public class ClimbServerTest {
     }
 
     //@Test
+/*
     public void getClimbing() throws IOException {
         final List<List<Coordinate>> paths =Arrays.asList(
                 Arrays.asList(
@@ -44,6 +45,7 @@ public class ClimbServerTest {
         System.out.println(String.format("Climbing: %d", climbing.getClimbing()));
 
     }
+
 
     @Test
     public void noExceptionForWrongServer1() throws IOException {
@@ -73,4 +75,5 @@ public class ClimbServerTest {
         Assert.assertTrue(climbing.getClimbing() == 0);
 
     }
+    */
 }

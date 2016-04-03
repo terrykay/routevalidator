@@ -1,5 +1,6 @@
 package com.bjt.routevalidator;
 
+import com.bjt.gpxparser.GeoFile;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -21,16 +22,16 @@ import java.util.logging.Logger;
 /**
  * Created by Ben.Taylor on 27/03/2016.
  */
-public class ClimbingStatistic  extends  StandardStatistic{
-    public ClimbingStatistic(List<List<Coordinate>> intendedPaths, ServletContext servletContext) throws IOException {
-        super("Climbing", getClimbing(intendedPaths, servletContext));
+public class ClimbingStatistic extends StandardStatistic {
+    public ClimbingStatistic(final GeoFile geoFile, ServletContext servletContext) throws IOException {
+        super("Climbing", getClimbing(geoFile, servletContext));
     }
 
-    private static String getClimbing(List<List<Coordinate>> intendedPaths, ServletContext servletContext) throws IOException {
+    private static String getClimbing(final GeoFile geoFile, ServletContext servletContext) throws IOException {
         final String climbServerUrl = servletContext.getInitParameter("ClimbingServerUrl");
-        final ClimbServerResult climbServerResult = getClimbing(intendedPaths, climbServerUrl);
+        final ClimbServerResult climbServerResult = getClimbing(geoFile, climbServerUrl);
 
-        if(climbServerResult != null && climbServerResult.isSuccess()) {
+        if (climbServerResult != null && climbServerResult.isSuccess()) {
             final String climbing = String.format("%,d m", climbServerResult.getClimbing());
             return climbing;
         } else {
@@ -38,7 +39,8 @@ public class ClimbingStatistic  extends  StandardStatistic{
         }
     }
 
-    public static ClimbServerResult getClimbing(List<List<Coordinate>> intendedPaths, String climbServerUrl) {
+    public static ClimbServerResult getClimbing(final GeoFile geoFile, String climbServerUrl) {
+        final List<Coordinate> intendedPaths = GeoHelper.getAllPoints(geoFile);
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
             final HttpPost httpPost = new HttpPost(climbServerUrl);
             final String coordsAsStringForClimbingServer = getCoordsAsStringForClimbingServer(intendedPaths);
@@ -51,19 +53,17 @@ public class ClimbingStatistic  extends  StandardStatistic{
                 final ClimbServerResult result = gson.fromJson(s, ClimbServerResult.class);
                 return result;
             }
-        } catch(final Exception exception) {
+        } catch (final Exception exception) {
             Logger.getLogger(ClimbingStatistic.class.getName()).log(Level.SEVERE, "Error in getClimbing", exception);
             return new ClimbServerResult(false, 0);
         }
     }
 
-    private static String getCoordsAsStringForClimbingServer(List<List<Coordinate>> paths) {
+    private static String getCoordsAsStringForClimbingServer(List<Coordinate> path) {
         final List<String> latLongs = new ArrayList<>();
-        for(final List<Coordinate> path : paths) {
-            for(final Coordinate coord : path) {
-                final String coordString = String.format("%.4f,%.4f", coord.y, coord.x);
-                latLongs.add(coordString);
-            }
+        for (final Coordinate coord : path) {
+            final String coordString = String.format("%.4f,%.4f", coord.y, coord.x);
+            latLongs.add(coordString);
         }
         final String latLongStrings = String.join(";", latLongs);
         return latLongStrings;
