@@ -84,7 +84,9 @@ public class Validator {
             new DistanceStatistic(geoFile, geoHelper),
             new DurationStatistic(geoFile),
             new StartDateTimeStatistic(geoFile),
-            new EndDateTimeStatistic(geoFile)
+            new EndDateTimeStatistic(geoFile),
+            new StartElevationStatistic(geoFile),
+            new EndElevationStatistic(geoFile)
         );
     }
 

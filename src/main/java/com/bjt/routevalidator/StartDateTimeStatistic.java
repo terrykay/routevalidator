@@ -1,6 +1,7 @@
 package com.bjt.routevalidator;
 
 import com.bjt.gpxparser.GeoFile;
+import com.bjt.gpxparser.Track;
 import com.bjt.gpxparser.TrackPoint;
 import org.joda.time.DateTime;
 
