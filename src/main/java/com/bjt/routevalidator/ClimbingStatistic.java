@@ -40,7 +40,7 @@ public class ClimbingStatistic extends StandardStatistic {
     }
 
     public static ClimbServerResult getClimbing(final GeoFile geoFile, String climbServerUrl) {
-        final List<Coordinate> intendedPaths = GeoHelper.getAllPoints(geoFile);
+        final List<? extends Coordinate> intendedPaths = GeoHelper.getAllPointsAsCoordinates(geoFile);
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
             final HttpPost httpPost = new HttpPost(climbServerUrl);
             final String coordsAsStringForClimbingServer = getCoordsAsStringForClimbingServer(intendedPaths);
@@ -59,7 +59,7 @@ public class ClimbingStatistic extends StandardStatistic {
         }
     }
 
-    private static String getCoordsAsStringForClimbingServer(List<Coordinate> path) {
+    private static String getCoordsAsStringForClimbingServer(final List<? extends Coordinate> path) {
         final List<String> latLongs = new ArrayList<>();
         for (final Coordinate coord : path) {
             final String coordString = String.format("%.4f,%.4f", coord.y, coord.x);

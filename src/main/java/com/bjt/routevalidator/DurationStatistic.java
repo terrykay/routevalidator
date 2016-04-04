@@ -9,6 +9,7 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Ben.Taylor on 03/04/2016.
@@ -19,9 +20,11 @@ public class DurationStatistic extends StandardStatistic {
     }
 
     private static String getDuration(final GeoFile geoFile) {
-        final TrackPoint lastTrackpoint = Me.Last(Me.Last(Me.Last(geoFile.getTracks()).getTrackSegments()).getTrackPoints());
-        final TrackPoint firstTrackpoint = geoFile.getTracks().get(0).getTrackSegments().get(0).getTrackPoints().get(0);
+        final List<? extends TrackPoint> trackPoints = GeoHelper.getAllPoints(geoFile);
+        final TrackPoint lastTrackpoint = trackPoints.get(trackPoints.size() - 1);
+        final TrackPoint firstTrackpoint = trackPoints.get(0);
         final String duration = getDuration(firstTrackpoint.getTime(), lastTrackpoint.getTime());
+        return duration;
     }
 
     public static String getDuration(String time1, String time2) {

@@ -4,17 +4,14 @@ import com.bjt.gpxparser.*;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 /**
  * Created by Ben.Taylor on 25/10/2015.
@@ -40,7 +37,7 @@ public class Validator {
         actualGpx.getGpx().pruneTracks(trackUsePreferenceNames);
 
         //intended:
-        final List<Coordinate> controls = GeoHelper.getAllPoints(intendedGpx.getGpx());
+        final List<? extends Coordinate> controls = GeoHelper.getAllPointsAsCoordinates(intendedGpx.getGpx());
         //actual:
         final List<List<Coordinate>> pathsRidden = getAllLines(actualGpx.getGpx());
 
@@ -85,7 +82,9 @@ public class Validator {
     private List<? extends Statistic> getActualStatistics(final GeoFile geoFile) throws FactoryException, TransformException {
         return Arrays.asList(
             new DistanceStatistic(geoFile, geoHelper),
-            new DurationStatistic(geoFile)
+            new DurationStatistic(geoFile),
+            new StartDateTimeStatistic(geoFile),
+            new EndDateTimeStatistic(geoFile)
         );
     }
 

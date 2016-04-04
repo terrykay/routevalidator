@@ -15,8 +15,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Ben.Taylor on 26/10/2015.
@@ -84,16 +85,20 @@ public class GeoHelper {
         return new Coordinate(aveX, aveY);
     }
 
-    public static List<Coordinate> getAllPoints(final GeoFile geoFile) {
-        final List<Coordinate> points = new ArrayList<>();
-        for(final Track track: geoFile.getTracks()) {
-            for(final TrackSegment trackSeg : track.getTrackSegments()) {
-                for(final TrackPoint trackPoint : trackSeg.getTrackPoints()) {
-                    final Coordinate coordinate = new Coordinate(trackPoint.getLon(), trackPoint.getLat());
-                    points.add(coordinate);
-                }
-            }
-        }
-        return points;
+    public static List<? extends Coordinate> getAllPointsAsCoordinates(final GeoFile geoFile) {
+        final List<? extends Coordinate> coords = geoFile.getTracks().stream()
+                .map(o -> o.getTrackSegments()).flatMap(List::stream)
+                .map(o -> o.getTrackPoints()).flatMap(List::stream)
+                .map(o -> new Coordinate(o.getLon(), o.getLat()))
+                .collect(Collectors.toList());
+        return coords;
+    }
+
+    public static List<? extends TrackPoint> getAllPoints(final GeoFile geoFile) {
+        final List<? extends TrackPoint> trackPoints = geoFile.getTracks().stream()
+                .map(o -> o.getTrackSegments()).flatMap(List::stream)
+                .map(o -> o.getTrackPoints()).flatMap(List::stream)
+                .collect(Collectors.toList());
+        return trackPoints;
     }
 }
