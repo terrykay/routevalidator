@@ -24,7 +24,7 @@ public class StartDateTimeStatistic extends StandardStatistic {
 
     public static String reformatTime(final String trackpointTime) {
         final DateTime dateTime =DateTime.parse(trackpointTime);
-        final String dateTimeString = dateTime.toString("ddd dd/MM/yy HH:mm");
+        final String dateTimeString = dateTime.toString("E dd/MM/yy HH:mm");
         return dateTimeString;
     }
 }
