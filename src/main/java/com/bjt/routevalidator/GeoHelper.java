@@ -85,19 +85,21 @@ public class GeoHelper {
         return new Coordinate(aveX, aveY);
     }
 
-    public static List<? extends Coordinate> getAllPointsAsCoordinates(final GeoFile geoFile) {
-        final List<? extends Coordinate> coords = geoFile.getTracks().stream()
+    public static Stream<? extends TrackPoint> getTrackpointsAsStream(GeoFile geoFile) {
+        return geoFile.getTracks().stream()
                 .map(o -> o.getTrackSegments()).flatMap(List::stream)
-                .map(o -> o.getTrackPoints()).flatMap(List::stream)
+                .map(o -> o.getTrackPoints()).flatMap(List::stream);
+    }
+
+    public static List<? extends Coordinate> getAllPointsAsCoordinates(final GeoFile geoFile) {
+        final List<? extends Coordinate> coords = getTrackpointsAsStream(geoFile)
                 .map(o -> new Coordinate(o.getLon(), o.getLat()))
                 .collect(Collectors.toList());
         return coords;
     }
 
     public static List<? extends TrackPoint> getAllPoints(final GeoFile geoFile) {
-        final List<? extends TrackPoint> trackPoints = geoFile.getTracks().stream()
-                .map(o -> o.getTrackSegments()).flatMap(List::stream)
-                .map(o -> o.getTrackPoints()).flatMap(List::stream)
+        final List<? extends TrackPoint> trackPoints = getTrackpointsAsStream(geoFile)
                 .collect(Collectors.toList());
         return trackPoints;
     }
