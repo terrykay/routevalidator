@@ -89,7 +89,8 @@ public class Validator {
             new EndElevationStatistic(geoFile),
             new MinElevationStatistic(geoFile),
             new MaxElevationStatistic(geoFile),
-            new TotalTrackpointsStatistic(geoFile)
+            new TotalTrackpointsStatistic(geoFile),
+            new PercentageOfRideWithinSpeedLimitsStatistic(geoFile)
         );
     }
 

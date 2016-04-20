@@ -1,9 +1,6 @@
 package com.bjt.routevalidator;
 
-import com.bjt.gpxparser.GeoFile;
-import com.bjt.gpxparser.Track;
-import com.bjt.gpxparser.TrackPoint;
-import com.bjt.gpxparser.TrackSegment;
+import com.bjt.gpxparser.*;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
@@ -53,8 +50,15 @@ public class GeoHelper {
     }
 
     public double getDistance(final Track track) throws FactoryException, TransformException {
+
         final List<Coordinate> coords = getCoords(track);
         return getDistance(coords);
+    }
+
+    public double getDistanceTrackpoints(List<? extends TrackPoint> trackPoints) throws FactoryException, TransformException {
+        final List<Coordinate> coords = trackPoints.stream().map(o -> new Coordinate(o.getLon(), o.getLat())).collect(Collectors.toList());
+        final double distance = getDistance(coords);
+        return distance;
     }
 
     public double getDistance(List<? extends Coordinate> coords) throws FactoryException, TransformException {
@@ -65,13 +69,11 @@ public class GeoHelper {
     }
 
     public static List<Coordinate> getCoords(final Track track) {
-        final List<Coordinate> coords = new ArrayList<>();
-        for(final TrackSegment trackSegment : track.getTrackSegments()) {
-            for(final TrackPoint trackPoint : trackSegment.getTrackPoints()) {
-                coords.add(new Coordinate(trackPoint.getLon(), trackPoint.getLat()));
-            }
-        }
-        return coords;
+        final List<Coordinate> coordinates = track.getTrackSegments().stream()
+                .flatMap(ts -> ts.getTrackPoints().stream())
+                .map(o -> new Coordinate(o.getLon(), o.getLat()))
+                .collect(Collectors.toList());
+        return coordinates;
     }
 
     private static final Coordinate getCentroidOfLine(final List<? extends Coordinate> line) {
