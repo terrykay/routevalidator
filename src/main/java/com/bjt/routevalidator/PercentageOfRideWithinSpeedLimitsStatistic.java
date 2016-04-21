@@ -1,6 +1,8 @@
 package com.bjt.routevalidator;
 
 import com.bjt.gpxparser.GeoFile;
+import org.joda.time.Duration;
+import org.joda.time.Seconds;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -42,7 +44,7 @@ public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatisti
         if(trackpointWrappers.size() > 0) trackpointWrappers.remove(0);//ValidateGPX ignores the first TWO trackpoints (for reasons best only known to itself)
         AddMaxSpeedToTrackPoints(trackpointWrappers);
         final double fractionOk = AddSpeed(trackpointWrappers);
-        final String percentString = String.format("%.1f", fractionOk);
+        final String percentString = String.format("%.1f", fractionOk * 100) + "%";
         return percentString;
     }
 
@@ -51,9 +53,8 @@ public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatisti
         {
             return (long)0;
         }
-        final long endTicks = legEnd.getDateTime().toDate().getTime();
-        final long startTicks = legStart.getDateTime().toDate().getTime();
-        final double timeDelta = (endTicks - startTicks) / 10000000;
+        final Seconds seconds = Seconds.secondsBetween(legStart.getDateTime(), legEnd.getDateTime());
+        final long timeDelta = seconds.getSeconds();
         return timeDelta;
     }
 
@@ -81,8 +82,8 @@ public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatisti
             TrackpointWrapper item = trkPoints.get(i);
             double num9 = 0;
             num9 = item.getDistanceCumulative();
-            num7 = (int)(num9 / num);
-            int num10 = (int)( item.Speed() / height1);
+            num7 = (int) Math.round(num9 / num);
+            int num10 = (int)Math.round( item.Speed() / height1);
             if (num10 < num6)
             {
                 num2 = 1;
