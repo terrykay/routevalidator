@@ -13,14 +13,14 @@ public class PercentageOfRideWithinSpeedLimitsStatisticTest {
     @Test
     public void Driving() throws Exception {
         final GeoFile geoFile = getGeoFile("/Driving.gpx");
-        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(geoFile);
-        Assert.assertEquals("71.0%", percentage);
+        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(geoFile, "%.6f");
+        Assert.assertEquals("71.03265%", percentage);
     }
 
     @Test
     public void Acceptble() throws Exception {
         final GeoFile geoFile = getGeoFile("/Acceptable.gpx");
-        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(geoFile);
+        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(geoFile, "%.6f");
         Assert.assertEquals("99.9%", percentage);
     }
 

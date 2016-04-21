@@ -15,6 +15,7 @@ public class TrackpointWrapper  {
     private double timeDelta;
     private double distanceCumulative;
     private double smoothSpeed;
+    private double timeCumulative;
 
     public TrackpointWrapper(final TrackPoint trackPoint) {
         this.trackPoint = trackPoint;
@@ -93,5 +94,13 @@ public class TrackpointWrapper  {
 
     public double getSmoothSpeed() {
         return smoothSpeed;
+    }
+
+    public void setTimeCumulative(double timeCumulative) {
+        this.timeCumulative = timeCumulative;
+    }
+
+    public double getTimeDelta() {
+        return timeDelta;
     }
 }
