@@ -64,8 +64,8 @@ public class TrackSummary {
                     if (!trackLeg.LooksDodgy()) {
                         if (trackLeg.TimeDelta() > (long) 60) {
                             TrackpointWrapper trackPoint = new TrackpointWrapper(totalDistance.getTrackpoint());
-                            trackPoint.setDistanceCumulative(distanceCumulative);
-                            trackPoint.setTimeCumulative(timeCumulative);
+                            trackPoint.setDistanceCumulative(this.totalDistance);
+                            trackPoint.setTimeCumulative(this.totalTime);
                             this.trkPoints.add(trackPoint);
                         }
                         totalDistance.setDistanceDelta(trackLeg.CalculateLegLength());
@@ -173,10 +173,12 @@ public class TrackSummary {
         return proportionOk;
     }
 
+    private static int nextid = 1;
+    private static int id;
     public void AddSpeed() {
         final int bmpHeight = 180;
         int height = bmpHeight;
-        double num = 0.12507046194445573;
+        double num = 0.125036949617652;
         double num1 = 80;
         double height1 = num1 / bmpHeight;
         int num2 = 0;
@@ -258,7 +260,10 @@ public class TrackSummary {
                     speedPoints.add(item.Speed());
                     num8++;
                 }
-                item.setSmoothSpeed((double)num2 * (num1 / (double)height));
+                final double smoothSpeed = (double) num2 * (num1 / (double) height);
+                id++;
+
+                item.setSmoothSpeed(smoothSpeed);
 /*
                 point = new Point(num7, height - num2);
                 arrayLists.Add(point);
