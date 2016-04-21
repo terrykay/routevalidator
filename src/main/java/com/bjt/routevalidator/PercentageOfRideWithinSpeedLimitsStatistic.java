@@ -18,7 +18,7 @@ public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatisti
         super("Percentage of ride within speed limits", getPercentage(geoFile));
     }
 
-    private static String getPercentage(GeoFile geoFile) throws FactoryException, TransformException {
+    public static String getPercentage(GeoFile geoFile) throws FactoryException, TransformException {
         final List<TrackpointWrapper> trackpointWrappers = GeoHelper.getTrackpointsAsStream(geoFile).map(o -> new TrackpointWrapper(o)).collect(Collectors.toList());
         final String stat = AnalyzeTrack(trackpointWrappers);
         return stat;
