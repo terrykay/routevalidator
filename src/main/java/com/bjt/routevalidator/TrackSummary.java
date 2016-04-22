@@ -13,12 +13,10 @@ import static com.bjt.routevalidator.TerrainType.FLAT;
  * Created by Ben.Taylor on 21/04/2016.
  */
 public class TrackSummary {
-    private double timeCumulative;
-    private double distanceCumulative;
     private List<TrackpointWrapper> trkPoints;
     private double totalTime;
     private double totalDistance;
-    private boolean inRange;
+
     private int distanceDeltaOver150m;
     private double maxDistanceDelta;
     private double rangeTime;
@@ -51,9 +49,7 @@ public class TrackSummary {
     private double rangeUnsmoothedClimb;
     private double rangeKmLow = -1;
     private double rangeKmHigh = -1;
-    private List<TrackpointWrapper> trackSummary;
     private double proportionOk;
-
 
     public static TrackSummary AnalyzeTrack(final GeoFile geoFile) {
         final TrackSummary trackSummary = new TrackSummary(geoFile);
@@ -116,20 +112,16 @@ public class TrackSummary {
             distanceDelta1.rangeDistance = distanceDelta1.rangeDistance + trackPoint.getDistanceDelta();
         }
         if (trackPoint.Speed() != 0) {
-            TrackSummary trackSummary1 = this;
-            trackSummary1.totalTimeMoving = trackSummary1.totalTimeMoving + (double) trackPoint.getTimeDelta();
+            this.totalTimeMoving = this.totalTimeMoving + (double) trackPoint.getTimeDelta();
         } else {
-            TrackSummary timeDelta2 = this;
-            timeDelta2.totalTimeAtRest = timeDelta2.totalTimeAtRest + (double) trackPoint.getTimeDelta();
+            this.totalTimeAtRest = this.totalTimeAtRest + (double) trackPoint.getTimeDelta();
         }
         this.trackPointCount = this.trackPointCount + (long) 1;
         if (this.isInRange()) {
-            TrackSummary trackSummary3 = this;
-            trackSummary3.rangeTrackPointCount = trackSummary3.rangeTrackPointCount + (long) 1;
+            this.rangeTrackPointCount = this.rangeTrackPointCount + (long) 1;
         }
         if (this.totalDistance > this.thresholdForClimbPoint) {
-            TrackSummary trackSummary4 = this;
-            trackSummary4.trackPointForClimbingCount = trackSummary4.trackPointForClimbingCount + (long) 1;
+            this.trackPointForClimbingCount = this.trackPointForClimbingCount + (long) 1;
             if (this.isInRange()) {
                 TrackSummary trackSummary5 = this;
                 trackSummary5.rangeTrackPointForClimbingCount = trackSummary5.rangeTrackPointForClimbingCount + (long) 1;
