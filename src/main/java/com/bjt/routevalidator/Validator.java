@@ -98,7 +98,7 @@ public class Validator {
             new AverageSpeedOverallStatistic(trackSummary),
             new AverageSpeedMovingStatistic(trackSummary),
             new MovingTimeStatistic(trackSummary),
-            new OverallTimeStatistic(trackSummary)
+            new TimeAtRestStatistic(trackSummary)
         );
     }
 

@@ -37,6 +37,8 @@ public class DurationStatistic extends StandardStatistic {
 
     public static String getDurationString(final Period period) {
         final PeriodFormatter periodFormatter = new PeriodFormatterBuilder()
+                .printZeroAlways()
+                .minimumPrintedDigits(2)
                 .appendHours()
                 .appendSeparator(":")
                 .appendMinutes()

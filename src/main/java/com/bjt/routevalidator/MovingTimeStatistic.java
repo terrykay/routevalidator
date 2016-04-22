@@ -12,9 +12,9 @@ public class MovingTimeStatistic extends StandardStatistic {
         super("Moving Time", getStatistic(trackSummary));
     }
 
-    private static String getStatistic(final TrackSummary trackSummary) {
+    public static String getStatistic(final TrackSummary trackSummary) {
         final int seconds = (int) trackSummary.getTotalTimeMoving();
-        final Period period = Period.seconds(seconds);
+        final Period period = Duration.standardSeconds(seconds).toPeriod();
         final String stat = DurationStatistic.getDurationString(period);
         return stat;
     }

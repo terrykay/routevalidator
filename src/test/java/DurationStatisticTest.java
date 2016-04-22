@@ -23,4 +23,12 @@ public class DurationStatisticTest {
         String duration = DurationStatistic.getDuration(tcxTime1, tcxTime2);
         Assert.assertEquals("13:27", duration);
     }
+
+    @Test
+    public void oneHourOneMinute() {
+        String tcxTime1 = "2010-01-01T08:00:00Z";
+        String tcxTime2 = "2010-01-01T09:01:00Z";
+        String duration = DurationStatistic.getDuration(tcxTime1, tcxTime2);
+        Assert.assertEquals("01:01", duration);
+    }
 }
