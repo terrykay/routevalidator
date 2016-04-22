@@ -1,6 +1,7 @@
 import com.bjt.gpxparser.GeoFile;
 import com.bjt.gpxparser.GeoFileParser;
 import com.bjt.routevalidator.PercentageOfRideWithinSpeedLimitsStatistic;
+import com.bjt.routevalidator.TrackSummary;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,14 +14,14 @@ public class PercentageOfRideWithinSpeedLimitsStatisticTest {
     @Test
     public void Driving() throws Exception {
         final GeoFile geoFile = getGeoFile("/Driving.gpx");
-        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(geoFile, "%.1f");
+        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(TrackSummary.AnalyzeTrack(geoFile), "%.1f");
         Assert.assertEquals("71.0%", percentage);
     }
 
     @Test
     public void Acceptable() throws Exception {
         final GeoFile geoFile = getGeoFile("/Acceptable.gpx");
-        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(geoFile, "%.1f");
+        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(TrackSummary.AnalyzeTrack(geoFile), "%.1f");
         Assert.assertEquals("99.9%", percentage);
     }
 

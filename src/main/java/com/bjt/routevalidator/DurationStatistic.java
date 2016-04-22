@@ -31,12 +31,16 @@ public class DurationStatistic extends StandardStatistic {
         final DateTime dateTime1 = DateTime.parse(time1);
         final DateTime dateTime2 = DateTime.parse(time2);
         final Period period = new Period(dateTime1, dateTime2);
+        final String durationString = getDurationString(period);
+        return durationString;
+    }
+
+    public static String getDurationString(final Period period) {
         final PeriodFormatter periodFormatter = new PeriodFormatterBuilder()
                 .appendHours()
                 .appendSeparator(":")
                 .appendMinutes()
                 .toFormatter();
-        final String durationString = period.toString(periodFormatter);
-        return durationString;
+        return period.toString(periodFormatter);
     }
 }

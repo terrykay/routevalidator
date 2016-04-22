@@ -80,6 +80,10 @@ public class Validator {
     }
 
     private List<? extends Statistic> getActualStatistics(final GeoFile geoFile) throws FactoryException, TransformException {
+        final TrackSummary trackSummary = TrackSummary.AnalyzeTrack(geoFile);
+        trackSummary.AddMaxSpeedToTrackPoints();
+        trackSummary.AddSpeed();
+
         return Arrays.asList(
             new DistanceStatistic(geoFile, geoHelper),
             new DurationStatistic(geoFile),
@@ -90,7 +94,11 @@ public class Validator {
             new MinElevationStatistic(geoFile),
             new MaxElevationStatistic(geoFile),
             new TotalTrackpointsStatistic(geoFile),
-            new PercentageOfRideWithinSpeedLimitsStatistic(geoFile)
+            new PercentageOfRideWithinSpeedLimitsStatistic(trackSummary),
+            new AverageSpeedOverallStatistic(trackSummary),
+            new AverageSpeedMovingStatistic(trackSummary),
+            new MovingTimeStatistic(trackSummary),
+            new OverallTimeStatistic(trackSummary)
         );
     }
 

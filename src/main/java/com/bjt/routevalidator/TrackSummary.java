@@ -23,6 +23,15 @@ public class TrackSummary {
     private double maxDistanceDelta;
     private double rangeTime;
     private double rangeDistance;
+
+    public double getTotalTimeMoving() {
+        return totalTimeMoving;
+    }
+
+    public double getTotalTimeAtRest() {
+        return totalTimeAtRest;
+    }
+
     private double totalTimeMoving;
     private double totalTimeAtRest;
     private long trackPointCount;
@@ -458,5 +467,21 @@ public class TrackSummary {
             }
         }
 
+    }
+
+    public double OverallAverageSpeed() {
+        if (this.totalTime <= 0)
+        {
+            return 0;
+        }
+        return this.totalDistance * 3600 / this.totalTime;
+    }
+
+    public double MovingAverageSpeed() {
+        if (this.totalTimeMoving <= 0)
+        {
+            return 0;
+        }
+        return this.totalDistance * 3600 / this.totalTimeMoving;
     }
 }

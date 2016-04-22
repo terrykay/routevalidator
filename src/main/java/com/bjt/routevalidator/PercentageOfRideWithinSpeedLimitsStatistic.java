@@ -17,14 +17,11 @@ import static com.bjt.routevalidator.TerrainType.*;
  * Created by Ben.Taylor on 19/04/2016.
  */
 public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatistic{
-    public PercentageOfRideWithinSpeedLimitsStatistic(GeoFile geoFile) throws FactoryException, TransformException {
-        super("Percentage of ride within speed limits", getPercentage(geoFile, "%.1f"));
+    public PercentageOfRideWithinSpeedLimitsStatistic(final TrackSummary trackSummary) throws FactoryException, TransformException {
+        super("Percentage of ride within speed limits", getPercentage(trackSummary, "%.1f"));
     }
 
-    public static String getPercentage(final GeoFile geoFile, final String format) throws FactoryException, TransformException {
-        final TrackSummary trackSummary = TrackSummary.AnalyzeTrack(geoFile);
-        trackSummary.AddMaxSpeedToTrackPoints();
-        trackSummary.AddSpeed();
+    public static String getPercentage(final TrackSummary trackSummary, final String format) throws FactoryException, TransformException {
         final double proportionOk = trackSummary.getProportionOk();
         final String statString = String.format(format, proportionOk * 100) + "%";
         return statString;
