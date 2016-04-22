@@ -21,7 +21,8 @@ public class PercentageOfRideWithinSpeedLimitsStatisticTest {
     @Test
     public void Acceptable() throws Exception {
         final GeoFile geoFile = getGeoFile("/Acceptable.gpx");
-        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(TrackSummary.AnalyzeTrack(geoFile), "%.1f");
+        final TrackSummary trackSummary = TrackSummary.AnalyzeTrack(geoFile);
+        final String percentage = PercentageOfRideWithinSpeedLimitsStatistic.getPercentage(trackSummary, "%.1f");
         Assert.assertEquals("99.9%", percentage);
     }
 

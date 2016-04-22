@@ -56,7 +56,10 @@ public class TrackSummary {
 
 
     public static TrackSummary AnalyzeTrack(final GeoFile geoFile) {
-        return new TrackSummary(geoFile);
+        final TrackSummary trackSummary = new TrackSummary(geoFile);
+        trackSummary.AddMaxSpeedToTrackPoints();
+        trackSummary.AddSpeed();
+        return  trackSummary;
     }
 
     private TrackSummary(final GeoFile geoFile) {
