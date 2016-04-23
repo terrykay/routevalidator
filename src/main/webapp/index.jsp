@@ -352,6 +352,7 @@ $(document).ready(function() {
             var index = closest.index;
             var distancePoint = distancePoints[index];
             distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.dist);
+            if(distanceTooltip._isOpen !== true) distanceTooltip.openOn(map);
         });
 
         map.fitBounds(featureGroup);
