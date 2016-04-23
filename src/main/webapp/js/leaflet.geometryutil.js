@@ -170,6 +170,7 @@ L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
                     mindist = distance;
                     result = ll;
                     result.distance = distance;
+                    result.index = i;
                 }
             }
             return result;
