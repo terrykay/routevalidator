@@ -343,6 +343,9 @@ $(document).ready(function() {
             $("#referrallast").click(function() {setReferral(referralAreas.length - 1); });
         }
         var featureGroup = new L.featureGroup([intended, actual]);
+        featureGroup.on("mousemove", function(e) {
+            console.info("featureGroup mousemove");
+        });
         map.fitBounds(featureGroup);
 
         var setReferral = function(j) { //j is 0-based

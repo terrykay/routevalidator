@@ -11,7 +11,7 @@ public class AverageSpeedMovingStatistic extends StandardStatistic {
 
     private static String getStatistic(TrackSummary trackSummary) {
         final double averageSpeedMoving = trackSummary.MovingAverageSpeed();
-        final String stat = String.format("%.1f", averageSpeedMoving);
+        final String stat = String.format("%.1f", averageSpeedMoving)  + " km/h";
         return stat;
     }
 }
