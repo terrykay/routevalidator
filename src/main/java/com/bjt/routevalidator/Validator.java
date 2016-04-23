@@ -42,9 +42,10 @@ public class Validator {
         final List<List<Coordinate>> pathsRidden = getAllLines(actualGpx.getGpx());
 
         final List<? extends Statistic> intendedStatistics = getIntendedStatistics(intendedGpx.getGpx());
-        final List<? extends Statistic> actualStatistics = getActualStatistics(actualGpx.getGpx());
+        final TrackSummary trackSummary = TrackSummary.AnalyzeTrack(actualGpx.getGpx());
+        final List<? extends Statistic> actualStatistics = getActualStatistics(actualGpx.getGpx(), trackSummary);
 
-        final Result result = new Result(intendedGpx, actualGpx, tolerance, trackUsePreferences, intendedStatistics, actualStatistics);
+        final Result result = new Result(intendedGpx, actualGpx, tolerance, trackUsePreferences, intendedStatistics, actualStatistics, trackSummary);
 
         final List<List<Coordinate>> referralAreas = new ArrayList<>();
         List<Coordinate> currentReferralArea = null;
@@ -79,8 +80,7 @@ public class Validator {
         return result;
     }
 
-    private List<? extends Statistic> getActualStatistics(final GeoFile geoFile) throws FactoryException, TransformException {
-        final TrackSummary trackSummary = TrackSummary.AnalyzeTrack(geoFile);
+    private List<? extends Statistic> getActualStatistics(final GeoFile geoFile, final TrackSummary trackSummary) throws FactoryException, TransformException {
         return Arrays.asList(
             new DistanceStatistic(geoFile, geoHelper),
             new DurationStatistic(geoFile),

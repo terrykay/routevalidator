@@ -1,10 +1,5 @@
 package com.bjt.routevalidator;
 
-import com.bjt.gpxparser.TrackPoint;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +14,7 @@ public class Result {
     private final GpxFile intendedGpx;
     private final GpxFile actualGpx;
     private final int tolerance;
+    private final TrackSummary trackSummary;
     private final List<? extends TrackUsePreference> trackUsePreferences;
     private final List<? extends Statistic> intendedStatistics;
     private final List<? extends Statistic> actualStatistics;
@@ -26,23 +22,27 @@ public class Result {
     private List<String> referralAreas;
 
     public Result() {
-        this(null, null, 200, null, null, null);
+        this(null, null, 200, null, null, null, null);
     }
 
-    public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences, List<? extends Statistic> intendedStatistics, List<? extends Statistic> actualStatistics) {
+    public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences, List<? extends Statistic> intendedStatistics, List<? extends Statistic> actualStatistics, TrackSummary trackSummary) {
         this.intendedGpx = intendedGpx;
         this.actualGpx = actualGpx;
         this.tolerance = tolerance;
+        this.trackSummary = trackSummary;
         if(trackUsePreferences == null) trackUsePreferences = new ArrayList<>();
         this.trackUsePreferences = trackUsePreferences;
         this.intendedStatistics = intendedStatistics;
         this.actualStatistics = actualStatistics;
-
     }
 
     public boolean hasTrackUsePreferences() {
         final boolean b = getTrackUsePreferences().size() > 0;
         return b;
+    }
+
+    public String getAltitudeGraphJson() {
+        return trackSummary.getAltitudeGraphJson();
     }
 
     public boolean isProcessed() {

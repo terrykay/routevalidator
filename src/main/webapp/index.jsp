@@ -23,7 +23,7 @@
     <title>AUK Route Validator</title>
 </head>
 
-<body style="overflow-y:hidden">
+<body>
 <table class="mapcontainer">
 
     <tr class="mapheader">
@@ -204,6 +204,9 @@
                 </table>
                 <div style="clear: both"></div>
             </div>
+            <div id="elevationgraph" style="width: 100%; height: 220px">
+
+            </div>
         </td>
         <% } %>
     </tr>
@@ -236,7 +239,27 @@
 
 
 <% if(result.getIntendedGpx() != null && result.getActualGpx() != null) { %>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 <script type="text/javascript">
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable( <%= result.getAltitudeGraphJson() %> );
+
+        var options = {
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('elevationgraph'));
+
+        chart.draw(data, options);
+      }
+
+
 L.Map.prototype.setCrs = function(newCrs) {
     this.options.crs = newCrs;
 }

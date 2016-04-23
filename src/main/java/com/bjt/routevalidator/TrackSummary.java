@@ -2,9 +2,12 @@ package com.bjt.routevalidator;
 
 import com.bjt.gpxparser.GeoFile;
 import com.bjt.gpxparser.TrackPoint;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.bjt.routevalidator.TerrainType.*;
 import static com.bjt.routevalidator.TerrainType.FLAT;
@@ -13,6 +16,10 @@ import static com.bjt.routevalidator.TerrainType.FLAT;
  * Created by Ben.Taylor on 21/04/2016.
  */
 public class TrackSummary {
+    public List<TrackpointWrapper> getTrkPoints() {
+        return trkPoints;
+    }
+
     private List<TrackpointWrapper> trkPoints;
     private double totalTime;
     private double totalDistance;
@@ -465,5 +472,15 @@ public class TrackSummary {
             return 0;
         }
         return this.totalDistance * 3600 / this.totalTimeMoving;
+    }
+
+    public final String getAltitudeGraphJson() {
+        final List<Object[]> rows = getTrkPoints().stream()
+                .map(t -> new Object[]{t.getDistanceCumulative(), t.getTrackpoint().getElevation()})
+                .collect(Collectors.toList());
+        rows.add(0, new Object[]{"Distance", "Altitude"});
+        final Gson gson = new GsonBuilder().create();
+        final String json = gson.toJson(rows);
+        return json;
     }
 }

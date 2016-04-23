@@ -40,7 +40,7 @@ tr.mapheader>td>div:first-of-type {
 }
 
 table.mapcontainer {
-    height: 100%;
+    height: calc(100% - 1px);
     width: 100%;
     left: 0;
     top: 0;
