@@ -251,7 +251,13 @@
         var data = google.visualization.arrayToDataTable( <%= result.getAltitudeGraphJson() %> );
 
         var options = {
-          legend: { position: 'bottom' }
+          legend: 'none',
+          chartArea: {
+          	left: 20,
+            top: 0,
+            width: '100%',
+            height: 200
+          }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('elevationgraph'));
