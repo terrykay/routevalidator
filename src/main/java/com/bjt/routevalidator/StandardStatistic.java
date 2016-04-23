@@ -1,5 +1,6 @@
 package com.bjt.routevalidator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public abstract class StandardStatistic implements Statistic {
 
     @Override
     public List<TableCell[]> getAcceptanceRows() {
-        return new TableCell[][]{};
+        return new ArrayList<>();
     }
 }
 
