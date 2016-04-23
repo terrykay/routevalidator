@@ -7,5 +7,7 @@ import java.util.List;
  */
 public interface Statistic {
     List<? extends TableCell> getCells();
+
+    List<TableCell[]> getAcceptanceRows();
 }
 

@@ -1,7 +1,10 @@
 package com.bjt.routevalidator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Ben.Taylor on 25/10/2015.
@@ -11,6 +14,12 @@ public class Result {
     public static  final String STATUS_REFER = "REFER";
 
     private String status;
+
+    public void setSpeedLimitStatus(String speedLimitStatus) {
+        this.speedLimitStatus = speedLimitStatus;
+    }
+
+    private String speedLimitStatus;
     private final GpxFile intendedGpx;
     private final GpxFile actualGpx;
     private final int tolerance;
@@ -34,6 +43,11 @@ public class Result {
         this.trackUsePreferences = trackUsePreferences;
         this.intendedStatistics = intendedStatistics;
         this.actualStatistics = actualStatistics;
+    }
+
+    public List<TableCell[]> getAcceptanceRows() {
+        final List<TableCell[]> acceptanceRows = actualStatistics.stream().flatMap(o -> o.getAcceptanceRows().stream()).collect(Collectors.toList());
+        return acceptanceRows;
     }
 
     public boolean hasTrackUsePreferences() {

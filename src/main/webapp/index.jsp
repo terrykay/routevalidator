@@ -105,6 +105,16 @@
                             <td><span>Track adherence:</span></td>
                             <td><span class="result ${result.status}">${result.status}</span>
                         </tr>
+                        <% for (com.bjt.routevalidator.TableCell[] acceptanceRow : result.getAcceptanceRows()) { %>
+                            <tr>
+                                <% for(com.bjt.routevalidator.TableCell cell : acceptanceRow) { %>
+                                     <td colspan="<%= cell.getColSpan() %>">
+                                         <span><%= cell.getContents() %></span>
+                                     </td>
+                                <% } %>
+                            </tr>
+                        <% } %>
+
                         <% if (!result.getReferralAreas().isEmpty()) { %>
                         <tr>
                             <td><span>Referral areas:</span>
@@ -254,7 +264,7 @@
           legend: 'none',
           chartArea: {
           	left: 30,
-            top: 0,
+            top: 10,
             width: '100%',
             height: 200
           }

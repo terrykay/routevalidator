@@ -19,5 +19,10 @@ public abstract class StandardStatistic implements Statistic {
         this.name = name;
         this.value = value;
     }
+
+    @Override
+    public List<TableCell[]> getAcceptanceRows() {
+        return new TableCell[][]{};
+    }
 }
 
