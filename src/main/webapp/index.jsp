@@ -346,7 +346,7 @@ $(document).ready(function() {
         }
         var featureGroup = new L.featureGroup([intended, actual]);
         featureGroup.on("mousemove", function(e) {
-            var closest = L.GeometryUtil.closest(map, actual, e.latLng, true);
+            var closest = L.GeometryUtil.closest(map, actual, e.latlng, true);
             console.info(closest);
         });
         map.fitBounds(featureGroup);
