@@ -253,7 +253,7 @@
         var options = {
           legend: 'none',
           chartArea: {
-          	left: 20,
+          	left: 30,
             top: 0,
             width: '100%',
             height: 200
