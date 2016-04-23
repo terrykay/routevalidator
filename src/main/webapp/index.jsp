@@ -344,7 +344,7 @@ $(document).ready(function() {
             $("#referralnext").click(function() {setReferral(parseInt($("#referralcurrentpage").data("current")) + 1);});
             $("#referrallast").click(function() {setReferral(referralAreas.length - 1); });
         }
-        var distancePoints = <%= result.getDistancePointsJson(); %> ;
+        var distancePoints = <%= result.getDistancePointsJson() %> ;
         var featureGroup = new L.featureGroup([intended, actual]);
         featureGroup.on("mousemove", function(e) {
             var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
