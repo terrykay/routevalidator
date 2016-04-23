@@ -1,5 +1,8 @@
 package com.bjt.routevalidator;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +56,10 @@ public class Result {
     public boolean hasTrackUsePreferences() {
         final boolean b = getTrackUsePreferences().size() > 0;
         return b;
+    }
+
+    public String getDistancePointsJson() {
+        return trackSummary.getDistancePointsJson();
     }
 
     public String getAltitudeGraphJson() {

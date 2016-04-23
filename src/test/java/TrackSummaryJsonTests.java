@@ -10,12 +10,20 @@ import java.io.InputStream;
 /**
  * Created by Ben.Taylor on 23/04/2016.
  */
-public class AltitudeGraphJsonTest {
+public class TrackSummaryJsonTests {
     @Test
     public void outputGraphJson() throws Exception {
         final GeoFile geoFile = getGeoFile("/Acceptable.gpx");
         final TrackSummary trackSummary = TrackSummary.AnalyzeTrack(geoFile);
         final String graphJson = trackSummary.getAltitudeGraphJson();
+        System.out.println(graphJson);
+    }
+
+    @Test
+    public void outputDistancePointsJson() throws Exception {
+        final GeoFile geoFile = getGeoFile("/Acceptable.gpx");
+        final TrackSummary trackSummary = TrackSummary.AnalyzeTrack(geoFile);
+        final String graphJson = trackSummary.getDistancePointsJson();
         System.out.println(graphJson);
     }
 

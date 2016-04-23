@@ -483,4 +483,11 @@ public class TrackSummary {
         final String json = gson.toJson(rows);
         return json;
     }
+
+    public String getDistancePointsJson() {
+        final List<DistancePoint> distancePoints = getTrkPoints().stream().map(tw -> new DistancePoint(tw)).collect(Collectors.toList());
+        final Gson gson = new GsonBuilder().create();
+        final String json = gson.toJson(distancePoints);
+        return json;
+    }
 }
