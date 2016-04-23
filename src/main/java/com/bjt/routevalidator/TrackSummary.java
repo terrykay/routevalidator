@@ -268,22 +268,9 @@ public class TrackSummary {
                 id++;
 
                 item.setSmoothSpeed(smoothSpeed);
-/*
-                point = new Point(num7, height - num2);
-                arrayLists.Add(point);
-*/
-            }
-            else
-            {
-//                point.Y = height - num2;
             }
         }
-/*
-        if (arrayLists.Count > 1)
-        {
-            grfx.DrawLines(pen, (Point[])arrayLists.ToArray(typeof(Point)));
-        }
-*/
+
         final double MAX_SPEED_UP = 24;
         final double MAX_SPEED_FLAT = 44;
         final double MAX_SPEED_DOWN = 68;

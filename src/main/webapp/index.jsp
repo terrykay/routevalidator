@@ -166,7 +166,7 @@
         <% if(isProcessed) { %>
         <td style="vertical-align: top">
             <div id="stats">
-                <table style="float:left">
+                <table style="float:left; max-width: 250px">
                     <thead>
                         <tr>
                             <th colspan="2"><strong>Intended track</strong></th>
@@ -184,7 +184,7 @@
                         <% } %>
                     </tbody>
                 </table>
-                <table style="float:left; margin-left: 20px">
+                <table style="float:left; margin-left: 20px; max-width: 330px">
                     <thead>
                         <tr>
                             <th colspan="2"><strong>Actual track</strong></th>
@@ -257,7 +257,7 @@ $(document).ready(function() {
         });
 
         var openspaceLayer = L.tileLayer.OSOpenSpace("229B0D5190F91C32E0530B6CA40A00BA");
-	openspaceLayer.setOpacity(0.3);
+	    openspaceLayer.setOpacity(0.3);
 
         map.on('baselayerchange', function(layer) {
               var centerPoint = map.getCenter();
