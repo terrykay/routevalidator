@@ -344,7 +344,8 @@ $(document).ready(function() {
         }
         var featureGroup = new L.featureGroup([intended, actual]);
         featureGroup.on("mousemove", function(e) {
-            console.info("featureGroup mousemove");
+            var closestLayerPoint = e.layer.closestLayerPoint(e.layerPoint);
+            console.info(closestLayerPoint);
         });
         map.fitBounds(featureGroup);
 
