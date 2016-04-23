@@ -346,11 +346,16 @@ $(document).ready(function() {
         }
         var distancePoints = <%= result.getDistancePointsJson() %> ;
         var featureGroup = new L.featureGroup([intended, actual]);
+        var distanceTooltip = L.popup();
         featureGroup.on("mousemove", function(e) {
             var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
             var index = closest.index;
             var distancePoint = distancePoints[index];
-            console.info(distancePoint);
+            distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.distance).openOn(map);
+        });
+
+        featureGroup.on("mouseleave", function(e) {
+            console.info("mouseleave");
         });
         map.fitBounds(featureGroup);
 
