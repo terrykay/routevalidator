@@ -39,7 +39,7 @@ public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatisti
     public List<TableCell[]> getAcceptanceRows() {
         final String speedLimitCompliance = proportionOk < 0.99 ? Result.STATUS_REFER : Result.STATUS_ACCEPT;
         final TableCell[][] tableCells = {
-                new TableCell[]{new TableCell(1, "Speed Limit Compliance"), new TableCell(1, speedLimitCompliance)}
+                new TableCell[]{new TableCell(1, "Speed Limit Compliance"), new TableCell(1, speedLimitCompliance, speedLimitCompliance)}
         };
         return Arrays.asList(tableCells);
     }

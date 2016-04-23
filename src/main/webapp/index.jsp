@@ -108,7 +108,7 @@
                         <% for (com.bjt.routevalidator.TableCell[] acceptanceRow : result.getAcceptanceRows()) { %>
                             <tr>
                                 <% for(com.bjt.routevalidator.TableCell cell : acceptanceRow) { %>
-                                     <td colspan="<%= cell.getColSpan() %>">
+                                     <td colspan="<%= cell.getColSpan() %>" class="<%= cell.getClasses() %>">
                                          <span><%= cell.getContents() %></span>
                                      </td>
                                 <% } %>
