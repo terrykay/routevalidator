@@ -227,11 +227,13 @@
 <script type="text/javascript" src="js/bootstrap-slider.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
 <script type="text/javascript" src="leaflet/leaflet-src.js"></script>
+<script type="text/javascript" src="js/leaflet.geometryutil.js"></script>
 <script type="text/javascript" src="js/proj4-compressed.js"></script>
 <script type="text/javascript" src="js/proj4leaflet.js"></script>
 <script type="text/javascript" src="js/OSOpenSpace.js"></script>
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
+
 
 <%
     String errorMessage = (String)request.getSession().getAttribute("FriendlyErrorMessage");
@@ -344,8 +346,8 @@ $(document).ready(function() {
         }
         var featureGroup = new L.featureGroup([intended, actual]);
         featureGroup.on("mousemove", function(e) {
-            var closestLayerPoint = e.layer.closestLayerPoint(e.layerPoint);
-            console.info(closestLayerPoint);
+            var closest = L.GeometryUtil.closest(map, actual, e.latLng, true);
+            console.info(closest);
         });
         map.fitBounds(featureGroup);
 
