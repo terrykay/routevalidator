@@ -351,12 +351,9 @@ $(document).ready(function() {
             var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
             var index = closest.index;
             var distancePoint = distancePoints[index];
-            distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.distance).openOn(map);
+            distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.dist);
         });
 
-        featureGroup.on("mouseleave", function(e) {
-            console.info("mouseleave");
-        });
         map.fitBounds(featureGroup);
 
         var setReferral = function(j) { //j is 0-based
