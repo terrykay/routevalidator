@@ -301,6 +301,8 @@ L.Map.prototype.setCrs = function(newCrs) {
 }
 
 $(document).ready(function() {
+
+
         var map = L.map("map", {
             continuousWorld: true,
             worldCopyJump: false,
@@ -391,6 +393,8 @@ $(document).ready(function() {
         $("input[type=checkbox]").on("change", function() {
             $("#recalculate").show().css("visibility", "visible");
         });
+
+        new Clipboard("button");
 });
 </script>
 <% } %>
