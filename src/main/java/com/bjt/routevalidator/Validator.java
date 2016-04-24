@@ -34,9 +34,9 @@ public class Validator {
         }
 
         final List<String> trackUsePreferenceNames = Arrays.asList(trackUsePreferences.stream().map(o -> o.getTrackName()).toArray(value -> new String[value]));
-        Logger.getLogger(Validator.class.getName()).info("Before prune = actual contains " + actualGpx.getGpx().getTracks().size());
+        Logger.getLogger(Validator.class.getName()).info("Before prune = actual contains " + actualGpx.getGpx().getTracks().size() + " - using \"" + trackUsePreferenceNames.get(0) + "\"");
         actualGpx.getGpx().pruneTracks(trackUsePreferenceNames);
-        Logger.getLogger(Validator.class.getName()).info("After prune = actual contains " + actualGpx.getGpx().getTracks().size());
+        Logger.getLogger(Validator.class.getName()).info("After prune = actual contains " + actualGpx.getGpx().getTracks().size() + " - \"" + actualGpx.getGpx().getTracks().get(0).getName() + "\"");
 
         //intended:
         final List<? extends Coordinate> controls = GeoHelper.getAllPointsAsCoordinates(intendedGpx.getGpx());
