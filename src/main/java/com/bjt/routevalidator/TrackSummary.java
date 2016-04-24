@@ -4,6 +4,7 @@ import com.bjt.gpxparser.GeoFile;
 import com.bjt.gpxparser.TrackPoint;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.joda.time.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class TrackSummary {
     }
 
     private List<TrackpointWrapper> trkPoints;
-    private double totalTime;
+    private long totalTime;
     private double totalDistance;
 
     private int distanceDeltaOver150m;

@@ -2,6 +2,7 @@ package com.bjt.routevalidator;
 
 import com.bjt.gpxparser.TrackPoint;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 /**
  * Created by Ben.Taylor on 19/04/2016.
@@ -12,10 +13,10 @@ public class TrackpointWrapper  {
     private double altitudeDelta;
     private double distanceDelta;
     private TerrainType terrain;
-    private double timeDelta;
+    private long timeDelta;
     private double distanceCumulative;
     private double smoothSpeed;
-    private double timeCumulative;
+    private long timeCumulative;
 
     public TrackpointWrapper(final TrackPoint trackPoint) {
         this.trackPoint = trackPoint;
@@ -62,7 +63,7 @@ public class TrackpointWrapper  {
         return dateTime;
     }
 
-    public void setTimeDelta(double timeDelta) {
+    public void setTimeDelta(long timeDelta) {
         this.timeDelta = timeDelta;
     }
 
@@ -96,11 +97,16 @@ public class TrackpointWrapper  {
         return smoothSpeed;
     }
 
-    public void setTimeCumulative(double timeCumulative) {
+    public void setTimeCumulative(long timeCumulative) {
         this.timeCumulative = timeCumulative;
     }
 
-    public double getTimeDelta() {
+    public Duration getTimeCumulative() {
+        final Duration duration = Duration.standardSeconds(timeCumulative);
+        return duration;
+    }
+
+    public long getTimeDelta() {
         return timeDelta;
     }
 }

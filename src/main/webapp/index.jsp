@@ -351,7 +351,7 @@ $(document).ready(function() {
             var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
             var index = closest.index;
             var distancePoint = distancePoints[index];
-            distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.dist);
+            distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.label);
             if(distanceTooltip._isOpen !== true) distanceTooltip.openOn(map);
         });
 
