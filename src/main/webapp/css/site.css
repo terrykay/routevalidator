@@ -64,6 +64,11 @@ div#stats table th, div#stats table td {
     padding: 0 15px 10px 15px
 }
 
+
+#actualstats td button {
+    white-space: normal;
+}
+
 td.mapcontainer {
     display:table-cell;
     vertical-align: middle;

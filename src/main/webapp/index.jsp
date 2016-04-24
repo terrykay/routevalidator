@@ -193,13 +193,13 @@
                             </tr>
                         <% } %>
                         <tr>
-                            <td><button class="btn btn-primary" id="showintendedonly">Show Stats for Intended GPX only</button></td>
+                            <td colspan="2"><button class="btn btn-primary" id="showintendedonly">Show Stats for Intended GPX only</button></td>
                         </tr>
                         <tr>
-                            <td><button class="btn btn-primary" data-clipboard-target="#actualstats">Copy Stats to clipboard</button></td>
+                            <td colspan="2"><button class="btn btn-primary" data-clipboard-target="#actualstats">Copy Stats to clipboard</button></td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-primary" href="mailto:steve.snook@tiscali.co.uk?subject=AAA Validation for DIY">Refer to AAA</button></td>
+                            <td colspan="2"><a class="btn btn-primary" href="mailto:steve.snook@tiscali.co.uk?subject=AAA Validation for DIY">Refer to AAA</button></td>
                         </tr>
                     </tbody>
                 </table>
