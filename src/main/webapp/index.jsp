@@ -282,6 +282,13 @@ $(document).on("click", "#showintendedonly", function() {
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
+//get ideal height for chart:
+        var statsBottom = $("div#stats").position().top + $("div#stats").outerHeight(true)
+        var idealHeight = $(document).height() - statsBottom;
+        if(idealHeight < 100) idealHeight = 100;
+        if(idealHeight > 250) idealHeight = 250;
+        $("#elevationgraph").css("height", idealHeight + "px");
+
       function drawChart() {
         var data = google.visualization.arrayToDataTable( <%= result.getAltitudeGraphJson() %> );
 
@@ -291,7 +298,7 @@ $(document).on("click", "#showintendedonly", function() {
           	left: 30,
             top: 10,
             width: '100%',
-            height: 180
+            height: idealHeight
           }
         };
 
