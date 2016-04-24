@@ -268,7 +268,7 @@
 %>
 
 
-<% if(result.getIntendedGpx() != null && result.getActualGpx() != null) { %>
+<% if(result.getIntendedGpx() != null && result.getActualGpx() != null && result.getActualGpx().getGpx().getTracks().size() > 0) { %>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
