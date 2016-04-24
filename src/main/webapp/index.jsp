@@ -299,7 +299,7 @@ $(document).on("click", "#showintendedonly", function() {
           	left: 30,
             top: 10,
             width: '100%',
-            height: (idealHeight - 10)
+            height: (idealHeight - 20)
           }
         };
 
