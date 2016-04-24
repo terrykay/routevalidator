@@ -400,7 +400,7 @@ $(document).ready(function() {
         });
 
         var $el = $("#copybutton"),
-                clipboard = new Clipboard(el),
+                clipboard = new Clipboard("#copybutton"),
                 instance = $el
                     .tooltipster({
                         content: $el.attr('data-copy'),
