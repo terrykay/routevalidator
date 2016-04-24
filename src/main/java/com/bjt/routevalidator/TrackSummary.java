@@ -280,9 +280,6 @@ public class TrackSummary {
             }
         }
 
-        final double MAX_SPEED_UP = 24;
-        final double MAX_SPEED_FLAT = 44;
-        final double MAX_SPEED_DOWN = 68;
         TerrainType terrainType = UNDECIDED;
         TrackpointWrapper trackPoint = trkPoints.get(0);
         for (int j = 1; j < trkPoints.size(); j++)
@@ -321,32 +318,41 @@ public class TrackSummary {
         for (int k = 0; k < trkPoints.size(); k++)
         {
             TrackpointWrapper trackPoint1 = trkPoints.get(k);
-            double mAXSPEEDFLAT = MAX_SPEED_FLAT;
-            switch (trackPoint1.getTerrain())
-            {
-                case UP:
-                {
-                    mAXSPEEDFLAT = MAX_SPEED_UP;
-                    break;
-                }
-                case DOWN:
-                {
-                    mAXSPEEDFLAT = MAX_SPEED_DOWN;
-                    break;
-                }
-                default:
-                {
-                    mAXSPEEDFLAT = MAX_SPEED_FLAT;
-                    break;
-                }
-            }
-            if (trackPoint1.getSmoothSpeed() > mAXSPEEDFLAT)
+            double maxSpeedForTerrain = getMaxSpeedForTerrain(trackPoint1.getTerrain());
+            if (trackPoint1.getSmoothSpeed() > maxSpeedForTerrain)
             {
                 num11++;
             }
         }
 
         proportionOk = ((double)(trkPoints.size() - num11)) / trkPoints.size();
+    }
+
+    public double getMaxSpeedForTerrain(TerrainType terrain) {
+        double mAXSPEEDFLAT;
+        final double MAX_SPEED_UP = 24;
+        final double MAX_SPEED_FLAT = 44;
+        final double MAX_SPEED_DOWN = 68;
+
+        switch (terrain)
+        {
+            case UP:
+            {
+                mAXSPEEDFLAT = MAX_SPEED_UP;
+                break;
+            }
+            case DOWN:
+            {
+                mAXSPEEDFLAT = MAX_SPEED_DOWN;
+                break;
+            }
+            default:
+            {
+                mAXSPEEDFLAT = MAX_SPEED_FLAT;
+                break;
+            }
+        }
+        return mAXSPEEDFLAT;
     }
 
 
@@ -494,6 +500,21 @@ public class TrackSummary {
     }
 
     public void writeWorkings(PrintWriter writer) {
-        writer.println("Workings!");
+        writer.println("Latitude,Longitude,Time,Altitude,Distance,SmoothSpeed,Terrain,MaxSpeedForTerrain,WithinSpeedLimit");
+        for (final TrackpointWrapper tw : this.trkPoints) {
+            final double maxSpeedForTerrain = getMaxSpeedForTerrain(tw.getTerrain());
+            final String line = String.format("%.4f,%.4f,%s,%.4f,%.3f,%.2f,%s,%.2f,%s",
+                    tw.getTrackpoint().getLat(),
+                    tw.getTrackpoint().getLon(),
+                    tw.getDateTime().toString("dd/MM/yyyy HH:mm:ss"),
+                    tw.getTrackpoint().getElevation(),
+                    tw.getDistanceCumulative(),
+                    tw.getSmoothSpeed(),
+                    tw.getTerrain(),
+                    maxSpeedForTerrain,
+                    (tw.getSmoothSpeed() <= maxSpeedForTerrain ? "Yes" : "No")
+            );
+            writer.println(line);
+        }
     }
 }

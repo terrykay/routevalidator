@@ -9,6 +9,12 @@
         <servlet-name>ReValidateServlet</servlet-name>
         <servlet-class>com.bjt.routevalidator.ReValidateServlet</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>DownloadWorkings</servlet-name>
+        <servlet-class>com.bjt.routevalidator.DownloadWorkingsServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>ReValidateServlet</servlet-name>
         <url-pattern>/revalidate</url-pattern>
@@ -17,6 +23,12 @@
         <servlet-name>ValidateServlet</servlet-name>
         <url-pattern>/validate</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DownloadWorkings</servlet-name>
+        <url-pattern>/downloadworkings</url-pattern>
+    </servlet-mapping>
+
     <context-param>
         <param-name>ClimbingServerUrl</param-name>
         <param-value>http://52.25.237.100:8080/hdsrvgatewayjson/climbdata</param-value>

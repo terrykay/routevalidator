@@ -205,6 +205,9 @@
                         <tr>
                             <td colspan="2"><a class="btn btn-primary" href="mailto:steve.snook@tiscali.co.uk?subject=AAA Validation for DIY">Refer to AAA</button></td>
                         </tr>
+                        <tr>
+                            <td colspan="2"><a href="/downloadworkings" target="blank">Download workings</a></td>
+                        </tr>
                     </tbody>
                 </table>
                 <table style="float:left; margin-left: 20px; max-width: 330px" id="actualstats">
