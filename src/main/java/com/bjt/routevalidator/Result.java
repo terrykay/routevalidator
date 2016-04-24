@@ -26,6 +26,11 @@ public class Result {
     private final GpxFile intendedGpx;
     private final GpxFile actualGpx;
     private final int tolerance;
+
+    public TrackSummary getTrackSummary() {
+        return trackSummary;
+    }
+
     private final TrackSummary trackSummary;
     private final List<? extends TrackUsePreference> trackUsePreferences;
     private final List<? extends Statistic> intendedStatistics;

@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.joda.time.Duration;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -490,5 +491,9 @@ public class TrackSummary {
         final Gson gson = new GsonBuilder().create();
         final String json = gson.toJson(distancePoints);
         return json;
+    }
+
+    public void writeWorkings(PrintWriter writer) {
+        writer.println("Workings!");
     }
 }
