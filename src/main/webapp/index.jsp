@@ -287,7 +287,7 @@ $(document).on("click", "#showintendedonly", function() {
         var data = google.visualization.arrayToDataTable( <%= result.getAltitudeGraphJson() %> );
     //get ideal height for chart:
             var idealHeight = $(document).innerHeight() - $("#elevationgraph").position().top - 2;
-            console.info("docheight = " + $(window).innerHeight());
+            console.info("docheight = " + $(window).innerHeight() + ", elevationgraphpositiontop = " + $("#elevationgraph").position().top);
             console.info("idealHeight = " + idealHeight);
             if(idealHeight < 100) idealHeight = 100;
             if(idealHeight > 250) idealHeight = 250;
