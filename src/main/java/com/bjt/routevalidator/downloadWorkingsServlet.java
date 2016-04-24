@@ -17,7 +17,9 @@ public class DownloadWorkingsServlet extends HttpServlet {
             resp.setContentType("text/csv");
             resp.setHeader("Content-Disposition", "attachment;filename=workings.csv");
             lastResult.getTrackSummary().writeWorkings(resp.getWriter());
+            resp.setStatus(200);
+        } else {
+            resp.sendError(404);
         }
-
     }
 }
