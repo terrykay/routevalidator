@@ -246,8 +246,8 @@
 <script type="text/javascript" src="js/OSOpenSpace.js"></script>
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
-<script type="text/javascript" src="js/clipboard.js"></script>
-<script type="text/javascript" src="js/jquery.tooltipster.js"></script>
+<script type="text/javascript" src="js/clipboard.min.js"></script>
+<script type="text/javascript" src="js/jquery.tooltipster.min.js"></script>
 
 
 <%
@@ -406,7 +406,8 @@ $(document).ready(function() {
                         content: $el.attr('data-copy'),
                         trigger: 'custom',
                         triggerClose: { mouseleave: true },
-                        triggerOpen: { hover: true }
+                        triggerOpen: { hover: true },
+                        position: 'right'
                     });
         var instance = tt.tooltipster('instance');
 
@@ -417,6 +418,7 @@ $(document).ready(function() {
                         .one('after', function(){
                             instance.content($el.attr('data-copy'));
                         });
+                    window.getSelection().removeAllRanges();
                 })
                 .on('error', function(e) {
                     instance
