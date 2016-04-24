@@ -64,9 +64,26 @@ div#stats table th, div#stats table td {
     padding: 0 15px 10px 15px
 }
 
+#intendedstats, #actualstats {
+    float: left;
+}
 
-#stats table td button {
+#intendedstats {
+    max-width: 200px;
+}
+
+#actualstats td:first-of-type {
+    max-width: 200px;
+}
+
+#actualstats {
+    margin-left: 20px;
+    max-width: 365px;
+}
+
+#stats table td button, #stats table td a {
     white-space: normal;
+    width: 100%;
 }
 
 td.mapcontainer {

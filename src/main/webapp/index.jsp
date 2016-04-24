@@ -176,7 +176,7 @@
         <% if(isProcessed) { %>
         <td style="vertical-align: top">
             <div id="stats">
-                <table style="float:left; max-width: 250px">
+                <table id="intendedstats">
                     <thead>
                         <tr>
                             <th colspan="2"><strong>Intended track</strong></th>
@@ -242,7 +242,7 @@
 <script type="text/javascript" src="js/OSOpenSpace.js"></script>
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
-<script type="text/javascript" src="js/clipboard.min.js"></script>
+<script type="text/javascript" src="js/clipboard.js"></script>
 
 
 <%
@@ -267,7 +267,11 @@
 <script type="text/javascript">
 
 $(document).on("click", "#showintendedonly", function() {
-    $("#actualstats").toggle();
+    if($("#actualstats").css("visibility") == "visible") {
+       	$("#actualstats").css("visibility", "hidden");
+    } else {
+       $("#actualstats").css("visibility", "visible");
+    }
 });
 
       google.charts.load('current', {'packages':['corechart']});
