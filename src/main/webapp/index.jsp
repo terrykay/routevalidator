@@ -247,7 +247,7 @@
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
 <script type="text/javascript" src="js/clipboard.min.js"></script>
-<script type="text/javascript" src="js/jquery.tooltipster.min.js"></script>
+<script type="text/javascript" src="js/jquery.tooltipster.js"></script>
 
 
 <%
