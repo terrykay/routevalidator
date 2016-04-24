@@ -196,7 +196,10 @@
                             <td colspan="2"><button class="btn btn-primary" id="showintendedonly">Show Stats for Intended GPX only</button></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><button class="btn btn-primary" data-clipboard-target="#actualstats">Copy Stats to clipboard</button></td>
+                            <td colspan="2"><button class="btn btn-primary" id="copybutton"
+                                data-copy="Copy stats to clipboard"
+                                data-copied="Copied!"
+                                data-clipboard-target="#actualstats">Copy Stats to clipboard</button></td>
                         </tr>
                         <tr>
                             <td colspan="2"><a class="btn btn-primary" href="mailto:steve.snook@tiscali.co.uk?subject=AAA Validation for DIY">Refer to AAA</button></td>
@@ -394,7 +397,32 @@ $(document).ready(function() {
             $("#recalculate").show().css("visibility", "visible");
         });
 
-        new Clipboard("button");
+        var $el = $("#copybutton"),
+                clipboard = new Clipboard(el),
+                instance = $el
+                    .tooltipster({
+                        content: $el.attr('data-copy'),
+                        trigger: 'custom',
+                        triggerClose: { mouseleave: true },
+                        triggerOpen: { hover: true }
+                    })
+                    .tooltipster('instance');
+
+            clipboard
+                .on('success', function(e) {
+                    instance
+                        .content($el.attr('data-copied'))
+                        .one('after', function(){
+                            instance.content($el.attr('data-copy'));
+                        });
+                })
+                .on('error', function(e) {
+                    instance
+                        .content($el.attr('data-copyerror'))
+                        .one('after', function(){
+                            instance.content($el.attr('data-copy'));
+                        });
+                });
 });
 </script>
 <% } %>
