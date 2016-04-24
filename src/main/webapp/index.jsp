@@ -291,7 +291,7 @@ $(document).on("click", "#showintendedonly", function() {
           	left: 30,
             top: 10,
             width: '100%',
-            height: 200
+            height: 180
           }
         };
 
