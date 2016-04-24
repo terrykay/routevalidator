@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -63,9 +64,11 @@ public class ValidateServlet extends HttpServlet {
                 }
             }
             if (intendedGpxFile == null || actualGpxFile == null) {
-                ErrorHandler.handleError("Both intended and actual gpx files must be uploaded.", null, req, resp);
+
+                logger.log(Level.SEVERE, "Both intended and actual gpx files must be uploaded.", (Exception) null);
             } else if (tolerance == null) {
-                ErrorHandler.handleError("Tolerance must be specified.", null, req, resp);
+
+                logger.log(Level.SEVERE, "Tolerance must be specified.", (Exception) null);
             } else {
                 final Validator validator = new Validator(getServletContext());
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());

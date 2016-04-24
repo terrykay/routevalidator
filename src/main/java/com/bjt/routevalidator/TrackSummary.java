@@ -62,8 +62,10 @@ public class TrackSummary {
 
     public static TrackSummary AnalyzeTrack(final GeoFile geoFile) {
         final TrackSummary trackSummary = new TrackSummary(geoFile);
-        trackSummary.AddMaxSpeedToTrackPoints();
-        trackSummary.AddSpeed();
+        if(trackSummary.trkPoints.size() > 0) {
+            trackSummary.AddMaxSpeedToTrackPoints();
+            trackSummary.AddSpeed();
+        }
         return  trackSummary;
     }
 
@@ -186,8 +188,6 @@ public class TrackSummary {
         return proportionOk;
     }
 
-    private static int nextid = 1;
-    private static int id;
     public void AddSpeed() {
         final int bmpHeight = 180;
         int height = bmpHeight;
@@ -274,7 +274,6 @@ public class TrackSummary {
                     num8++;
                 }
                 final double smoothSpeed = (double) num2 * (num1 / (double) height);
-                id++;
 
                 item.setSmoothSpeed(smoothSpeed);
             }
