@@ -20,6 +20,7 @@
     <link href="css/bootstrap-slider.min.css" type="text/css" rel="stylesheet"/>
     <link href="css/site.css" type="text/css" rel="stylesheet"/>
     <link href="css/jquery.jgrowl.min.css" type="text/css" rel="stylesheet"/>
+    <link href="css/tooltipster.css" type="text/css" rel="stylesheet"/>
     <title>AUK Route Validator</title>
 </head>
 
@@ -246,6 +247,7 @@
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
 <script type="text/javascript" src="js/clipboard.js"></script>
+<script type="text/javascript" src="js/jquery.tooltipster.min.js"></script>
 
 
 <%
