@@ -287,8 +287,6 @@ $(document).on("click", "#showintendedonly", function() {
         var data = google.visualization.arrayToDataTable( <%= result.getAltitudeGraphJson() %> );
     //get ideal height for chart:
             var idealHeight = $(window).innerHeight() - $("#elevationgraph").position().top - 10;
-            console.info("docheight = " + $(window).innerHeight() + ", elevationgraphpositiontop = " + $("#elevationgraph").position().top);
-            console.info("idealHeight = " + idealHeight);
             if(idealHeight < 100) idealHeight = 100;
             if(idealHeight > 250) idealHeight = 250;
             $("#elevationgraph").css("height", idealHeight + "px");
@@ -407,7 +405,6 @@ $(document).ready(function() {
             $("#recalculate").show().css("visibility", "visible");
         });
 
-        console.info("doing clipboard");
         var $el = $("#copybutton");
         var clipboard = new Clipboard("#copybutton");
         var tt = instance = $el.tooltipster({
