@@ -192,9 +192,18 @@
                                 <% } %>
                             </tr>
                         <% } %>
+                        <tr>
+                            <td><button class="btn btn-primary" id="showintendedonly">Show Stats for Intended GPX only</button></td>
+                        </tr>
+                        <tr>
+                            <td><button class="btn btn-primary" data-clipboard-target="#actualstats">Copy Stats to clipboard</button></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-primary" href="mailto:steve.snook@tiscali.co.uk?subject=AAA Validation for DIY">Refer to AAA</button></td>
+                        </tr>
                     </tbody>
                 </table>
-                <table style="float:left; margin-left: 20px; max-width: 330px">
+                <table style="float:left; margin-left: 20px; max-width: 330px" id="actualstats">
                     <thead>
                         <tr>
                             <th colspan="2"><strong>Actual track</strong></th>
@@ -233,6 +242,7 @@
 <script type="text/javascript" src="js/OSOpenSpace.js"></script>
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
+<script type="text/javascript" src="js/clipboard.min.js"></script>
 
 
 <%
@@ -255,6 +265,10 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
+
+$(document).on("click", "#showintendedonly", function() {
+    $("#actualstats").toggle();
+});
 
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);

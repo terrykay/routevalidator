@@ -9,7 +9,7 @@ public class DistancePoint {
     private double lng;
 
     public DistancePoint(final TrackpointWrapper trackpointWrapper) {
-        label = String.format( "%.1f km\n%s (%s)",
+        label = String.format( "%.1f km @ %s (%s)",
                 trackpointWrapper.getDistanceCumulative(),
                 trackpointWrapper.getDateTime().toString("h:mm a").toLowerCase(),
                 DurationStatistic.getDurationString(trackpointWrapper.getTimeCumulative().toPeriod())
