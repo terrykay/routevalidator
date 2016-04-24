@@ -44,7 +44,6 @@ public class ReValidateServlet extends HttpServlet {
             final boolean checked = "on".equalsIgnoreCase(req.getParameter("trackusepreference_checked_" + i.toString()));
             final TrackUsePreference trackUsePreference = new TrackUsePreference(trackName, checked);
             trackUsePreferences.add(trackUsePreference);
-            Logger.getAnonymousLogger().info(String.format("%d: track name: %s, checked: %b", i, trackName, checked));
             i++;
         }
 
