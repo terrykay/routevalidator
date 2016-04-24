@@ -247,7 +247,7 @@
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
 <script type="text/javascript" src="js/clipboard.js"></script>
-<script type="text/javascript" src="js/jquery.tooltipster.min.js"></script>
+<script type="text/javascript" src="js/jquery.tooltipster.js"></script>
 
 
 <%
@@ -399,16 +399,16 @@ $(document).ready(function() {
             $("#recalculate").show().css("visibility", "visible");
         });
 
-        var $el = $("#copybutton"),
-                clipboard = new Clipboard("#copybutton"),
-                instance = $el
-                    .tooltipster({
+        console.info("doing clipboard");
+        var $el = $("#copybutton");
+        var clipboard = new Clipboard("#copybutton");
+        var tt = instance = $el.tooltipster({
                         content: $el.attr('data-copy'),
                         trigger: 'custom',
                         triggerClose: { mouseleave: true },
                         triggerOpen: { hover: true }
-                    })
-                    .tooltipster('instance');
+                    });
+        var instance = tt.tooltipster('instance');
 
             clipboard
                 .on('success', function(e) {
