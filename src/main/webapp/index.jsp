@@ -284,7 +284,10 @@ $(document).on("click", "#showintendedonly", function() {
 
 //get ideal height for chart:
         var statsBottom = $("div#stats").position().top + $("div#stats").outerHeight(true)
+        console.info("statsBottom = " + statsBottom);
         var idealHeight = $(document).height() - statsBottom;
+        console.info("docheight = " + $(document).height());
+        console.info("idealHeight = " + idealHeight);
         if(idealHeight < 100) idealHeight = 100;
         if(idealHeight > 250) idealHeight = 250;
         $("#elevationgraph").css("height", idealHeight + "px");
