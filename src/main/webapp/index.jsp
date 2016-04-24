@@ -206,7 +206,7 @@
                             <td colspan="2"><a class="btn btn-primary" href="mailto:steve.snook@tiscali.co.uk?subject=AAA Validation for DIY">Refer to AAA</button></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><a href="/downloadworkings" target="blank" data-tooltip="Might not contain the same number of rows as trackpoints due to the way ValidateGPX's algorithm works.">Download workings</a></td>
+                            <td colspan="2"><a href="/downloadworkings" target="blank" title="Might not contain the same number of rows as trackpoints due to the way ValidateGPX's algorithm works.">Download workings</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -436,7 +436,7 @@ $(document).ready(function() {
                         });
                 });
 
-        $("*[data-tooltip]").tooltipster();
+        $("a[title]").tooltipster();
 });
 </script>
 <% } %>
