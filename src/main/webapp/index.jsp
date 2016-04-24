@@ -282,7 +282,7 @@ $(document).on("click", "#showintendedonly", function() {
     }
 });
 
-<% if(result.getActualGpx().getGpx().getTracks().size() > 0) %>
+<% if(result.getActualGpx().getGpx().getTracks().size() > 0) { %>
 
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
