@@ -268,7 +268,7 @@
 %>
 
 
-<% if(result.getIntendedGpx() != null && result.getActualGpx() != null && result.getActualGpx().getGpx().getTracks().size() > 0) { %>
+<% if(result.getIntendedGpx() != null && result.getActualGpx() != null ) { %>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -281,6 +281,8 @@ $(document).on("click", "#showintendedonly", function() {
        $("#actualstats").css("visibility", "visible");
     }
 });
+
+<% if(result.getActualGpx().getGpx().getTracks().size() > 0) %>
 
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
@@ -308,7 +310,7 @@ $(document).on("click", "#showintendedonly", function() {
 
         chart.draw(data, options);
       }
-
+<% } %>
 
 L.Map.prototype.setCrs = function(newCrs) {
     this.options.crs = newCrs;
