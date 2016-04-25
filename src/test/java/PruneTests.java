@@ -31,6 +31,21 @@ public class PruneTests {
         Assert.assertEquals(0, geoFile.getTracks().size());
     }
 
+    @Test
+    public void reEnable() throws Exception {
+        final GeoFile geoFile = getGeoFile("/Driving.gpx");
+
+        geoFile.pruneTracks(Arrays.asList("Current Track: 20 APR 2016 16:05"));
+        Assert.assertEquals(1, geoFile.getTracks().size());
+
+        geoFile.pruneTracks(new ArrayList<>());
+        Assert.assertEquals(0, geoFile.getTracks().size());
+
+        //check it comes back:
+        geoFile.pruneTracks(Arrays.asList("Current Track: 20 APR 2016 16:05"));
+        Assert.assertEquals(1, geoFile.getTracks().size());
+    }
+
     private GeoFile getGeoFile(String name) throws Exception {
         final InputStream inputStream = getClass().getResourceAsStream(name);
         final GeoFileParser gpxparser = new GeoFileParser();
