@@ -2,6 +2,9 @@ package com.bjt.routevalidator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import jdk.nashorn.internal.runtime.URIUtils;
+import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.util.URIUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -141,14 +144,14 @@ public class Result {
         this.isUrlLoaded = isUrlLoaded;
     }
 
-    public String getMailtoHref() throws UnsupportedEncodingException {
-        String href = "mailto:steve.snook@tiscali.co.uk?subject=" + URLEncoder.encode("AAA Validation for DIY", "UTF-8");
+    public String getMailtoHref() throws URIException {
+        String href = "mailto:steve.snook@tiscali.co.uk?subject=" + URIUtil.encodeQuery("AAA Validation for DIY");
         if(isUrlLoaded) {
             final String comparisonUrl = "http://routevalidator.com/validate?intended=" + getIntendedGpx().getFileName() + "&actual=" + getActualGpx().getFileName() + "&tolerance=" + getTolerance();
             final String extraMessage = "Intended: " + getIntendedGpx().getFileName() + "\r\n" +
                     "Actual: " + getActualGpx().getFileName() + "\r\n" +
                     "Comparison: " + comparisonUrl;
-            href += "&body=" + URLEncoder.encode(extraMessage, "UTF-8");
+            href += "&body=" + URIUtil.encodeQuery(extraMessage);
         }
         return href;
     }

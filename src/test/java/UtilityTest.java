@@ -1,4 +1,6 @@
 import com.bjt.routevalidator.Utility;
+import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.util.URIUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,8 +22,7 @@ public class UtilityTest {
     }
 
     @Test
-    public void encodeMailto() throws UnsupportedEncodingException {
-        final String ascii = "mailto:steve.snook@tiscali.co.uk?subject=" + URLEncoder.encode("AAA Validation for DIY", "UTF-8");
-        System.out.println(ascii);
+    public void encodeMailto() throws UnsupportedEncodingException, URIException {
+        System.out.println(URIUtil.encodeQuery("AAA Validation for DIY"));
     }
 }

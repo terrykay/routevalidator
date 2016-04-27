@@ -42,7 +42,7 @@
                             <%  if (!isProcessed) { %>
                                 <td><input class="filestyle" type="file" name="intended"/></td>
                             <% } else { %>
-                                <td style="color: <%= intendedColour %>">${result.intendedGpx.fileName}</td>
+                                <td style="color: <%= intendedColour %>"><%= result.intendedGpx.getShortFileName() %></td>
                             <% } %>
                         </tr>
                         <tr>
@@ -50,7 +50,7 @@
                             <% if (!isProcessed) { %>
                                 <td><input class="filestyle" type="file" name="actual" accept=".gpx,.tcx"/></td>
                             <% } else { %>
-                                <td style="color: <%= actualColour %>">${result.actualGpx.fileName}</td>
+                                <td style="color: <%= actualColour %>"><%= result.actualGpx.getShortFileName() %></td>
                             <% } %>
                         </tr>
                         <% if (result.hasTrackUsePreferences()) { %>

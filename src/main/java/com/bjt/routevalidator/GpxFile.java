@@ -21,6 +21,10 @@ public class GpxFile {
         return fileName;
     }
 
+    public String getShortFileName() {
+        return Utility.urlToShortFileName(fileName);
+    }
+
     public GeoFile getGpx() {
         return gpx;
     }
