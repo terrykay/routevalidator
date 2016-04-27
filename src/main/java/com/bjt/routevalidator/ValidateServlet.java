@@ -61,7 +61,7 @@ public class ValidateServlet extends HttpServlet {
             }
         }catch(final Exception ex) {
             logger.throwing(ValidateServlet.class.getName(), "doGet", ex);
-
+            ex.printStackTrace(resp.getWriter());
         }
     }
 
