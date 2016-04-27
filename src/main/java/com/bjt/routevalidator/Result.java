@@ -38,8 +38,10 @@ public class Result {
     private String toleranceString;
     private List<String> referralAreas;
 
+    public static final int DEFAULT_TOLERANCE = 200;
+
     public Result() {
-        this(null, null, 200, null, null, null, null);
+        this(null, null, DEFAULT_TOLERANCE, null, null, null, null);
     }
 
     public Result(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences, List<? extends Statistic> intendedStatistics, List<? extends Statistic> actualStatistics, TrackSummary trackSummary) {

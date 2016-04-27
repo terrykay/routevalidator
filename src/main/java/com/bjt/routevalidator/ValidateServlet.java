@@ -5,6 +5,11 @@ import com.bjt.gpxparser.GeoFileParser;
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +27,42 @@ import java.util.logging.Logger;
  */
 public class ValidateServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(ValidateServlet.class.getName());
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            final String actual = req.getParameter("actual");
+            final String intended = req.getParameter("intended");
+            if (actual == null || actual.isEmpty()) throw new Exception("Actual URL must be specified.");
+            if (intended == null || intended.isEmpty()) throw new Exception("Actual URL must be specified.");
+            final String toleranceString = req.getParameter("tolerance");
+            final int tolerance = toleranceString != null && !toleranceString.isEmpty() ? Integer.parseInt(toleranceString) : Result.DEFAULT_TOLERANCE;
+
+            logger.info("actual = " + actual);
+            logger.info("intended = " + intended);
+            final GeoFileParser geoFileParser = new GeoFileParser();
+            final HttpGet actualGet = new HttpGet(actual);
+            final HttpGet intendedGet = new HttpGet(intended);
+            try(CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+                    final CloseableHttpResponse actualResponse = httpClient.execute(actualGet);
+                    final CloseableHttpResponse intendedResponse = httpClient.execute(intendedGet)) {
+
+                final GpxFile actualGpxFile = new GpxFile(actual, geoFileParser.parseGeoFile(actualResponse.getEntity().getContent(), actual));
+                final GpxFile intendedGpxFile = new GpxFile(intended, geoFileParser.parseGeoFile(intendedResponse.getEntity().getContent(), actual));
+
+                final Validator validator = new Validator(getServletContext());
+                final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
+
+                final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance, trackUsePreferences);
+                req.getSession().setAttribute("result", result);
+                req.setAttribute("result", result);
+                req.getRequestDispatcher("/index.jsp").include(req, resp);
+            }
+        }catch(final Exception ex) {
+            logger.throwing(ValidateServlet.class.getName(), "doGet", ex);
+
+        }
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
