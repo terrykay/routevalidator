@@ -23,6 +23,6 @@ public class UtilityTest {
 
     @Test
     public void encodeMailto() throws UnsupportedEncodingException, URIException {
-        System.out.println(URIUtil.encodeQuery("AAA Validation for DIY"));
+        System.out.println(URIUtil.encodeWithinQuery("a&b c/d"));
     }
 }

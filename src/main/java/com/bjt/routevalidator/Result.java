@@ -145,13 +145,13 @@ public class Result {
     }
 
     public String getMailtoHref() throws URIException {
-        String href = "mailto:steve.snook@tiscali.co.uk?subject=" + URIUtil.encodeQuery("AAA Validation for DIY");
+        String href = "mailto:steve.snook@tiscali.co.uk?subject=" + URIUtil.encodeWithinQuery("AAA Validation for DIY");
         if(isUrlLoaded) {
             final String comparisonUrl = "http://routevalidator.com/validate?intended=" + getIntendedGpx().getFileName() + "&actual=" + getActualGpx().getFileName() + "&tolerance=" + getTolerance();
             final String extraMessage = "Intended: " + getIntendedGpx().getFileName() + "\r\n" +
                     "Actual: " + getActualGpx().getFileName() + "\r\n" +
                     "Comparison: " + comparisonUrl;
-            href += "&body=" + URIUtil.encodeQuery(extraMessage);
+            href += "&body=" + URIUtil.encodeWithinQuery(extraMessage);
         }
         return href;
     }
