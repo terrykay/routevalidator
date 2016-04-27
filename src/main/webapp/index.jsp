@@ -203,7 +203,7 @@
                                 data-clipboard-target="#actualstats">Copy Stats to clipboard</button></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><a class="btn btn-primary" href="mailto:steve.snook@tiscali.co.uk?subject=AAA Validation for DIY">Refer to AAA</button></td>
+                            <td colspan="2"><a class="btn btn-primary" href="<%= result.getMailtoHref() %>">Refer to AAA</button></td>
                         </tr>
                         <tr>
                             <td colspan="2"><a href="/downloadworkings" target="blank" title="Might not contain the same number of rows as trackpoints due to the way ValidateGPX's algorithm works.">Download workings</a></td>

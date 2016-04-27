@@ -3,6 +3,8 @@ package com.bjt.routevalidator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +19,7 @@ public class Result {
     public static  final String STATUS_REFER = "REFER";
 
     private String status;
+    private boolean isUrlLoaded;
 
     public void setSpeedLimitStatus(String speedLimitStatus) {
         this.speedLimitStatus = speedLimitStatus;
@@ -128,5 +131,25 @@ public class Result {
 
     public List<? extends Statistic> getActualStatistics() {
         return actualStatistics;
+    }
+
+    public boolean isUrlLoaded() {
+        return isUrlLoaded;
+    }
+
+    public void setIsUrlLoaded(boolean isUrlLoaded) {
+        this.isUrlLoaded = isUrlLoaded;
+    }
+
+    public String getMailtoHref() throws UnsupportedEncodingException {
+        String href = "mailto:steve.snook@tiscali.co.uk?subject=" + URLEncoder.encode("AAA Validation for DIY", "UTF-8");
+        if(isUrlLoaded) {
+            final String comparisonUrl = "http://routevalidator.com/validate?intended=" + getIntendedGpx().getFileName() + "&actual=" + getActualGpx().getFileName() + "&tolerance=" + getTolerance();
+            final String extraMessage = "Intended: " + getIntendedGpx().getFileName() + "\r\n" +
+                    "Actual: " + getActualGpx().getFileName() + "\r\n" +
+                    "Comparison: " + comparisonUrl;
+            href += "&body=" + URLEncoder.encode(extraMessage, "UTF-8");
+        }
+        return href;
     }
 }

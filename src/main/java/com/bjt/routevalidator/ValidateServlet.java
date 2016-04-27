@@ -46,15 +46,14 @@ public class ValidateServlet extends HttpServlet {
                     final CloseableHttpResponse actualResponse = httpClient.execute(actualGet);
                     final CloseableHttpResponse intendedResponse = httpClient.execute(intendedGet)) {
 
-                final String actualShortFileName = Utility.urlToShortFileName(actual);
-                final String intendedShortFileName = Utility.urlToShortFileName(intended);
-                final GpxFile actualGpxFile = new GpxFile(actualShortFileName, geoFileParser.parseGeoFile(actualResponse.getEntity().getContent(), actual));
-                final GpxFile intendedGpxFile = new GpxFile(intendedShortFileName, geoFileParser.parseGeoFile(intendedResponse.getEntity().getContent(), intended));
+                final GpxFile actualGpxFile = new GpxFile(actual, geoFileParser.parseGeoFile(actualResponse.getEntity().getContent(), actual));
+                final GpxFile intendedGpxFile = new GpxFile(intended, geoFileParser.parseGeoFile(intendedResponse.getEntity().getContent(), intended));
 
                 final Validator validator = new Validator(getServletContext());
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
 
                 final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance, trackUsePreferences);
+                result.setIsUrlLoaded(true);
                 req.getSession().setAttribute("result", result);
                 req.setAttribute("result", result);
                 req.getRequestDispatcher("/index.jsp").include(req, resp);
