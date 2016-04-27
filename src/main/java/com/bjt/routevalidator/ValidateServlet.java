@@ -10,6 +10,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.taglibs.standard.tag.common.core.Util;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,8 +39,6 @@ public class ValidateServlet extends HttpServlet {
             final String toleranceString = req.getParameter("tolerance");
             final int tolerance = toleranceString != null && !toleranceString.isEmpty() ? Integer.parseInt(toleranceString) : Result.DEFAULT_TOLERANCE;
 
-            logger.info("actual = " + actual);
-            logger.info("intended = " + intended);
             final GeoFileParser geoFileParser = new GeoFileParser();
             final HttpGet actualGet = new HttpGet(actual);
             final HttpGet intendedGet = new HttpGet(intended);
@@ -47,8 +46,10 @@ public class ValidateServlet extends HttpServlet {
                     final CloseableHttpResponse actualResponse = httpClient.execute(actualGet);
                     final CloseableHttpResponse intendedResponse = httpClient.execute(intendedGet)) {
 
-                final GpxFile actualGpxFile = new GpxFile(actual, geoFileParser.parseGeoFile(actualResponse.getEntity().getContent(), actual));
-                final GpxFile intendedGpxFile = new GpxFile(intended, geoFileParser.parseGeoFile(intendedResponse.getEntity().getContent(), actual));
+                final String actualShortFileName = Utility.urlToShortFileName(actual);
+                final String intendedShortFileName = Utility.urlToShortFileName(intended);
+                final GpxFile actualGpxFile = new GpxFile(actualShortFileName, geoFileParser.parseGeoFile(actualResponse.getEntity().getContent(), actual));
+                final GpxFile intendedGpxFile = new GpxFile(intendedShortFileName, geoFileParser.parseGeoFile(intendedResponse.getEntity().getContent(), intended));
 
                 final Validator validator = new Validator(getServletContext());
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
