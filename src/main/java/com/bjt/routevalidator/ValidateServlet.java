@@ -42,12 +42,24 @@ public class ValidateServlet extends HttpServlet {
             final GeoFileParser geoFileParser = new GeoFileParser();
             final HttpGet actualGet = new HttpGet(actual);
             final HttpGet intendedGet = new HttpGet(intended);
-            try(CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-                    final CloseableHttpResponse actualResponse = httpClient.execute(actualGet);
-                    final CloseableHttpResponse intendedResponse = httpClient.execute(intendedGet)) {
+            try (CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+                 final CloseableHttpResponse actualResponse = httpClient.execute(actualGet);
+                 final CloseableHttpResponse intendedResponse = httpClient.execute(intendedGet)) {
+                final GpxFile actualGpxFile;
+                final GpxFile intendedGpxFile;
 
-                final GpxFile actualGpxFile = new GpxFile(actual, geoFileParser.parseGeoFile(actualResponse.getEntity().getContent(), actual));
-                final GpxFile intendedGpxFile = new GpxFile(intended, geoFileParser.parseGeoFile(intendedResponse.getEntity().getContent(), intended));
+                try {
+                    actualGpxFile = new GpxFile(actual, geoFileParser.parseGeoFile(actualResponse.getEntity().getContent(), actual));
+                } catch (Exception ex) {
+                    ErrorHandler.handleError("The actual GPX file could not be parsed. Please check the URL points to the GPX file itself (not merely a page containing it).", ex, req, resp);
+                    return;
+                }
+                try {
+                    intendedGpxFile = new GpxFile(intended, geoFileParser.parseGeoFile(intendedResponse.getEntity().getContent(), intended));
+                } catch (Exception ex) {
+                    ErrorHandler.handleError("The intended GPX file could not be parsed. Please check the URL points to the GPX file itself (not merely a page containing it).", ex, req, resp);
+                    return;
+                }
 
                 final Validator validator = new Validator(getServletContext());
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
@@ -58,9 +70,9 @@ public class ValidateServlet extends HttpServlet {
                 req.setAttribute("result", result);
                 req.getRequestDispatcher("/index.jsp").include(req, resp);
             }
-        }catch(final Exception ex) {
+        } catch (final Exception ex) {
             logger.throwing(ValidateServlet.class.getName(), "doGet", ex);
-            ex.printStackTrace(resp.getWriter());
+            ErrorHandler.handleError("The URL for one of the files did not work.", ex, req, resp);
         }
     }
 
@@ -92,7 +104,7 @@ public class ValidateServlet extends HttpServlet {
                     final GeoFile actualGpx;
                     try {
                         actualGpx = readGpx(file, geoFileParser, file.getName());
-                    }catch(final Exception ex) {
+                    } catch (final Exception ex) {
                         throw new FriendlyException("The actual GPX file was invalid.");
                     }
                     final String actualFilename = file.getName();
