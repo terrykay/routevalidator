@@ -106,6 +106,10 @@ public class TrackSummary {
         }
     }
 
+    public double getTotalClimb() {
+        return totalClimb;
+    }
+
     private void UpdateTotals(final TrackpointWrapper trackPoint) {
         this.totalTime = this.totalTime + trackPoint.getTimeDelta();
         this.totalDistance = this.totalDistance + trackPoint.getDistanceDelta();

@@ -88,6 +88,7 @@ public class Validator {
                     new DurationStatistic(geoFile),
                     new StartDateTimeStatistic(geoFile),
                     new EndDateTimeStatistic(geoFile),
+                    new TotalClimbStatistic(trackSummary),
                     new StartElevationStatistic(geoFile),
                     new EndElevationStatistic(geoFile),
                     new MinElevationStatistic(geoFile),
