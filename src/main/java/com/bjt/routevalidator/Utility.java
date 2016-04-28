@@ -1,6 +1,7 @@
 package com.bjt.routevalidator;
 
 import java.io.*;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +24,7 @@ public class Utility {
 
     public static String configFile = System.getenv("ROUTEVALIDATOR_CONF");
     public static String getConfigItem(final String key) throws IOException {
+        Logger.getAnonymousLogger().info("configFile = " + configFile);
         if(configFile != null && !configFile.isEmpty()) {
             final File file = new File(configFile);
             if(file.exists()) {
