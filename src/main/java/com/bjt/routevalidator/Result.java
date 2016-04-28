@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder;
 import jdk.nashorn.internal.runtime.URIUtils;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
+import org.apache.taglibs.standard.tag.common.core.Util;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.stream.Stream;
  */
 public class Result {
     public static final String STATUS_ACCEPT = "ACCEPT";
-    public static  final String STATUS_REFER = "REFER";
+    public static final String STATUS_REFER = "REFER";
 
     private String status;
     private boolean isUrlLoaded;
@@ -55,7 +57,7 @@ public class Result {
         this.actualGpx = actualGpx;
         this.tolerance = tolerance;
         this.trackSummary = trackSummary;
-        if(trackUsePreferences == null) trackUsePreferences = new ArrayList<>();
+        if (trackUsePreferences == null) trackUsePreferences = new ArrayList<>();
         this.trackUsePreferences = trackUsePreferences;
         this.intendedStatistics = intendedStatistics;
         this.actualStatistics = actualStatistics;
@@ -100,7 +102,7 @@ public class Result {
     }
 
     public String getToleranceString() {
-        if(tolerance == 1000) return "1km";
+        if (tolerance == 1000) return "1km";
         else return String.valueOf(tolerance) + "m";
     }
 
@@ -144,15 +146,20 @@ public class Result {
         this.isUrlLoaded = isUrlLoaded;
     }
 
-    public String getMailtoHref() throws URIException {
-        String href = "mailto:steve.snook@tiscali.co.uk?subject=" + URIUtil.encodeWithinQuery("AAA Validation for DIY");
-        if(isUrlLoaded) {
-            final String comparisonUrl = "http://routevalidator.com/validate?intended=" + getIntendedGpx().getFileName() + "&actual=" + getActualGpx().getFileName() + "&tolerance=" + getTolerance();
-            final String extraMessage = "Intended: " + getIntendedGpx().getFileName() + "\r\n" +
-                    "Actual: " + getActualGpx().getFileName() + "\r\n" +
-                    "Comparison: " + comparisonUrl;
-            href += "&body=" + URIUtil.encodeWithinQuery(extraMessage);
+    public String getMailtoHref() throws IOException {
+        final String aaaEmail = Utility.getAAAEmailAddress();
+        if (aaaEmail != null && !aaaEmail.isEmpty()) {
+            String href = "mailto:" + aaaEmail + "?subject=" + URIUtil.encodeWithinQuery("AAA Validation for DIY");
+
+            if (isUrlLoaded) {
+                final String comparisonUrl = "http://routevalidator.com/validate?intended=" + getIntendedGpx().getFileName() + "&actual=" + getActualGpx().getFileName() + "&tolerance=" + getTolerance();
+                final String extraMessage = "Intended: " + getIntendedGpx().getFileName() + "\r\n" +
+                        "Actual: " + getActualGpx().getFileName() + "\r\n" +
+                        "Comparison: " + comparisonUrl;
+                href += "&body=" + URIUtil.encodeWithinQuery(extraMessage);
+            }
+            return href;
         }
-        return href;
+        else return null;
     }
 }

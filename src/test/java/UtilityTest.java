@@ -1,9 +1,12 @@
 import com.bjt.routevalidator.Utility;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
+import org.apache.taglibs.standard.tag.common.core.Util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -24,5 +27,11 @@ public class UtilityTest {
     @Test
     public void encodeMailto() throws UnsupportedEncodingException, URIException {
         System.out.println(URIUtil.encodeWithinQuery("a&b c/d"));
+    }
+
+    @Test
+    public void getAAAEmailAddress() throws IOException {
+        Utility.configFile = "test.conf";
+        System.out.println(Utility.getAAAEmailAddress());
     }
 }
