@@ -83,6 +83,7 @@ public class Validator {
     private List<? extends Statistic> getActualStatistics(final GeoFile geoFile, final TrackSummary trackSummary) throws FactoryException, TransformException {
         if (geoFile.getTracks().size() > 0)
             return Arrays.asList(
+                    new CreatorStatistic(geoFile),
                     new DistanceStatistic(geoFile, geoHelper),
                     new DurationStatistic(geoFile),
                     new StartDateTimeStatistic(geoFile),
