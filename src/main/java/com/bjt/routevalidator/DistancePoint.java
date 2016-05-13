@@ -24,7 +24,7 @@ public class DistancePoint {
     }
 
     public static String formatDateTime(final DateTime dateTime) {
-        final DateTime localDateTime = dateTime.withZone(DateTimeZone.getDefault());
+        final DateTime localDateTime = dateTime.withZone(DateTimeZone.forID("Europe/London"));
         return localDateTime.toString("h:mm a").toLowerCase();
     }
 }
