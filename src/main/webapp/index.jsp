@@ -389,7 +389,7 @@ $(document).ready(function() {
         featureGroup.on("mouseover", function(e) {
             featureGroup.shouldShowTooltip = true;
         });
-        featureGroup.on("mousemove", _.throttle(function() {
+        featureGroup.on("mousemove", _.throttle(function(e) {
                 if(featureGroup.shouldShowTooltip === true) {
                     var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
                     var index = closest.index;
