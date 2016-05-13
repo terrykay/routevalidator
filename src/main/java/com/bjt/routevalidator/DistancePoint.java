@@ -1,8 +1,6 @@
 package com.bjt.routevalidator;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 
 /**
  * Created by Ben.Taylor on 23/04/2016.
@@ -24,7 +22,8 @@ public class DistancePoint {
     }
 
     public static String formatDateTime(final DateTime dateTime) {
-        final DateTime localDateTime = dateTime.withZone(DateTimeZone.forID("Europe/London"));
+        final DateTime localDateTime = TimeHelper.toLocal(dateTime);
         return localDateTime.toString("h:mm a").toLowerCase();
     }
+
 }
