@@ -5,6 +5,7 @@ import com.bjt.gpxparser.TrackPoint;
 import com.bjt.gpxparser.TrackpointT;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
@@ -43,6 +44,7 @@ public class DurationStatistic extends StandardStatistic {
                 .appendSeparator(":")
                 .appendMinutes()
                 .toFormatter();
-        return period.toString(periodFormatter);
+        final Period hoursAndMinutes = period.normalizedStandard(PeriodType.time());
+        return hoursAndMinutes.toString(periodFormatter);
     }
 }
