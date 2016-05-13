@@ -253,6 +253,7 @@
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
 <script type="text/javascript" src="js/clipboard.min.js"></script>
 <script type="text/javascript" src="js/jquery.tooltipster.min.js"></script>
+<script type="text/javascript" src="js/underscore-min.js"></script>
 
 
 <%
@@ -386,11 +387,22 @@ $(document).ready(function() {
         var featureGroup = new L.featureGroup([intended, actual]);
         var distanceTooltip = L.popup();
         featureGroup.on("mousemove", function(e) {
-            var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
-            var index = closest.index;
-            var distancePoint = distancePoints[index];
-            distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.label);
-            if(distanceTooltip._isOpen !== true) distanceTooltip.openOn(map);
+            featureGroup.showTooltip = function() {
+                var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
+                var index = closest.index;
+                var distancePoint = distancePoints[index];
+                distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.label);
+                if(distanceTooltip._isOpen !== true) distanceTooltip.openOn(map);
+            }
+            _.throttle(function() {
+                var func = featureGroup.showTooltip;
+                if(func && _.isFunction(func)) {
+                    func();
+                }
+            }, 500, {leading: false});
+        });
+        featureGroup.on("mouseout", function(e) {
+            featureGroup.showTooltip = null;
         });
 
         map.fitBounds(featureGroup);

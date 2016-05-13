@@ -27,7 +27,8 @@ public class FeedbackTest_TimeCalcs {
 
     @Test
     public void utcTimeShowsAsBst() { //UTC is 'equivalent' to GMT, and is indicated by the Z suffix.. should show as BST (it's in may)
-        final DateTime utcTime = DateTime.parse("2016-04-30T05:09:04Z");
+        final String timeString = "2016-04-30T05:09:04Z";
+        final DateTime utcTime = DateTime.parse(timeString);
         final String formattedDateTime = DistancePoint.formatDateTime(utcTime);
 
         Assert.assertEquals("6:09 am", formattedDateTime);
