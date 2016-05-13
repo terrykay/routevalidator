@@ -33,9 +33,11 @@ public class TrackUsePreference {
         final List<TrackUsePreference> trackUsePreferences = new ArrayList<>();
         final GeoHelper geoHelper = new GeoHelper();
         for(final Track track : geoFile.getTracks()) {
-            boolean render = geoHelper.getDistance(track) >= DEFAULT_MIN_DISTANCE;
-            final TrackUsePreference trackUsePreference = new TrackUsePreference(track.getName(), render);
-            trackUsePreferences.add(trackUsePreference);
+            if(GeoHelper.getCoords(track).size() > 1) {
+                boolean render = geoHelper.getDistance(track) >= DEFAULT_MIN_DISTANCE;
+                final TrackUsePreference trackUsePreference = new TrackUsePreference(track.getName(), render);
+                trackUsePreferences.add(trackUsePreference);
+            }
         }
         return trackUsePreferences;
     }
