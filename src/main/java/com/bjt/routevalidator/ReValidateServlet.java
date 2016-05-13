@@ -23,7 +23,8 @@ public class ReValidateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             final Result lastResult = (Result) req.getSession().getAttribute("result");
-            final Validator validator = new Validator(getServletContext());
+            final ClimbingServerUrlProvider climbingServerUrlProvider = new ConfigClimbingServerUrlProvider(getServletContext());
+            final Validator validator = new Validator(climbingServerUrlProvider);
             final int newTolerance = Integer.parseInt(req.getParameter("tolerance"));
             final List<TrackUsePreference> trackUsePreferences = parseTrackUsePreferences(req);
             final Result result = validator.validate(lastResult.getIntendedGpx(), lastResult.getActualGpx(), newTolerance, trackUsePreferences);

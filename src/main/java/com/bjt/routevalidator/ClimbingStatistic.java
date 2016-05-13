@@ -23,12 +23,12 @@ import java.util.logging.Logger;
  * Created by Ben.Taylor on 27/03/2016.
  */
 public class ClimbingStatistic extends StandardStatistic {
-    public ClimbingStatistic(final GeoFile geoFile, ServletContext servletContext) throws IOException {
-        super("Climbing", getClimbing(geoFile, servletContext));
+    public ClimbingStatistic(final GeoFile geoFile, ClimbingServerUrlProvider climbingServerUrlProvider) throws IOException {
+        super("Climbing", getClimbing(geoFile, climbingServerUrlProvider));
     }
 
-    private static String getClimbing(final GeoFile geoFile, ServletContext servletContext) throws IOException {
-        final String climbServerUrl = servletContext.getInitParameter("ClimbingServerUrl");
+    private static String getClimbing(final GeoFile geoFile, ClimbingServerUrlProvider climbingServerUrlProvider) throws IOException {
+        final String climbServerUrl = climbingServerUrlProvider.getClimbingServerUrl();
         final ClimbServerResult climbServerResult = getClimbing(geoFile, climbServerUrl);
 
         if (climbServerResult != null && climbServerResult.isSuccess()) {

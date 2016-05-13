@@ -6,7 +6,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
-import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,10 +17,10 @@ import java.util.logging.Logger;
  */
 public class Validator {
     private final GeoHelper geoHelper;
-    private final ServletContext servletContext;
+    private final ClimbingServerUrlProvider climbingServerUrlProvider;
 
-    public Validator(ServletContext servletContext) {
-        this.servletContext = servletContext;
+    public Validator(ClimbingServerUrlProvider climbingServerUrlProvider) {
+        this.climbingServerUrlProvider = climbingServerUrlProvider;
         geoHelper = new GeoHelper();
     }
 
@@ -106,7 +105,7 @@ public class Validator {
     private List<? extends Statistic> getIntendedStatistics(final GeoFile geoFile) throws FactoryException, TransformException, IOException {
         return Arrays.asList(
                 new DistanceStatistic(geoFile, geoHelper),
-                new ClimbingStatistic(geoFile, servletContext),
+                new ClimbingStatistic(geoFile, climbingServerUrlProvider),
                 new DoubleWidthCommentStatistic("(Contour counting)")
         );
     }

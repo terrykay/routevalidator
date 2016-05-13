@@ -61,7 +61,8 @@ public class ValidateServlet extends HttpServlet {
                     return;
                 }
 
-                final Validator validator = new Validator(getServletContext());
+                final ClimbingServerUrlProvider climbingServerUrlProvider = new ConfigClimbingServerUrlProvider(getServletContext());
+                final Validator validator = new Validator(climbingServerUrlProvider);
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
 
                 final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance, trackUsePreferences);
@@ -124,7 +125,8 @@ public class ValidateServlet extends HttpServlet {
 
                 logger.log(Level.SEVERE, "Tolerance must be specified.", (Exception) null);
             } else {
-                final Validator validator = new Validator(getServletContext());
+                final ClimbingServerUrlProvider climbingServerUrlProvider = new ConfigClimbingServerUrlProvider(getServletContext());
+                final Validator validator = new Validator(climbingServerUrlProvider);
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
                 final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance, trackUsePreferences);
                 req.getSession().setAttribute("result", result);
@@ -135,7 +137,7 @@ public class ValidateServlet extends HttpServlet {
             req.getSession().setAttribute("FriendlyErrorMessage", e.getMessage());
             resp.sendRedirect("/");
         } catch (final Exception e) {
-            ErrorHandler.handleError("There was an error processing the GPX files.", e, req, resp);
+            ErrorHandler.handleError("There was an error processing the GPX files: " + e.getMessage(), e, req, resp);
         }
     }
 
