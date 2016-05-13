@@ -386,23 +386,21 @@ $(document).ready(function() {
         var distancePoints = <%= result.getDistancePointsJson() %> ;
         var featureGroup = new L.featureGroup([intended, actual]);
         var distanceTooltip = L.popup();
-        featureGroup.on("mousemove", function(e) {
-            featureGroup.showTooltip = function() {
-                var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
-                var index = closest.index;
-                var distancePoint = distancePoints[index];
-                distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.label);
-                if(distanceTooltip._isOpen !== true) distanceTooltip.openOn(map);
-            }
-            _.throttle(function() {
-                var func = featureGroup.showTooltip;
-                if(func && _.isFunction(func)) {
-                    func();
+        featureGroup.on("mouseover", function(e) {
+            featureGroup.shouldShowTooltip = true;
+        });
+        featureGroup.on("mousemove", _.throttle(function() {
+                if(featureGroup.shouldShowTooltip === true) {
+                    var closest = L.GeometryUtil.closest(map, distancePoints, e.latlng, true);
+                    var index = closest.index;
+                    var distancePoint = distancePoints[index];
+                    distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.label);
+                    if(distanceTooltip._isOpen !== true) distanceTooltip.openOn(map);
                 }
             }, 500, {leading: false});
-        });
+        );
         featureGroup.on("mouseout", function(e) {
-            featureGroup.showTooltip = null;
+            featureGroup.shouldShowTooltip = false;
         });
 
         map.fitBounds(featureGroup);
