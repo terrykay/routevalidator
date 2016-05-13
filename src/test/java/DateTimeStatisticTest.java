@@ -9,7 +9,7 @@ import org.junit.Test;
 public class DateTimeStatisticTest {
     @Test
     public void tcxTime() {
-        String trackpointTime = "2016-04-04T11:06:00Z";
-        Assert.assertEquals("Mon 04/04/16 11:06", StartDateTimeStatistic.reformatTime(trackpointTime));
+        String trackpointTime = "2016-01-04T11:06:00Z";
+        Assert.assertEquals("Mon 04/01/16 11:06", StartDateTimeStatistic.reformatTime(trackpointTime));
     }
 }
