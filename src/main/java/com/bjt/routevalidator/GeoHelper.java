@@ -7,6 +7,7 @@ import com.vividsolutions.jts.operation.distance.DistanceOp;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.joda.time.DateTime;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -100,8 +101,17 @@ public class GeoHelper {
     }
 
     public static List<? extends TrackPoint> getAllPoints(final GeoFile geoFile) {
-        final List<? extends TrackPoint> trackPoints = getTrackpointsAsStream(geoFile)
-                .collect(Collectors.toList());
+        final Stream<? extends TrackPoint> trackpointsAsStream = getTrackpointsAsStream(geoFile);
+
+        List<? extends TrackPoint> trackPoints;
+        if(getTrackpointsAsStream(geoFile).allMatch(t -> t.getTime() != null && !t.getTime().isEmpty())) {
+            trackPoints = getTrackpointsAsStream(geoFile)
+                    .sorted((o1, o2) -> DateTime.parse(o1.getTime()).compareTo(DateTime.parse(o2.getTime())))
+                    .collect(Collectors.toList());
+        } else {
+            trackPoints = getTrackpointsAsStream(geoFile)
+                    .collect(Collectors.toList());
+        }
         return trackPoints;
     }
 }
