@@ -397,7 +397,7 @@ $(document).ready(function() {
                     distanceTooltip.setLatLng(e.latlng).setContent(distancePoint.label);
                     if(distanceTooltip._isOpen !== true) distanceTooltip.openOn(map);
                 }
-            }, 500, {leading: false});
+            }, 500, {leading: false})
         );
         featureGroup.on("mouseout", function(e) {
             featureGroup.shouldShowTooltip = false;
