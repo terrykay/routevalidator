@@ -53,7 +53,7 @@ public class Validator {
             //if((int)(counter / 10) %5 == 0) {
             final Double dist = getMinDistance(control, pathsRidden);
             if (dist == null || dist > tolerance) {
-                if (currentReferralArea == null) {
+                if (currentReferralArea == null || referralAreaIsFarFrom(currentReferralArea, control)) {
                     currentReferralArea = new ArrayList<>();
                     referralAreas.add(currentReferralArea);
                 }
@@ -77,6 +77,13 @@ public class Validator {
         }
 
         return result;
+    }
+
+    private boolean referralAreaIsFarFrom(final List<Coordinate> referralArea, final Coordinate control) throws TransformException, FactoryException {
+        final Coordinate lastReferralPoint = referralArea.get(referralArea.size() - 1);
+        final double dist = geoHelper.getDistance(Arrays.asList(lastReferralPoint, control));
+        final boolean isFar = dist > 1000;
+        return isFar;
     }
 
     private List<? extends Statistic> getActualStatistics(final GeoFile geoFile, final TrackSummary trackSummary) throws FactoryException, TransformException {

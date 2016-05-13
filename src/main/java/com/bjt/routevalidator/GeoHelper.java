@@ -50,7 +50,6 @@ public class GeoHelper {
     }
 
     public double getDistance(final Track track) throws FactoryException, TransformException {
-
         final List<Coordinate> coords = getCoords(track);
         return getDistance(coords);
     }

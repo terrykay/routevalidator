@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Ben.Taylor on 13/05/2016.
  */
-public class FeedbackTest {
+public class FeedbackTest_SinglePointTrack {
     @Test
     public void trackWithOnlyOneTrackpointDoesntThrow() throws Exception {
         final GpxFile actual = getGpxFile("/AcceptableWithSinglePointTrack.gpx");
