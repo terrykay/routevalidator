@@ -138,6 +138,21 @@ public class Result {
         return actualStatistics;
     }
 
+    public List<TableCell[]> getPreliminaryRows() throws FriendlyException {
+        final PercentageOfRideWithinSpeedLimitsStatistic speedLimitsStatistic = (PercentageOfRideWithinSpeedLimitsStatistic)
+                getActualStatistics().stream().filter(e -> e instanceof PercentageOfRideWithinSpeedLimitsStatistic)
+                .findFirst().orElseThrow(() -> new FriendlyException("Speed limit statistic not found"));
+        final boolean validate = referralAreas.isEmpty() && speedLimitsStatistic.validate();
+        final TableCell[] speedLimitsStatisticRow = speedLimitsStatistic.getRow();
+        final List<TableCell[]> tableCells = Arrays.asList(
+                new TableCell[]{new TableCell(1, "Validate"), new TableCell(1, validate ? "Yes" : "No")},
+                new TableCell[]{new TableCell(1, "Track adherence"), new TableCell(1, referralAreas.isEmpty() ? "ACCEPT" : "REFER")},
+                new TableCell[]{new TableCell(1, "@ Tolerance distance"), new TableCell(1, getToleranceString())},
+                speedLimitsStatisticRow
+        );
+        return tableCells;
+    }
+
     public boolean isUrlLoaded() {
         return isUrlLoaded;
     }

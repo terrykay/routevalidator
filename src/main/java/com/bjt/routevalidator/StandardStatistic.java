@@ -25,5 +25,6 @@ public abstract class StandardStatistic implements Statistic {
     public List<TableCell[]> getAcceptanceRows() {
         return new ArrayList<>();
     }
+
 }
 

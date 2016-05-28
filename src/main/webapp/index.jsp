@@ -214,11 +214,23 @@
                 </table>
                 <table style="float:left; margin-left: 20px; max-width: 330px" id="actualstats">
                     <thead>
-                        <tr>
+                        <tr class="clipboarditems onlyvisiblewhennotcopying">
                             <th colspan="2"><strong>Actual track</strong></th>
+                        </tr>
+                        <tr class="clipboarditems onlyvisiblewhencopying">
+                            <th colspan="2"><%= result.getIntendedGpx().getFileName() %></th>
                         </tr>
                     </thead>
                     <tbody>
+                        <% for(com.bjt.routevalidator.TableCell[] cells : result.getPreliminaryRows()) { %>
+                            <tr class="clipboarditems onlyvisiblewhencopying">
+                                <% for (com.bjt.routevalidator.TableCell cell : cells) { %>
+                                    <td colspan="<%= cell.getColSpan() %>">
+                                        <span><%= cell.getContents() %></span>
+                                    </td>
+                                <% } %>
+                            </tr>
+                        <% } %>
                         <% for(com.bjt.routevalidator.Statistic stat : result.getActualStatistics()) { %>
                             <tr>
                                 <% for (com.bjt.routevalidator.TableCell cell : stat.getCells()) { %>
@@ -251,7 +263,7 @@
 <script type="text/javascript" src="js/OSOpenSpace.js"></script>
 <script type="text/javascript" src="js/site.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl.min.js"></script>
-<script type="text/javascript" src="js/clipboard.min.js"></script>
+<script type="text/javascript" src="js/clipboard.js"></script>
 <script type="text/javascript" src="js/jquery.tooltipster.min.js"></script>
 <script type="text/javascript" src="js/underscore-min.js"></script>
 

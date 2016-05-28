@@ -123,3 +123,10 @@ input.btn, a.btn {
     font-size:1.4em;
     min-width:400px
 }
+
+.clipboarditems.onlyvisiblewhencopying:not(.copying) {
+    display: none;
+}
+.clipboarditems.onlyvisiblewhennotcopying.copying {
+    display: none;
+}

@@ -255,6 +255,7 @@ function match(el, selector) {
 function select(element) {
     var selectedText;
 
+    $(".clipboarditems", element).addClass("copying")
     if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
         element.focus();
         element.setSelectionRange(0, element.value.length);
@@ -499,6 +500,7 @@ module.exports = E;
                 succeeded = false;
             }
 
+            $(".clipboarditems", this.target).removeClass("copying");
             this.handleResult(succeeded);
         };
 

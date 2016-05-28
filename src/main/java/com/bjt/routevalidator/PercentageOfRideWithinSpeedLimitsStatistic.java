@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Ben.Taylor on 19/04/2016.
  */
-public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatistic{
+public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatistic implements ValidationContributor {
     private final double proportionOk;
 
     public PercentageOfRideWithinSpeedLimitsStatistic(final TrackSummary trackSummary) throws FactoryException, TransformException {
@@ -36,11 +36,19 @@ public class PercentageOfRideWithinSpeedLimitsStatistic extends StandardStatisti
     }
 
     @Override
+    public boolean validate() {
+        return proportionOk >= 0.99;
+    }
+
+    @Override
     public List<TableCell[]> getAcceptanceRows() {
-        final String speedLimitCompliance = proportionOk < 0.99 ? Result.STATUS_REFER : Result.STATUS_ACCEPT;
-        final TableCell[][] tableCells = {
-                new TableCell[]{new TableCell(1, "Speed Limit Compliance"), new TableCell(1, speedLimitCompliance, "result " + speedLimitCompliance )}
-        };
+        final TableCell[][] tableCells = { getRow() };
         return Arrays.asList(tableCells);
+    }
+
+    public TableCell[] getRow() {
+        final String speedLimitCompliance = validate() ? Result.STATUS_ACCEPT : Result.STATUS_REFER;
+        final TableCell[] tableCells = {new TableCell(1, "Speed Limit Compliance"), new TableCell(1, speedLimitCompliance, "result " + speedLimitCompliance)};
+        return tableCells;
     }
 }
