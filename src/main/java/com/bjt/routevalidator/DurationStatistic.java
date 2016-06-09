@@ -20,7 +20,7 @@ public class DurationStatistic extends StandardStatistic {
         super("Duration", getDuration(geoFile));
     }
 
-    private static String getDuration(final GeoFile geoFile) {
+    public static String getDuration(final GeoFile geoFile) {
         final List<? extends TrackPoint> trackPoints = GeoHelper.getAllPoints(geoFile);
         final TrackPoint lastTrackpoint = trackPoints.get(trackPoints.size() - 1);
         final TrackPoint firstTrackpoint = trackPoints.get(0);
@@ -37,6 +37,9 @@ public class DurationStatistic extends StandardStatistic {
     }
 
     public static String getDurationString(final Period period) {
+        if(period.getMonths() > 0) {
+            throw new FriendlyException("Times in the actual track(s) were too far (more than a month) apart.");
+        }
         final PeriodFormatter periodFormatter = new PeriodFormatterBuilder()
                 .printZeroAlways()
                 .minimumPrintedDigits(2)
