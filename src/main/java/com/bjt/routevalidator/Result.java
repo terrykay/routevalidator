@@ -145,7 +145,7 @@ public class Result {
         final boolean validate = referralAreas.isEmpty() && speedLimitsStatistic.validate();
         final TableCell[] speedLimitsStatisticRow = speedLimitsStatistic.getRow();
         final List<TableCell[]> tableCells = Arrays.asList(
-                new TableCell[]{new TableCell(1, "Validate"), new TableCell(1, validate ? "Yes" : "No")},
+                new TableCell[]{new TableCell(1, "Validate"), new TableCell(1, validate ? "Yes" : "TBC")},
                 new TableCell[]{new TableCell(1, "Track adherence"), new TableCell(1, referralAreas.isEmpty() ? "ACCEPT" : "REFER")},
                 new TableCell[]{new TableCell(1, "@ Tolerance distance"), new TableCell(1, getToleranceString())},
                 speedLimitsStatisticRow
