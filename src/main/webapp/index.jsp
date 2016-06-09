@@ -40,7 +40,7 @@
                             <td><span>Intended GPX:</span></td>
 
                             <%  if (!isProcessed) { %>
-                                <td><input class="filestyle" type="file" name="intended"/></td>
+                                <td><input class="filestyle" type="file" name="intended" accept=".gpx,.zip"/></td>
                             <% } else { %>
                                 <td style="color: <%= intendedColour %>"><%= result.getIntendedGpx().getShortFileName() %></td>
                             <% } %>
