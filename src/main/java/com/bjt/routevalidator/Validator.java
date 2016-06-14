@@ -49,7 +49,7 @@ public class Validator {
         final List<List<Coordinate>> referralAreas = new ArrayList<>();
         List<Coordinate> currentReferralArea = null;
         int counter = 0;
-        double maxDistFromAnyControl = Double.MAX_VALUE;
+        double maxDistFromAnyControl = Double.MIN_VALUE;
 
         for (final Coordinate control : controls) {
             //if((int)(counter / 10) %5 == 0) {
@@ -70,7 +70,6 @@ public class Validator {
         final double warningCloseness = 10;
         Logger.getAnonymousLogger().info(String.format("maxDistFromAnyControl = %f", maxDistFromAnyControl));
         if(maxDistFromAnyControl <= warningCloseness) {
-            Logger.getAnonymousLogger().info("Adding warning");
             result.addWarning(String.format("Warning - the actual track is never more than %.0f metres from the intended track. Please check they're not actually the same one.", warningCloseness));
         }
 
