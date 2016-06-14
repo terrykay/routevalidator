@@ -38,6 +38,6 @@ public class UtilityTest {
     @Test
     public void dumpingGround() {
         double d = 10;
-        System.out.println(String.format("It is %.0f metres", d));
+        System.out.println(String.format("It is %f metres", d));
     }
 }
