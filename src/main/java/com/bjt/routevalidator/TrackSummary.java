@@ -69,6 +69,11 @@ public class TrackSummary {
         return  trackSummary;
     }
 
+    public double getFractionOfTimeAtRest() {
+        if(totalTime == 0) return Double.POSITIVE_INFINITY;
+        else return totalTimeAtRest / totalTime;
+    }
+
     private TrackSummary(final GeoFile geoFile) {
         boolean flag = false;
         TrackpointWrapper totalDistance = null;

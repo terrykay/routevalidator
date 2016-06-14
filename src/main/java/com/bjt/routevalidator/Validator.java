@@ -73,6 +73,12 @@ public class Validator {
             result.addWarning(String.format("Warning - the actual track is never more than %.0f metres from the intended track. Please check they're not actually the same one.", warningCloseness));
         }
 
+        final double fractionOfTimeAtRest = trackSummary.getFractionOfTimeAtRest();
+        Logger.getAnonymousLogger().info(String.format("fraction of time at rest = %f", fractionOfTimeAtRest));
+        if(trackSummary.getFractionOfTimeAtRest() < 0.05) {
+            result.addWarning(String.format("Warning - time at rest is only %.1f%% of the total time."));
+        }
+
         if (referralAreas.isEmpty()) {
             result.setStatus(Result.STATUS_ACCEPT);
         } else {

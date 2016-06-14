@@ -37,7 +37,7 @@ public class UtilityTest {
 
     @Test
     public void dumpingGround() {
-        double d = 10;
-        System.out.println(String.format("It is %f metres", d));
+        double d = 0.04597946354657984314;
+        System.out.println(String.format("They spent %.1f%% of the total time at rest", d * 100));
     }
 }
