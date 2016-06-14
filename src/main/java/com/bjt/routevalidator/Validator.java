@@ -76,7 +76,7 @@ public class Validator {
         final double fractionOfTimeAtRest = trackSummary.getFractionOfTimeAtRest();
         Logger.getAnonymousLogger().info(String.format("fraction of time at rest = %f", fractionOfTimeAtRest));
         if(trackSummary.getFractionOfTimeAtRest() < 0.05) {
-            result.addWarning(String.format("Warning - time at rest is only %.1f%% of the total time."));
+            result.addWarning(String.format("Warning - time at rest is only %.1f%% of the total time.", fractionOfTimeAtRest));
         }
 
         if (referralAreas.isEmpty()) {
