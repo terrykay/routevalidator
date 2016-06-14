@@ -279,7 +279,19 @@
             });
         </script>
 <%
-    }
+    } /* if error message */
+    if(!result.getWarnings().isEmpty()) {
+    %>
+        <script type="text/javascript">
+            $(document).ready(function() {
+            <% for(final String warning : result.getWarnings()) { %>
+                $.jGrowl('<%= org.apache.commons.lang.StringEscapeUtils.escapeJavaScript(warning) %>', {sticky: true, theme: "error", position: "center"});
+            <% } %>
+            });
+        </script>
+    <%
+     } /* if warnings */
+    %>
 %>
 
 

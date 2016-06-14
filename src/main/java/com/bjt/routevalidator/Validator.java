@@ -49,9 +49,13 @@ public class Validator {
         final List<List<Coordinate>> referralAreas = new ArrayList<>();
         List<Coordinate> currentReferralArea = null;
         int counter = 0;
+        double maxDistFromAnyControl = Double.MAX_VALUE;
+
         for (final Coordinate control : controls) {
             //if((int)(counter / 10) %5 == 0) {
             final Double dist = getMinDistance(control, pathsRidden);
+            maxDistFromAnyControl = Math.max(maxDistFromAnyControl, dist);
+
             if (dist == null || dist > tolerance) {
                 if (currentReferralArea == null || referralAreaIsFarFrom(currentReferralArea, control)) {
                     currentReferralArea = new ArrayList<>();
@@ -61,6 +65,11 @@ public class Validator {
             } else {
                 currentReferralArea = null;
             }
+        }
+
+        final double warningCloseness = 10;
+        if(maxDistFromAnyControl <= warningCloseness) {
+            result.addWarning(String.format("Warning - the actual track is never more than %.0f metres from the intended track. Please check they're not actually the same one.", warningCloseness));
         }
 
         if (referralAreas.isEmpty()) {

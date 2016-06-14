@@ -23,6 +23,12 @@ public class Result {
     public static final String STATUS_ACCEPT = "ACCEPT";
     public static final String STATUS_REFER = "REFER";
 
+    public List<String> getWarnings() {
+        return warnings;
+    }
+
+    private final List<String> warnings;
+
     private String status;
     private boolean isUrlLoaded;
 
@@ -61,6 +67,11 @@ public class Result {
         this.trackUsePreferences = trackUsePreferences;
         this.intendedStatistics = intendedStatistics;
         this.actualStatistics = actualStatistics;
+        warnings = new ArrayList<>();
+    }
+
+    public void addWarning(final String warning) {
+        warnings.add(warning);
     }
 
     public List<TableCell[]> getAcceptanceRows() {

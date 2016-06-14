@@ -34,4 +34,10 @@ public class UtilityTest {
         Utility.configFile = "test.conf";
         System.out.println(Utility.getAAAEmailAddress());
     }
+
+    @Test
+    public void dumpingGround() {
+        double d = 10;
+        System.out.println(String.format("It is %.0f metres", d));
+    }
 }
