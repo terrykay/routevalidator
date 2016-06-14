@@ -120,6 +120,7 @@ public class Validator {
 
     private List<? extends Statistic> getIntendedStatistics(final GeoFile geoFile) throws FactoryException, TransformException, IOException {
         return Arrays.asList(
+                new CreatorStatistic(geoFile),
                 new DistanceStatistic(geoFile, geoHelper),
                 new ClimbingStatistic(geoFile, climbingServerUrlProvider),
                 new DoubleWidthCommentStatistic("(Contour counting)")
