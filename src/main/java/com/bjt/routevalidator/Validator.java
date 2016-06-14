@@ -68,7 +68,9 @@ public class Validator {
         }
 
         final double warningCloseness = 10;
+        Logger.getAnonymousLogger().info(String.format("maxDistFromAnyControl = %.f", maxDistFromAnyControl));
         if(maxDistFromAnyControl <= warningCloseness) {
+            Logger.getAnonymousLogger().info("Adding warning");
             result.addWarning(String.format("Warning - the actual track is never more than %.0f metres from the intended track. Please check they're not actually the same one.", warningCloseness));
         }
 
