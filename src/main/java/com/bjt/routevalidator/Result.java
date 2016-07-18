@@ -7,6 +7,7 @@ import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.taglibs.standard.tag.common.core.Util;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -172,16 +173,22 @@ public class Result {
         this.isUrlLoaded = isUrlLoaded;
     }
 
-    public String getMailtoHref() throws IOException {
+    public String getMailtoHref(HttpServletRequest request) throws IOException {
+
         final String aaaEmail = Utility.getAAAEmailAddress();
+        final String rider = request.getParameter("rider");
+
         if (aaaEmail != null && !aaaEmail.isEmpty()) {
             String href = "mailto:" + aaaEmail + "?subject=" + URIUtil.encodeWithinQuery("AAA Validation for DIY");
 
             if (isUrlLoaded) {
                 final String comparisonUrl = "http://routevalidator.com/validate?intended=" + getIntendedGpx().getFileName() + "&actual=" + getActualGpx().getFileName() + "&tolerance=" + getTolerance();
-                final String extraMessage = "Intended: " + getIntendedGpx().getFileName() + "\r\n" +
+                String extraMessage = "Intended: " + getIntendedGpx().getFileName() + "\r\n" +
                         "Actual: " + getActualGpx().getFileName() + "\r\n" +
                         "Comparison: " + comparisonUrl;
+                if(rider != null && !rider.isEmpty()) {
+                    extraMessage = "Rider: " + rider + "\r\n" + extraMessage;
+                }
                 href += "&body=" + URIUtil.encodeWithinQuery(extraMessage);
             }
             return href;

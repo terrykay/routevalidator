@@ -202,7 +202,7 @@
                                 data-copied="Copied!"
                                 data-clipboard-target="#actualstats">Copy Stats to clipboard</button></td>
                         </tr>
-                        <% final String mailToHref = result.getMailtoHref(); if(mailToHref != null && !mailToHref.isEmpty()) { %>
+                        <% final String mailToHref = result.getMailtoHref(request); if(mailToHref != null && !mailToHref.isEmpty()) { %>
                         <tr>
                             <td colspan="2"><a class="btn btn-primary" href="<%= mailToHref %>">Refer to AAA</button></td>
                         </tr>
