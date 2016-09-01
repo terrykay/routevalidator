@@ -271,7 +271,6 @@
 <%
     String errorMessage = (String)request.getSession().getAttribute("FriendlyErrorMessage");
     if(!(errorMessage == null || errorMessage.isEmpty())) {
-        request.getSession().removeAttribute("FriendlyErrorMessage");
 %>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -280,8 +279,11 @@
         </script>
 <%
     } /* if error message */
-    if(!result.getWarnings().isEmpty()) {
-    %>
+%>
+
+<%
+   if(!result.getWarnings().isEmpty()) {
+%>
         <script type="text/javascript">
             $(document).ready(function() {
             <% for(final String warning : result.getWarnings()) { %>
@@ -289,10 +291,10 @@
             <% } %>
             });
         </script>
-    <%
-     } /* if warnings */
-    %>
+<%
+    } /* if warnings */
 %>
+
 
 
 <% if(result.getIntendedGpx() != null && result.getActualGpx() != null ) { %>
