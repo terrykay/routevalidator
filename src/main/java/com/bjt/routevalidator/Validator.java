@@ -95,7 +95,7 @@ public class Validator {
         //System.err.println("After = "+trimmedPath.size());
         System.err.println("Control = "+controls.size());
                 
-        List <List <Coordinate>> newPaths = new ArrayList();
+   /*     List <List <Coordinate>> newPaths = new ArrayList();
         //newPaths.add(trimmedPath);
         
         List <Coordinate> trimmedPath = new ArrayList();
@@ -103,10 +103,10 @@ public class Validator {
             trimmedPath.add(pathsRidden.get(0).get(i*4));
         }
         
-        newPaths.add(trimmedPath);
+        newPaths.add(trimmedPath);*/
         for (final Coordinate control : controls) {
             //if((int)(counter / 10) %5 == 0) {
-            final Double dist = getMinDistance(control, newPaths);
+            final Double dist = getMinDistance(control, pathsRidden);
             maxDistFromAnyControl = Math.max(maxDistFromAnyControl, dist);
 
             if (dist == null || dist > tolerance) {
