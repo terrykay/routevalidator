@@ -19,7 +19,8 @@ public class Utility {
     }
 
     public static String getAAAEmailAddress() throws IOException {
-        return getConfigItem("AAA_EMAIL");
+        
+    return getConfigItem("AAA_EMAIL");
     }
 
     public static String configFile = System.getenv("ROUTEVALIDATOR_CONF");

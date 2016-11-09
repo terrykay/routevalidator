@@ -32,6 +32,7 @@ public class ValidateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            long start = System.currentTimeMillis();
             final String actual = req.getParameter("actual");
             final String intended = req.getParameter("intended");
             if (actual == null || actual.isEmpty()) throw new Exception("Actual URL must be specified.");
@@ -66,6 +67,7 @@ public class ValidateServlet extends HttpServlet {
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
 
                 final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance, trackUsePreferences);
+                req.setAttribute("taken", (System.currentTimeMillis()-start));
                 result.setIsUrlLoaded(true);
                 req.getSession().setAttribute("result", result);
                 req.setAttribute("result", result);
@@ -79,6 +81,7 @@ public class ValidateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        long start = System.currentTimeMillis();
         final ServletFileUpload servletFileUpload = new ServletFileUpload();
 
         logger.info("ValidateServlet.doPost working!");
@@ -129,6 +132,7 @@ public class ValidateServlet extends HttpServlet {
                 final Validator validator = new Validator(climbingServerUrlProvider);
                 final List<? extends TrackUsePreference> trackUsePreferences = TrackUsePreference.getDefault(actualGpxFile.getGpx());
                 final Result result = validator.validate(intendedGpxFile, actualGpxFile, tolerance, trackUsePreferences);
+                req.setAttribute("taken", (System.currentTimeMillis()-start));
                 req.getSession().setAttribute("result", result);
                 req.setAttribute("result", result);
                 req.getRequestDispatcher("/index.jsp").include(req, resp);

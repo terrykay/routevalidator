@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * Created by Ben.Taylor on 25/10/2015.
  */
 public class Validator {
+
     private final GeoHelper geoHelper;
     private final ClimbingServerUrlProvider climbingServerUrlProvider;
 
@@ -24,6 +25,42 @@ public class Validator {
         geoHelper = new GeoHelper();
     }
 
+    private List <Coordinate> trim(List <Coordinate> coords, int epsilon) {
+        double dmax = 0;
+        int index = 0;
+        int end = coords.size() - 1;
+
+        // Find furthest point from line start to end
+        List<Coordinate> theLine = new ArrayList();
+        theLine.add(coords.get(0));
+        theLine.add(coords.get(end));
+        try {
+            for (int i = 1; i < end - 1; i++) {
+                double dist = geoHelper.lineToPoint(theLine, coords.get(i));
+                if (dist > dmax) {
+                    dmax = dist;
+                    index = i;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("geohelper problem : " + e.getMessage());
+        }
+        List <Coordinate> resultList = new ArrayList();
+        // If max distance is greater than epsilon, recursively simplify
+        if ( dmax > epsilon ) {
+            List <Coordinate> recResults1 = trim(coords.subList(0, index), epsilon);
+            List <Coordinate> recResults2 = trim(coords.subList(index, end), epsilon);
+ 
+        // Build the result list
+            resultList.addAll(recResults1);
+            resultList.remove(resultList.size()-1);
+            resultList.addAll(recResults2);
+        } else {
+            resultList.add(coords.get(0));
+            resultList.add(coords.get(coords.size()-1));
+        }
+        return resultList;
+    }
 
     public Result validate(GpxFile intendedGpx, GpxFile actualGpx, int tolerance, List<? extends TrackUsePreference> trackUsePreferences) throws FactoryException, TransformException, IOException, FriendlyException {
 
@@ -51,9 +88,25 @@ public class Validator {
         int counter = 0;
         double maxDistFromAnyControl = Double.MIN_VALUE;
 
+        //long startOfTrim = System.currentTimeMillis();
+        //List <Coordinate> trimmedPath= trim(pathsRidden.get(0),10);
+        //System.err.println("Trim took : "+(System.currentTimeMillis()-startOfTrim));
+        System.err.println("Before = "+pathsRidden.get(0).size());
+        //System.err.println("After = "+trimmedPath.size());
+        System.err.println("Control = "+controls.size());
+                
+        List <List <Coordinate>> newPaths = new ArrayList();
+        //newPaths.add(trimmedPath);
+        
+        List <Coordinate> trimmedPath = new ArrayList();
+        for (int i=0; i<pathsRidden.get(0).size()/4; i++) {
+            trimmedPath.add(pathsRidden.get(0).get(i*4));
+        }
+        
+        newPaths.add(trimmedPath);
         for (final Coordinate control : controls) {
             //if((int)(counter / 10) %5 == 0) {
-            final Double dist = getMinDistance(control, pathsRidden);
+            final Double dist = getMinDistance(control, newPaths);
             maxDistFromAnyControl = Math.max(maxDistFromAnyControl, dist);
 
             if (dist == null || dist > tolerance) {
@@ -69,13 +122,13 @@ public class Validator {
 
         final double warningCloseness = 10;
         Logger.getAnonymousLogger().info(String.format("maxDistFromAnyControl = %f", maxDistFromAnyControl));
-        if(maxDistFromAnyControl <= warningCloseness) {
+        if (maxDistFromAnyControl <= warningCloseness) {
             result.addWarning(String.format("Warning - the actual track is never more than %.0f metres from the intended track. Please check they're not actually the same one.", warningCloseness));
         }
 
         final double fractionOfTimeAtRest = trackSummary.getFractionOfTimeAtRest();
         Logger.getAnonymousLogger().info(String.format("fraction of time at rest = %f", fractionOfTimeAtRest));
-        if(trackSummary.getFractionOfTimeAtRest() < 0.05) {
+        if (trackSummary.getFractionOfTimeAtRest() < 0.05) {
             result.addWarning(String.format("Warning - time at rest is only %.1f%% of the total time.", fractionOfTimeAtRest));
         }
 
@@ -103,7 +156,7 @@ public class Validator {
     }
 
     private List<? extends Statistic> getActualStatistics(final GeoFile geoFile, final TrackSummary trackSummary) throws FactoryException, TransformException {
-        if (geoFile.getTracks().size() > 0)
+        if (geoFile.getTracks().size() > 0) {
             return Arrays.asList(
                     new CreatorStatistic(geoFile),
                     new DistanceStatistic(geoFile, geoHelper),
@@ -122,7 +175,9 @@ public class Validator {
                     new MovingTimeStatistic(trackSummary),
                     new TimeAtRestStatistic(trackSummary)
             );
-        else return new ArrayList<>();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     private List<? extends Statistic> getIntendedStatistics(final GeoFile geoFile) throws FactoryException, TransformException, IOException {
@@ -148,7 +203,6 @@ public class Validator {
         return renderedStrings;
     }
 
-
     private static List<List<Coordinate>> getAllLines(final GeoFile gpx) {
         final List<List<Coordinate>> lines = new ArrayList<>();
         for (final Track track : gpx.getTracks()) {
@@ -164,12 +218,13 @@ public class Validator {
         return lines;
     }
 
-
     private Double getMinDistance(final Coordinate point, final List<List<Coordinate>> lines) throws FactoryException, TransformException {
         Double minDistance = null;
         for (final List<Coordinate> line : lines) {
             final double dist = geoHelper.lineToPoint(line, point);
-            if (minDistance == null || dist < minDistance) minDistance = dist;
+            if (minDistance == null || dist < minDistance) {
+                minDistance = dist;
+            }
         }
         return minDistance;
     }

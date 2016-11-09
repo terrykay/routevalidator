@@ -14,12 +14,12 @@
     </div>
     <div class="panel-body">
         <div class="error">${error}</div>
-        <div><a href="/">Return to the home page</a></div>
+        <div><a href="/routevalidator/">Return to the home page</a></div>
         <%
-        Exception exception = (Exception)request.getAttribute("exception");
-        if(exception != null) {
+        Exception myException = (Exception)request.getAttribute("exception");
+        if(myException != null) {
             %><div class="technicaldetails"><%
-            final StackTraceElement[] stackTrace = exception.getStackTrace();
+            final StackTraceElement[] stackTrace = myException.getStackTrace();
             for(StackTraceElement element : stackTrace) {
                 %><div><%= element.toString() %><%
             }
